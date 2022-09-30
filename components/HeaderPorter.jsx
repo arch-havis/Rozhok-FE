@@ -6,7 +6,7 @@ import Link from "next/link";
 import { Button } from "react-bootstrap";
 // import Cookies from "js-cookie";
 
-const HeaderClient = () => {
+const HeaderPorter = () => {
   //   const handleLogOut = async () => {
   //     await cookie.remove("token");
   //     await cookie.remove("role");
@@ -77,4 +77,4 @@ const HeaderClient = () => {
   );
 };
 
-export default HeaderClient;
+export default HeaderPorter;
