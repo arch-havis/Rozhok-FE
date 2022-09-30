@@ -80,11 +80,6 @@ const HeaderClient = () => {
             >
               Logout
             </Button>
-            {/* <Link href="/toko">
-              <a className="text-putih fs-5 fw-bold text-decoration-none ms-3">
-                Logout
-              </a>
-            </Link> */}
           </Nav>
         </Navbar.Collapse>
       </Container>
