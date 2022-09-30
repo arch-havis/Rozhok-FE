@@ -24,3 +24,23 @@ a {
     background: black;
   }
 }
+
+.bb {
+  border: solid blue;
+}
+
+.br {
+  border: solid red;
+}
+
+.bh {
+  border: solid black;
+}
+
+.bg {
+  border: solid green;
+}
+
+.bk {
+  border: solid yellow;
+}
