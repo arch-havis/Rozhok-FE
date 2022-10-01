@@ -11,10 +11,16 @@ const Index = () => {
     e.preventDefault();
     setRegister(!Register);
   };
-const goClient = (e) => {
-  e.preventDefault()
-  location.href = "/client-page" 
-}
+  const goClient = (e) => {
+    e.preventDefault();
+    location.href = "/client-page";
+  };
+
+  const goJunkStation = (e) => {
+    e.preventDefault();
+    location.href = "/junk-station";
+  };
+
   // const handleCancel = (e) => {
   //   e.preventDefault();
   //   location.href = "/";
@@ -33,7 +39,10 @@ const goClient = (e) => {
         }}
       >
         <Col lg={2}></Col>
-        <Col lg={8} className="p-5 mt-5 bg-putihan border border-lime rounded-2">
+        <Col
+          lg={8}
+          className="p-5 mt-5 bg-putihan border border-lime rounded-2"
+        >
           <Row>
             <Col lg={6}>
               <img
@@ -41,7 +50,11 @@ const goClient = (e) => {
                 style={{ width: "100%" }}
                 className="border border-alpukat border-2"
               ></img>
-              <Button variant="lime" className="text-putihan border-alpukat" onClick={(e) => goClient(e)}>
+              <Button
+                variant="lime"
+                className="text-putihan border-alpukat"
+                onClick={(e) => goClient(e)}
+              >
                 Client
               </Button>
             </Col>
@@ -63,7 +76,11 @@ const goClient = (e) => {
                 style={{ width: "100%" }}
                 className="border border-alpukat border-2"
               ></img>
-              <Button variant="lime" className="text-putihan border-alpukat">
+              <Button
+                variant="lime"
+                className="text-putihan border-alpukat"
+                onClick={(e) => goJunkStation(e)}
+              >
                 Junk Station
               </Button>
             </Col>
