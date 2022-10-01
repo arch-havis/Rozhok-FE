@@ -17,7 +17,7 @@ const Index = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     Router.push({
-      pathname: `/client-page/dashboard`,
+      pathname: `/client/dashboard`,
       query: {
         username: user.username,
         password: user.password,
