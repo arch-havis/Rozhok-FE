@@ -17,7 +17,7 @@ const HeaderClient = () => {
     <Navbar collapseOnSelect expand="lg" bg="alpukat" sticky="top">
       <Container>
         <Navbar.Brand>
-          <Link href="/client-page/home">
+          <Link href="/client/dashboard">
             <a className="text-putih fs-4 fw-bold  text-decoration-none">
               <img
                 style={{ width: 73, height: 90, marginRight: 6 }}
@@ -46,17 +46,17 @@ const HeaderClient = () => {
             </NavDropdown> */}
           </Nav>
           <Nav>
-            <Link href="/client-page/toko">
+            <Link href="/client/toko">
               <a className="text-putih fs-5 fw-bold text-decoration-none mx-3 mt-3 mt-lg-0 ">
                 Toko
               </a>
             </Link>
-            <Link href="/client-page/keranjang">
+            <Link href="/client/keranjang">
               <a className="text-putih fs-5 fw-bold text-decoration-none mx-3 mt-3 mt-lg-0">
                 Keranjang
               </a>
             </Link>
-            <Link href="/client-page/jual-rosok">
+            <Link href="/client/jual-rosok">
               <a className="text-putih fs-5 fw-bold text-decoration-none mx-3 mt-3 mt-lg-0">
                 jual Rosok
               </a>
@@ -66,7 +66,7 @@ const HeaderClient = () => {
                 Transaksi
               </a>
             </Link>
-            <Link href="/client-page/profile">
+            <Link href="/client/profile">
               <a className="text-putih fs-5 fw-bold text-decoration-none mx-3 mt-3 mt-lg-0">
                 Profile
               </a>

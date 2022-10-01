@@ -18,7 +18,7 @@ const Footer = () => {
                 <div className="text">&copy;Rozhok
                 </div>
             </div>
-        </footer>
+        </footer>  
     );
 };
 export default Footer;
