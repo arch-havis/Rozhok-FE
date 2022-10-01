@@ -5,7 +5,6 @@ import { Col, Row, Form, Button, Container } from "react-bootstrap";
 
 const Index = () => {
   const [Register, setRegister] = useState(false);
-  console.log(Register);
 
   //   const handleSubmit = (e) => {
   //     e.preventDefault();
@@ -138,7 +137,7 @@ const Index = () => {
       ) : (
         // form login
         <Row
-          className="pt-5 p-lg-5 m-0 d-flex justify-content-center"
+          className="pt-5 p-lg-5  d-flex justify-content-center "
           style={{
             backgroundImage: `url("/bg-login.jpg")`,
             backgroundSize: "cover",
@@ -147,9 +146,9 @@ const Index = () => {
             maxWidth: "100%",
           }}
         >
-          <Col xxl={6} xl="5" lg="6" md="8" sm="9" className="bk">
+          <Col xxl={6} xl="5" lg="6" md="8" sm="9" className="pt-5 ">
             <Form
-              onSubmit={(e) => handleSubmit(e)}
+              // onSubmit={(e) => handleSubmit(e)}
               className="border border-lime p-3 p-md-5 bg-putihan rounded-3 text-alpukat border-2"
             >
               <Form.Group className="mb-3" controlId="formBasicEmail">
