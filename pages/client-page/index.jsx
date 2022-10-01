@@ -2,19 +2,43 @@ import Link from "next/link";
 import React from "react";
 import { useState } from "react";
 import { Col, Row, Form, Button } from "react-bootstrap";
+import Router from "next/router";
 
 const Index = () => {
   const [Register, setRegister] = useState(false);
   console.log(Register);
 
+  const [user, setUser] = useState({
+    username: "",
+    password: "",
+  });
+  console.log(user);
+
   const handleSubmit = (e) => {
+    e.preventDefault();
+    Router.push({
+      pathname: `/client-page/dashboard`,
+      query: {
+        username: user.username,
+        password: user.password,
+      },
+    });
+  };
+
+  const handleRegist = (e) => {
     e.preventDefault();
     setRegister(!Register);
   };
 
   const handleCancel = (e) => {
     e.preventDefault();
-    location.href = "/";
+    setRegister(!Register);
+  };
+
+  const handleInput = (e) => {
+    let newLogin = { ...user };
+    newLogin[e.target.name] = e.target.value;
+    setUser(newLogin);
   };
 
   return (
@@ -33,7 +57,7 @@ const Index = () => {
         <Col lg className="pt-5 mt-5">
           {Register ? (
             <Form
-              onSubmit={(e) => handleSubmit(e)}
+              onSubmit={(e) => handleRegist(e)}
               className="border border-lime p-5 bg-putihan text-alpukat rounded-3 border-2"
             >
               <Form.Group className="mb-3" controlId="formBasicEmail">
@@ -76,14 +100,27 @@ const Index = () => {
               onSubmit={(e) => handleSubmit(e)}
               className="border border-lime p-5 bg-putihan rounded-3 text-alpukat border-2"
             >
-              <Form.Group className="mb-3" controlId="formBasicEmail">
+              <Form.Group
+                className="mb-3"
+                controlId="formBasicEmail"
+                onChange={(e) => handleInput(e)}
+              >
                 <Form.Label>Username</Form.Label>
-                <Form.Control type="email" placeholder="Enter email" />
+                <Form.Control
+                  name="username"
+                  type="email"
+                  placeholder="Enter email"
+                />
               </Form.Group>
 
               <Form.Group className="mb-3" controlId="formBasicPassword">
                 <Form.Label>Password</Form.Label>
-                <Form.Control type="password" placeholder="Password" />
+                <Form.Control
+                  name="password"
+                  type="password"
+                  placeholder="Password"
+                  onChange={(e) => handleInput(e)}
+                />
               </Form.Group>
               <div className="d-flex justify-content-end">
                 <Button variant="lime" type="submit" style={{ color: "white" }}>
@@ -94,8 +131,9 @@ const Index = () => {
               <p>
                 Belum punya akun?{" "}
                 <a
+                  id="register"
                   className="text-lime text-decoration-none"
-                  onClick={(e) => handleSubmit(e)}
+                  onClick={(e) => handleRegist(e)}
                 >
                   {" "}
                   <b>Register !</b>
