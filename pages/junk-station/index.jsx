@@ -29,7 +29,7 @@ const Index = () => {
     <div className="">
       {Register ? (
         <Row
-          className="p-0 p-lg-5 m-0 d-flex justify-content-center justify-content-xl-start bg"
+          className="p-0 p-lg-5 m-0 d-flex justify-content-center justify-content-xl-start"
           style={{
             backgroundImage: `url("/bg-login.jpg")`,
             backgroundSize: "cover",
@@ -38,7 +38,7 @@ const Index = () => {
             maxWidth: "100%",
           }}
         >
-          <Col xl="7" lg="8" md="10" sm="12" className=" mt-2 bk">
+          <Col xl="7" lg="8" md="10" sm="12" className=" mt-2 ">
             <Form
               //   onSubmit={(e) => handleSubmit(e)}
               className="border border-lime p-5 bg-putihan text-alpukat rounded-3 border-2"
