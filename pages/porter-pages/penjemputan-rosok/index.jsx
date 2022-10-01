@@ -1,6 +1,7 @@
 import React from "react";
 import { Card, Row, Button } from "react-bootstrap";
 import HeaderPorter from "../../../components/HeaderPorter";
+import Router from "next/router";
 
 const Index = () => {
     return (
@@ -22,7 +23,11 @@ const Index = () => {
                                     <Card.Title className="text-alpukat">Jalan: Jl. Wiro II Dusun hahaha RT 02/19</Card.Title>
                                 </div>
                                 <div className="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-6 d-flex justify-content-end">
-                                    <Button variant="alpukat" className="hover-overlay hover-zoom text-white fs-5">
+                                    <Button
+                                        variant="alpukat"
+                                        className="hover-overlay hover-zoom text-white fs-5"
+                                        onClick={() => Router.push({ pathname: "/porter-pages/detail-penjemputan" })}
+                                    >
                                         lihat
                                     </Button>
                                 </div>
