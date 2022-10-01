@@ -4,12 +4,14 @@ import { Button, Row } from "react-bootstrap";
 import Card from "react-bootstrap/Card";
 import { BiPurchaseTag } from "react-icons/bi";
 import { GiCash } from "react-icons/gi";
-import kurir from "../../assets/kurir.svg";
+import kurir from "../../../assets/kurir.svg";
 import Image from "next/image";
+import HeaderPorter from "../../../components/HeaderPorter";
 
-const Dashboard = () => {
+const Index = () => {
     return (
         <div>
+            <HeaderPorter />
             <div className="container">
                 <div className="d-flex float-end mt-3 h-5">
                     <Form.Select aria-label="Default select example" className="w-75 flex me-3">
@@ -74,4 +76,4 @@ const Dashboard = () => {
     );
 };
 
-export default Dashboard;
+export default Index;
