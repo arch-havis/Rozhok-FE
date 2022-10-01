@@ -13,7 +13,7 @@ const Index = () => {
   };
   const goClient = (e) => {
     e.preventDefault();
-    location.href = "/client-page";
+    location.href = "/client";
   };
 
   const goJunkStation = (e) => {
