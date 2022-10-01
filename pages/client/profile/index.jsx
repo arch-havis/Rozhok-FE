@@ -9,23 +9,23 @@ const Index = () => {
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
-  const [type, setType] = useState()
+  const [type, setType] = useState();
 
   const handleEditName = () => {
-    setType("nama")
+    setType("nama");
     handleShow();
   };
 
   const handleAddress = () => {
-    setType("alamat")
-    handleShow()
-  }
+    setType("alamat");
+    handleShow();
+  };
 
   return (
     <div>
       <HeaderClient />
-      <Row>
-        <Col md={2}></Col>
+      <Row className="p-0 m-0">
+        <Col md={2} className="p-0 m-0"></Col>
         <Col
           md={8}
           className="p-5 mt-5 mb-5 border border-2 border-alpukat rounded-2"
@@ -119,7 +119,7 @@ const Index = () => {
             </Col>
           </Row>
         </Col>
-        <Col md={2}></Col>
+        <Col md={2} className="p-0 m-0"></Col>
       </Row>
       <Footer />
       <AddModal show={show} handleClose={handleClose} type={type} />
