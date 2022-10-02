@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Router from "next/router";
 import React from "react";
 import { useState } from "react";
 import { Col, Row, Form, Button, Container } from "react-bootstrap";
@@ -22,6 +23,11 @@ const Index = () => {
   const handlePostRegister = (e) => {
     e.preventDefault();
     setRegister(!Register);
+  };
+
+  const handlePostLogin = (e) => {
+    e.preventDefault();
+    Router.push({ pathname: "/junk-station/dashboard" });
   };
 
   return (
@@ -161,8 +167,13 @@ const Index = () => {
                 <Form.Control type="password" placeholder="Masukkan password" />
               </Form.Group>
               <div className="d-flex justify-content-end">
-                <Button variant="lime" type="submit" style={{ color: "white" }}>
-                  Submit
+                <Button
+                  variant="lime"
+                  type="submit"
+                  style={{ color: "white" }}
+                  onClick={(e) => handlePostLogin(e)}
+                >
+                  Login
                 </Button>
               </div>
               <br></br>
