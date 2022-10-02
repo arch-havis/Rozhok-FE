@@ -38,6 +38,7 @@ const Index = () => {
                 kota: item.kota,
                 kecamatan: item.kecamatan,
                 jalan: item.jalan,
+                status: item.status,
             },
         });
     };
@@ -97,11 +98,7 @@ const Index = () => {
                                     <td>{data.tipeTransaksi}</td>
                                     <td>{data.status}</td>
                                     <td>
-                                        {data.status === "Sudah bayar" ? (
-                                            <AiTwotoneEdit className="fs-4 text-lime user-select-auto" />
-                                        ) : (
-                                            <AiTwotoneEdit className="fs-4 text-lime user-select-auto" onChange={(e) => e.target.value(e)} onClick={() => DetailTransaksi(data)} />
-                                        )}
+                                        <AiTwotoneEdit className="fs-4 text-lime user-select-auto" onChange={(e) => e.target.value(e)} onClick={() => DetailTransaksi(data)} />
                                         <AiTwotoneDelete className="fs-4 text-danger ms-4 user-select-auto" />
                                     </td>
                                 </tr>

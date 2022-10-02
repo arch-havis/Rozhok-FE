@@ -32,24 +32,42 @@ const Index = () => {
                                 <Card.Title className="text-alpukat fs-3">Kategori: Besi </Card.Title>
                             </div>
                             <div className="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12 d-flex justify-content-end">
-                                <Card.Title className="text-alpukat fs-5 pt-1 text-center text-white bg-danger rounded-3 w-25">Belum Bayar </Card.Title>
+                                {router.query.status === "Sudah bayar" ? (
+                                    <Card.Title className="text-alpukat fs-5 pt-1 text-center text-white bg-lime rounded-3 w-25">{router.query.status}</Card.Title>
+                                ) : (
+                                    <Card.Title className="text-alpukat fs-5 pt-1 text-center text-white bg-danger rounded-3 w-25">{router.query.status}</Card.Title>
+                                )}
                             </div>
                             <div className="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12 mt-5">
-                                <Card.Title className="text-alpukat fs-3">
-                                    Berat <input className="w-25" type="number"></input> (Kg)
-                                </Card.Title>
+                                {router.query.status === "Belum bayar" ? (
+                                    <Card.Title className="text-alpukat fs-3">
+                                        Berat <input className="w-25" type="number"></input> (Kg)
+                                    </Card.Title>
+                                ) : (
+                                    <Card.Title className="text-alpukat fs-3">Berat 10 (Kg)</Card.Title>
+                                )}
                             </div>
                             <div className="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12 d-flex justify-content-end mt-5">
-                                <Card.Title className="text-alpukat fs-3 text-center text-alpukat rounded-3 w-50">
-                                    Rp <input className="w-25" type="number"></input>
-                                </Card.Title>
+                                {router.query.status === "Belum bayar" ? (
+                                    <Card.Title className="text-alpukat fs-3 text-center text-alpukat rounded-3 w-50">
+                                        Rp <input className="w-25" type="number"></input>
+                                    </Card.Title>
+                                ) : (
+                                    <Card.Title className="text-alpukat fs-3 text-center text-alpukat rounded-3 w-50">Rp 50.000</Card.Title>
+                                )}
                             </div>
                         </Row>
                     </Card.Body>
                 </Card>
-                <Button variant="alpukat" className="hover-overlay hover-zoom text-white fs-5 float-end">
-                    Simpan
-                </Button>
+                {router.query.status === "Belum bayar" ? (
+                    <Button variant="alpukat" className="hover-overlay hover-zoom text-white fs-5 float-end">
+                        Simpan
+                    </Button>
+                ) : (
+                    <Button variant="danger" className="hover-overlay hover-zoom text-white fs-5 float-end">
+                        Jual
+                    </Button>
+                )}
             </div>
         </div>
     );
