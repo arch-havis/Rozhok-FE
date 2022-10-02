@@ -1,16 +1,17 @@
 import React from "react";
 import { Card, Row, Button } from "react-bootstrap";
 import HeaderPorter from "../../../components/HeaderPorter";
-import Router from "next/router";
+import { useRouter } from "next/router";
 
 const Index = () => {
+    const router = useRouter();
     // data dummy
     const customer = [
         { id: 1, nama: "Rudi", provinsi: "Jawa Timur", kota: "Trenggalek", kecamatam: "Panggul", jalan: "Jl. Wiro II Dusun hahaha RT 02/19" },
         { id: 2, nama: "Hyung", provinsi: "Jawa Timur", kota: "Trenggalek", kecamatam: "Munjungan", jalan: "Jl. Wiro II Dusun hahaha RT 02/19" },
     ];
     const DetailRosok = (item) => {
-        Router.push({
+        router.push({
             pathname: `/porter/penjemputan-rosok/${item.id}`,
             query: {
                 id: item.id,
@@ -48,7 +49,7 @@ const Index = () => {
                                                 variant="alpukat"
                                                 className="hover-overlay hover-zoom text-white fs-5"
                                                 onChange={(e) => e.target.value(e)}
-                                                onClick={() => DetailRosok(client.id)}
+                                                onClick={() => DetailRosok(client)}
                                             >
                                                 lihat
                                             </Button>
