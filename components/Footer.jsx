@@ -4,7 +4,7 @@ import { Col } from "react-bootstrap";
 
 const Footer = () => {
     return (
-        <footer className="bg-alpukat">
+        <footer className="bg-alpukat text-putihan">
             <div className="atas">
                 <div className="text">
                     <div className="row">
