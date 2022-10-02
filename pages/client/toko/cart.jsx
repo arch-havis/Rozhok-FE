@@ -1,3 +1,4 @@
+import Router from "next/router";
 import React, { useEffect, useState } from "react";
 import { Row, Col, Button, Form } from "react-bootstrap";
 import Footer from "../../../components/Footer";
@@ -30,6 +31,15 @@ const Cart = () => {
     e.preventDefault();
     setJumlah(jumlah + 1);
   };
+
+  const handleBuy = (e) => {
+    Router.push({
+      pathname:"/client/toko/checkout",
+      query: {
+        total : sub
+      }
+    })
+  }
 
   return (
     <div>
@@ -182,7 +192,7 @@ const Cart = () => {
             <b>Grand Total</b>
           </Col>
           <Col md={6} className="text-end p-0 m-0">
-            <Button variant="lime text-putihan">Beli</Button>
+            <Button variant="lime text-putihan" onClick={(e) => handleBuy(e)}>Beli</Button>
           </Col>
         </Row>
       </div>
