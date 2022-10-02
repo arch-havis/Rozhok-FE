@@ -21,6 +21,11 @@ const Index = () => {
     location.href = "/junk-station";
   };
 
+  const goAdmin = (e) => {
+    e.preventDefault()
+    location.href = "/admin"
+  }
+
   // const handleCancel = (e) => {
   //   e.preventDefault();
   //   location.href = "/";
@@ -90,7 +95,7 @@ const Index = () => {
                 style={{ width: "100%" }}
                 className="border border-alpukat border-2"
               ></img>
-              <Button variant="lime" className="text-putihan border-alpukat">
+              <Button variant="lime" className="text-putihan border-alpukat" onClick={(e) => goAdmin(e)}>
                 Admin
               </Button>
             </Col>
