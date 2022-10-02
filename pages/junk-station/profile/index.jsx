@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Col, Container, Row } from "react-bootstrap";
+import { Button, Col, Container, Row } from "react-bootstrap";
 import HeaderJunkStation from "../../../components/HeaderJunkStation";
 import {
   AiFillAlert,
@@ -69,6 +69,21 @@ const Index = () => {
               alt="logo"
               className="w-75 mt-0 mt-md-5 mt-lg-0"
             />
+          </Col>
+        </Row>
+
+        {/* Button Perbarui */}
+        <Row>
+          <Col className="text-end">
+            <Button
+              className=" mb-3 fw-bold text-putih"
+              variant="lime"
+              onClick={function () {
+                location.href = "/junk-station/edit-profile";
+              }}
+            >
+              Perbarui
+            </Button>
           </Col>
         </Row>
       </Container>
