@@ -18,7 +18,7 @@ const HeaderPorter = () => {
         <Navbar collapseOnSelect expand="lg" bg="alpukat" sticky="top">
             <Container>
                 <Navbar.Brand>
-                    <Link href="/porter-pages/dashboard" onClick={() => Router.push({ pathname: "/porter-pages/dashboard" })}>
+                    <Link href="/porter/dashboard" onClick={() => Router.push({ pathname: "/porter/dashboard" })}>
                         <a className="text-putih fs-4 fw-bold  text-decoration-none">
                             <img
                                 style={{ width: 73, height: 90, marginRight: 6 }}
@@ -47,13 +47,13 @@ const HeaderPorter = () => {
             </NavDropdown> */}
                     </Nav>
                     <Nav>
-                        <Link href="/porter-pages/penjemputan-rosok">
+                        <Link href="/porter/penjemputan-rosok">
                             <a className="text-putih fs-5 fw-bold text-decoration-none mx-3 mt-3 mt-lg-0 ">Penjemputan Rosok</a>
                         </Link>
-                        <Link href="/porter-pages/junk-station">
+                        <Link href="/porter/junk-station">
                             <a className="text-putih fs-5 fw-bold text-decoration-none mx-3 mt-3 mt-lg-0">Junk Station</a>
                         </Link>
-                        <Link href="/porter-pages/transaksi">
+                        <Link href="/porter/transaksi">
                             <a className="text-putih fs-5 fw-bold text-decoration-none mx-3 mt-3 mt-lg-0">Transaksi</a>
                         </Link>
 
