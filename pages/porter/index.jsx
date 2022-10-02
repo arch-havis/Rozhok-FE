@@ -1,7 +1,7 @@
 import React from "react";
 import Dashboard from "./dashboard/dashboard";
 
-const Porter = () => {
+const Index = () => {
     return (
         <div>
             <Dashboard />
@@ -9,4 +9,4 @@ const Porter = () => {
     );
 };
 
-export default Porter;
+export default Index;

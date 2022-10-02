@@ -7,6 +7,7 @@ import { GiCash } from "react-icons/gi";
 import kurir from "../../../assets/kurir.svg";
 import Image from "next/image";
 import HeaderPorter from "../../../components/HeaderPorter";
+// import Footer from "../../../components/Footer";
 
 const Index = () => {
     return (
@@ -72,6 +73,7 @@ const Index = () => {
                     <Image src={kurir} height={350} width={1250} />
                 </div>
             </div>
+            {/* <Footer style={{ marginTop: "1410px" }} /> */}
         </div>
     );
 };

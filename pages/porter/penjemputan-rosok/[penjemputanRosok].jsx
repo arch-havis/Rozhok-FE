@@ -2,8 +2,10 @@ import React from "react";
 import { Row, Card, Button } from "react-bootstrap";
 import HeaderPorter from "../../../components/HeaderPorter";
 import { CgProfile } from "react-icons/cg";
+import { useRouter } from "next/router";
 
 const Index = () => {
+    const router = useRouter();
     return (
         <div>
             <HeaderPorter />
@@ -13,14 +15,14 @@ const Index = () => {
                 <br />
                 <Row className="" style={{ marginTop: "100px" }}>
                     <div className="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-6">
-                        <h4 className="text-alpukat">Nama: Rudi</h4>
+                        <h4 className="text-alpukat">Nama: {router.query.nama}</h4>
                         <CgProfile className="text-alpukat" style={{ fontSize: "92.5px" }} />
                     </div>
                     <div className="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-6 d-grid justify-content-end">
-                        <h4 className="text-alpukat">Provinsi: Jawa Timur</h4>
-                        <h4 className="text-alpukat">Kota/Kab: Trenggalek</h4>
-                        <h4 className="text-alpukat">Kecamatan: Panggul</h4>
-                        <h4 className="text-alpukat">Jalan: Jl. Wiro II Dusun hahaha RT 02/19</h4>
+                        <h4 className="text-alpukat">Provinsi: {router.query.provinsi}</h4>
+                        <h4 className="text-alpukat">Kota/Kab: {router.query.kota}</h4>
+                        <h4 className="text-alpukat">Kecamatan: {router.query.kecamatan}</h4>
+                        <h4 className="text-alpukat">Jalan: {router.query.jalan}</h4>
                     </div>
                 </Row>
                 <Card className="w-100 mt-5 shadow-sm">
