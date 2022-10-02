@@ -13,8 +13,8 @@ const Index = () => {
 
     // data dummy
     const rosok = [
-        { id: 1, nama: "Rosok CBA", provinsi: "Jawa Timur", kota: "Trenggalek", kecamatam: "Panggul", jalan: "Jl. Wiro II Dusun hahaha RT 02/19" },
-        { id: 2, nama: "Rosok ABC", provinsi: "Jawa Timur", kota: "Trenggalek", kecamatam: "Munjungan", jalan: "Jl. Wiro II Dusun hahaha RT 02/19" },
+        { id: 1, nama: "Rosok CBA", provinsi: "Jawa Timur", kota: "Trenggalek", kecamatan: "Panggul", jalan: "Jl. Wiro II Dusun hahaha RT 02/19" },
+        { id: 2, nama: "Rosok ABC", provinsi: "Jawa Timur", kota: "Trenggalek", kecamatan: "Munjungan", jalan: "Jl. Wiro II Dusun hihihi RT 02/05" },
     ];
 
     const DetailJunkStation = (item) => {
@@ -140,7 +140,7 @@ const Index = () => {
                                     <Card.Title className="mb-4 text-alpukat">Nama: {client.nama}</Card.Title>
                                     <Card.Title className="mb-4 text-alpukat">Provinsi: {client.provinsi}</Card.Title>
                                     <Card.Title className="mb-4 text-alpukat">Kota: {client.kota}</Card.Title>
-                                    <Card.Title className="mb-4 text-alpukat">Kecamatan: {client.kecamatam}</Card.Title>
+                                    <Card.Title className="mb-4 text-alpukat">Kecamatan: {client.kecamatan}</Card.Title>
                                     <Row>
                                         <div className="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-6">
                                             <Card.Title className="text-alpukat">Jalan: {client.jalan}</Card.Title>
