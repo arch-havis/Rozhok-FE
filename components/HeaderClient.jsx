@@ -51,17 +51,17 @@ const HeaderClient = () => {
                 Toko
               </a>
             </Link>
-            <Link href="/client/keranjang">
+            <Link href="/client/toko/cart">
               <a className="text-putih fs-5 fw-bold text-decoration-none mx-3 mt-3 mt-lg-0">
                 Keranjang
               </a>
             </Link>
             <Link href="/client/jual-rosok">
               <a className="text-putih fs-5 fw-bold text-decoration-none mx-3 mt-3 mt-lg-0">
-                jual Rosok
+                Jual Rosok
               </a>
             </Link>
-            <Link href="/client-page/transaksi">
+            <Link href="/client/transaksi">
               <a className="text-putih fs-5 fw-bold text-decoration-none mx-3 mt-3 mt-lg-0">
                 Transaksi
               </a>
