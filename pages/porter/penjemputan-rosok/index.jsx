@@ -34,7 +34,7 @@ const Index = () => {
                 <div className="" style={{ marginTop: "80px" }}>
                     {customer.map((client, i) => {
                         return (
-                            <Card className="w-100 mb-5" key={i}>
+                            <Card className="w-100 mb-5 border border-lime" key={i}>
                                 <Card.Body className="bg-tea shadow-md">
                                     <Card.Title className="mb-4 text-alpukat">Nama: {client.nama}</Card.Title>
                                     <Card.Title className="mb-4 text-alpukat">Provinsi: {client.provinsi}</Card.Title>
