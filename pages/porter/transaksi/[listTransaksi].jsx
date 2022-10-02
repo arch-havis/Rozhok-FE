@@ -48,7 +48,7 @@ const Index = () => {
                     </Card.Body>
                 </Card>
                 <Button variant="alpukat" className="hover-overlay hover-zoom text-white fs-5 float-end">
-                    lihat
+                    Simpan
                 </Button>
             </div>
         </div>
