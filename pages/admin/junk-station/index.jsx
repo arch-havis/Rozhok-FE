@@ -7,7 +7,7 @@ import HeaderAdmin from "../../../components/HeaderAdmin";
 
 const Index = () => {
   const handleDetailJunkStation = () => {
-    location.href = "/admin/produk/detail-junk-station";
+    location.href = "/admin/junk-station/detail-junk-station";
   };
 
   return (
