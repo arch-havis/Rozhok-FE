@@ -7,7 +7,6 @@ import { GiCash } from "react-icons/gi";
 import kurir from "../../../assets/kurir.svg";
 import Image from "next/image";
 import HeaderPorter from "../../../components/HeaderPorter";
-// import Footer from "../../../components/Footer";
 
 const Index = () => {
     return (
