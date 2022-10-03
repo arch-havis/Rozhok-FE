@@ -10,7 +10,7 @@ const Index = () => {
         <div>
             <HeaderPorter />
             <div className="container">
-                <h3 className="text-alpukat float-end mt-5 fw-bolder">Detail Rosok</h3>
+                <h3 className="text-alpukat float-end mt-5 fw-bolder">Detail Transaksi</h3>
                 <br />
                 <br />
                 <Row className="" style={{ marginTop: "100px" }}>
