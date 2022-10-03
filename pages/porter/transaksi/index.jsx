@@ -69,16 +69,8 @@ const Index = () => {
                 </div>
                 <div className="d-flex justify-content-end mt-4">
                     <div className="d-flex flex-sm-row flex-column w-50">
-                        <Form.Select aria-label="Default select example" onChange={(e) => handleKotaKab(e)}>
-                            <option>Tanggal Awal</option>
-                            <option value="pembelian">Pembelian</option>
-                            <option value="penjualan">Penjualan</option>
-                        </Form.Select>
-                        <Form.Select aria-label="Default select example" className="mx-0 mx-sm-2 my-2 my-sm-0" onChange={(e) => handleKecamatan(e)}>
-                            <option>Tanggal Akhir</option>
-                            <option value="sudah bayar">Sudah Bayar</option>
-                            <option value="belum bayar">Belum Bayar</option>
-                        </Form.Select>
+                        <input type="date" className="rounded-2 border-1 border-putih w-50" />
+                        <input type="date" className="rounded-2 border-1 border-putih w-50 my-1 my-sm-0 ms-auto" />
                     </div>
                 </div>
                 <Table className="mt-5 rounded rounded-3 overflow-hidden mx-auto">

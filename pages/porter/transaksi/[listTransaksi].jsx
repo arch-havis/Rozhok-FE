@@ -32,28 +32,28 @@ const Index = () => {
                                 <Card.Title className="text-alpukat fs-3">Kategori: Besi </Card.Title>
                             </div>
                             <div className="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12 d-flex justify-content-end">
-                                {router.query.status === "Sudah bayar" ? (
+                                {router.query.status === "Sudah bayar" || router.query.status === "Terjual" ? (
                                     <Card.Title className="text-alpukat fs-5 pt-1 text-center text-white bg-lime rounded-3 w-25">{router.query.status}</Card.Title>
                                 ) : (
                                     <Card.Title className="text-alpukat fs-5 pt-1 text-center text-white bg-danger rounded-3 w-25">{router.query.status}</Card.Title>
                                 )}
                             </div>
                             <div className="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12 mt-5">
-                                {router.query.status === "Belum bayar" ? (
+                                {router.query.status === "Sudah bayar" || router.query.status === "Terjual  " ? (
+                                    <Card.Title className="text-alpukat fs-3">Berat 10 (Kg)</Card.Title>
+                                ) : (
                                     <Card.Title className="text-alpukat fs-3">
                                         Berat <input className="w-25" type="number"></input> (Kg)
                                     </Card.Title>
-                                ) : (
-                                    <Card.Title className="text-alpukat fs-3">Berat 10 (Kg)</Card.Title>
                                 )}
                             </div>
                             <div className="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12 d-flex justify-content-end mt-5">
-                                {router.query.status === "Belum bayar" ? (
+                                {router.query.status === "Sudah bayar" || router.query.status === "Terjual" ? (
+                                    <Card.Title className="text-alpukat fs-3 text-center text-alpukat rounded-3 w-50">Rp 50.000</Card.Title>
+                                ) : (
                                     <Card.Title className="text-alpukat fs-3 text-center text-alpukat rounded-3 w-50">
                                         Rp <input className="w-25" type="number"></input>
                                     </Card.Title>
-                                ) : (
-                                    <Card.Title className="text-alpukat fs-3 text-center text-alpukat rounded-3 w-50">Rp 50.000</Card.Title>
                                 )}
                             </div>
                         </Row>
@@ -68,6 +68,7 @@ const Index = () => {
                         Jual
                     </Button>
                 )}
+                {router.query.status === "Terjual" ? null : null}
             </div>
         </div>
     );
