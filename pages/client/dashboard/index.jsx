@@ -1,10 +1,16 @@
 import React from "react";
 import { Row, Col, Carousel, Table, Button } from "react-bootstrap";
 import HeaderClient from "../../../components/HeaderClient";
-import Footer from "../../../components/Footer"
+import Footer from "../../../components/Footer";
+import { getCookie } from "cookies-next";
 
 const Index = () => {
   const harga = "Rp. 100.000";
+
+  
+  console.log(getCookie("token"));
+
+
   return (
     <div>
       <HeaderClient />
@@ -41,7 +47,11 @@ const Index = () => {
         </Col>
         <Col md={3}></Col>
       </Row>
-      <Carousel id="carousel" variant="dark" className="border-top-dark p-5 bg-tea mb-5">
+      <Carousel
+        id="carousel"
+        variant="dark"
+        className="border-top-dark p-5 bg-tea mb-5"
+      >
         <Carousel.Item>
           <img
             className="d-block w-100"
@@ -189,7 +199,7 @@ const Index = () => {
           </div>
         </Row>
       </div>
-      <Footer/>
+      <Footer />
     </div>
   );
 };

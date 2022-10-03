@@ -3,26 +3,51 @@ import React from "react";
 import { useState } from "react";
 import { Col, Row, Form, Button } from "react-bootstrap";
 import Router from "next/router";
+import axios from "axios";
+import { setCookie } from "cookies-next";
 
 const Index = () => {
   const [Register, setRegister] = useState(false);
   console.log(Register);
 
   const [user, setUser] = useState({
-    username: "",
+    email: "",
     password: "",
   });
-  console.log(user);
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    Router.push({
-      pathname: `/client/dashboard`,
-      query: {
-        username: user.username,
+    postLogin(e);
+  };
+
+  const postLogin = async (e) => {
+    e.preventDefault();
+
+    await axios({
+      method: "post",
+      url: "https://altagp3.online/login",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      data: {
+        email: user.email,
         password: user.password,
       },
-    });
+    })
+      .then((response) => {
+        alert(response.data.message);
+        setCookie("token", response.data.data.token);
+        Router.push({
+          pathname: `/client/dashboard`,
+          query: {
+            email: user.email,
+            password: user.password,
+          },
+        });
+      })
+      .catch((error) => {
+        console.log(error.message);
+      });
   };
 
   const handleRegist = (e) => {
@@ -105,9 +130,9 @@ const Index = () => {
                 controlId="formBasicEmail"
                 onChange={(e) => handleInput(e)}
               >
-                <Form.Label>Username</Form.Label>
+                <Form.Label>Email</Form.Label>
                 <Form.Control
-                  name="username"
+                  name="email"
                   type="email"
                   placeholder="Enter email"
                 />
