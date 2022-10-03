@@ -28,24 +28,15 @@ const Index = () => {
             >
               <Form.Group className="mb-3" controlId="formBasicEmail">
                 <Form.Label>Nama Produk</Form.Label>
-                <Form.Control
-                  type="text"
-                  placeholder="Masukkan nama junk station"
-                />
+                <Form.Control type="text" placeholder="" />
               </Form.Group>
               <Form.Group className="mb-3" controlId="formBasicEmail">
                 <Form.Label>Harga Produk</Form.Label>
-                <Form.Control
-                  type="text"
-                  placeholder="Masukkan nama pemilik junk station"
-                />
+                <Form.Control type="text" placeholder="" />
               </Form.Group>
               <Form.Group className="mb-3" controlId="formBasicEmail">
                 <Form.Label>Stok</Form.Label>
-                <Form.Control
-                  type="number"
-                  placeholder="Tambahkan jumlah stok produk"
-                />
+                <Form.Control type="number" placeholder="" />
               </Form.Group>
               <Form.Group
                 className="my-3"
@@ -65,7 +56,7 @@ const Index = () => {
                   onClick={(e) => handleCancel(e)}
                   style={{ color: "white" }}
                 >
-                  Cancel
+                  Batal
                 </Button>
                 <Button
                   className="ms-5"
