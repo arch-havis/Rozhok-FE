@@ -6,7 +6,7 @@ const Index = () => {
   return (
     <div className="bg-putih min-vh-100">
       <HeaderJunkStation />
-      <Container className="pt-4">
+      <Container className="py-4">
         <h2 className="text-end">Detail Transaksi</h2>
         <div className="bg-tea mt-5 p-3 rounded-3 shadow-md">
           <h3 className="ms-1">Kategori: Besi</h3>
