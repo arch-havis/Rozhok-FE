@@ -77,9 +77,13 @@ const Index = () => {
                   Edit
                 </Button>
                 {" | "}
-                {/* <a href="" className="text-alpukat text-decoration-none"> */}
-                Hapus
-                {/* </a> */}
+                <Button
+                  variant="putihan"
+                  className="text-alpukat text-decoration-none p-0"
+                  // onClick={() => handleEditKategori()}
+                >
+                  Hapus
+                </Button>
               </td>
             </tr>
           </tbody>
