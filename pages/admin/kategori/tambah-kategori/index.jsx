@@ -1,9 +1,27 @@
 import React from "react";
+import Router, { useRouter } from "next/router";
 import HeaderAdmin from "../../../../components/HeaderAdmin";
 import Footer from "../../../../components/Footer";
 import { Button, Col, Container, Form, Row } from "react-bootstrap";
 
 const Index = () => {
+  const router = useRouter();
+
+  const handleBatal = () => {
+    Router.push({
+      pathname: `/admin/kategori`,
+      // query: {
+      //   transaksiId: transaksiId,
+      // },
+    });
+  };
+
+  const handleTambahKategori = () => {
+    Router.push({
+      pathname: `/admin/kategori`,
+    });
+  };
+
   return (
     <div>
       <HeaderAdmin />
@@ -11,7 +29,7 @@ const Index = () => {
         <Row className="pb-5">
           <Col
             md={8}
-            className="p-5 bg-putih  border border-lime rounded-2 mx-auto"
+            className="p-5 bg-putih  border border-lime rounded-2 mx-auto "
           >
             <Form.Group>
               <Form.Label>Nama Kategori</Form.Label>
@@ -27,7 +45,16 @@ const Index = () => {
             </Form.Group>
             <Row id="bawah" className="mt-5">
               <Col className="text-end">
-                <Button variant="lime">Tambah</Button>
+                <Button variant="danger" onClick={() => handleBatal()}>
+                  Batal
+                </Button>
+                <Button
+                  variant="lime"
+                  className="ms-3 text-putih fw-bold"
+                  onClick={() => handleTambahKategori()}
+                >
+                  Tambah
+                </Button>
               </Col>
             </Row>
           </Col>

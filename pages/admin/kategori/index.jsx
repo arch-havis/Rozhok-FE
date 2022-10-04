@@ -1,14 +1,31 @@
 import React from "react";
+import Router, { useRouter } from "next/router";
+
 import HeaderAdmin from "../../../components/HeaderAdmin";
 import Footer from "../../../components/Footer";
 import { Button, Col, Container, Row, Table } from "react-bootstrap";
 
 const Index = () => {
+  const router = useRouter();
   const hargaClient = 666666;
   const hargaMitra = 7777777;
 
-  const goTambah = (e) => {
-    location.href = "/admin/kategori/tambah-kategori";
+  const gotoTambahKategori = () => {
+    Router.push({
+      pathname: `/admin/kategori/tambah-kategori`,
+      // query: {
+      //   transaksiId: transaksiId,
+      // },
+    });
+  };
+
+  const handleEditKategori = () => {
+    Router.push({
+      pathname: `/admin/kategori/edit-kategori`,
+      // query: {
+      //   transaksiId: transaksiId,
+      // },
+    });
   };
 
   const formatClient = new Intl.NumberFormat("id-ID", {
@@ -29,8 +46,8 @@ const Index = () => {
       <Container>
         <div className="text-end">
           <Button
-            variant="lime mt-5 mb-2 border-alpukat"
-            onClick={() => goTambah()}
+            variant="lime mt-5 mb-2 fw-bold text-putih "
+            onClick={() => gotoTambahKategori()}
           >
             Tambah Kategori
           </Button>
@@ -42,7 +59,7 @@ const Index = () => {
               <th>Kategori</th>
               <th>Harga Client</th>
               <th>Harga Mitra</th>
-              <th>Aksi</th>
+              <th></th>
             </tr>
           </thead>
           <tbody className="border-tea border">
@@ -52,16 +69,17 @@ const Index = () => {
               <td>{formatClient}</td>
               <td>{formatMitra}</td>
               <td>
-                <a
-                  href="/admin/kategori/tambah"
-                  className="text-alpukat text-decoration-none"
+                <Button
+                  variant="putihan"
+                  className="text-alpukat text-decoration-none p-0"
+                  onClick={() => handleEditKategori()}
                 >
                   Edit
-                </a>
+                </Button>
                 {" | "}
-                <a href="" className="text-alpukat text-decoration-none">
-                  Hapus
-                </a>
+                {/* <a href="" className="text-alpukat text-decoration-none"> */}
+                Hapus
+                {/* </a> */}
               </td>
             </tr>
           </tbody>
