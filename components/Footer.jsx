@@ -5,11 +5,13 @@ const Footer = () => {
   return (
     <footer className="bg-alpukat text-putihan">
       <Container>
-        <Row className=" bk">
-          <Col className=""> Contact</Col>
-          <Col className="text-center"> Social</Col>
-          <Col className="text-end"> About</Col>
-        </Row>
+        <Col xs="12 mx-auto" sm="6">
+          <Row className="">
+            <Col> Contact</Col>
+            <Col className="text-center"> Social</Col>
+            <Col className="text-end"> About</Col>
+          </Row>
+        </Col>
         <div className="bawah">
           <div className="text-center">&copy; Rozhok 2022</div>
         </div>
