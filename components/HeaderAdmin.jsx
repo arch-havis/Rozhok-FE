@@ -17,7 +17,7 @@ const HeaderAdmin = () => {
     <Navbar collapseOnSelect expand="lg" bg="alpukat" sticky="top">
       <Container>
         <Navbar.Brand>
-          <Link href="/admin">
+          <Link href="/admin/dashboard">
             <a className="text-putih fs-4 fw-bold  text-decoration-none">
               <img
                 style={{ width: 73, height: 90, marginRight: 6 }}
