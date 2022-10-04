@@ -4,20 +4,22 @@ import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
 import Link from "next/link";
 import { Button } from "react-bootstrap";
-// import Cookies from "js-cookie";
+import Router from "next/router";
+import cookie from "js-cookie";
 
 const HeaderAdmin = () => {
-  //   const handleLogOut = async () => {
-  //     await cookie.remove("token");
-  //     await cookie.remove("role");
-  //     await Router.push({ pathname: "/" });
-  //   };
+  const handleLogOut = async () => {
+    await cookie.remove("token");
+    await cookie.remove("role");
+    await cookie.remove("username");
+    await Router.push({ pathname: "/" });
+  };
 
   return (
     <Navbar collapseOnSelect expand="lg" bg="alpukat" sticky="top">
       <Container>
         <Navbar.Brand>
-          <Link href="/admin">
+          <Link href="/admin/dashboard">
             <a className="text-putih fs-4 fw-bold  text-decoration-none">
               <img
                 style={{ width: 73, height: 90, marginRight: 6 }}
@@ -76,7 +78,7 @@ const HeaderAdmin = () => {
               style={{ marginTop: -7 }}
               variant="alpukat"
               className=" text-putih fs-5 fw-bold text-decoration-none ms-3"
-              //   onClick={() => handleLogOut()}
+              onClick={() => handleLogOut()}
             >
               Logout
             </Button>

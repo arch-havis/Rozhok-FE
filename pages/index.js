@@ -22,9 +22,14 @@ const Index = () => {
   };
 
   const goAdmin = (e) => {
-    e.preventDefault()
-    location.href = "/admin"
-  }
+    e.preventDefault();
+    location.href = "/admin";
+  };
+
+  const goPorter = (e) => {
+    e.preventDefault();
+    location.href = "/porter";
+  };
 
   // const handleCancel = (e) => {
   //   e.preventDefault();
@@ -69,7 +74,11 @@ const Index = () => {
                 style={{ width: "100%" }}
                 className="border border-alpukat border-2"
               ></img>
-              <Button variant="lime" className="text-putihan border-alpukat">
+              <Button
+                variant="lime"
+                className="text-putihan border-alpukat"
+                onClick={(e) => goPorter(e)}
+              >
                 Porter
               </Button>
             </Col>
@@ -95,7 +104,11 @@ const Index = () => {
                 style={{ width: "100%" }}
                 className="border border-alpukat border-2"
               ></img>
-              <Button variant="lime" className="text-putihan border-alpukat" onClick={(e) => goAdmin(e)}>
+              <Button
+                variant="lime"
+                className="text-putihan border-alpukat"
+                onClick={(e) => goAdmin(e)}
+              >
                 Admin
               </Button>
             </Col>
