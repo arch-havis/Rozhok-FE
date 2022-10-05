@@ -3,6 +3,7 @@ import { Row, Col, Button, Table } from "react-bootstrap";
 import Footer from "../../../components/Footer";
 import HeaderClient from "../../../components/HeaderClient";
 import AddModal from "../../../components/client-page/AddClientData";
+import EditAlamat from "../../../components/client-page/Alamat";
 import { getCookie } from "cookies-next";
 import axios from "axios";
 
@@ -56,6 +57,11 @@ const Index = (props) => {
 
   const handleAddress = () => {
     setType("alamat");
+    handleShow();
+  };
+
+  const handleEditAdd = () => {
+    setType("edit");
     handleShow();
   };
 
@@ -234,6 +240,54 @@ const Index = (props) => {
       });
   };
 
+  ////////////////EDIT/////////////////
+  // const [edit, setEdit] = useState(false);
+  // console.log(edit);
+  // const editClose = () => setEdit(false);
+  // const editShow = () => setEdit(true);
+  const [id, setId] = useState();
+  console.log(id);
+  console.log(namaProv, namaKab, namaKec, status, jalan);
+  const handleEditAlamat = async (e) => {
+    e.preventDefault();
+    await axios({
+      method: "put",
+      url: `https://altagp3.online/alamat/${id}`,
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+      data: {
+        provinsi: namaProv,
+        kota: namaKab,
+        kecamatan: namaKec,
+        status: status,
+        jalan: jalan,
+      },
+    })
+      .then((response) => {
+        console.log(response.data.message);
+      })
+      .catch((error) => {
+        console.log(error.message);
+      });
+  };
+
+  const handleDelAdd = async (e) => {
+    await axios({
+      method: "delete",
+      url: `https://altagp3.online/alamat/${id}`,
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
+      .then((response) => {
+        alert(response.data.message);
+      })
+      .catch((error) => {
+        console.log(error.data.message);
+      });
+  };
+
   return (
     <div>
       <HeaderClient />
@@ -316,17 +370,28 @@ const Index = (props) => {
                 {props.listAlamat.data.map((items, index) => {
                   return (
                     <tr className="text-alpukat" key={index}>
-                      <td>{items.id}</td>
+                      <td>{index + 1}</td>
                       <td>{items.provinsi}</td>
                       <td>{items.kota}</td>
                       <td>{items.kecamatan}</td>
                       <td>{items.status}</td>
                       <td>{items.jalan}</td>
                       <td>
-                        <a href="" onClick={() => handleEdit()}>
+                        <a
+                          onClick={() => {
+                            handleEditAdd(), setId(items.id);
+                          }}
+                        >
                           Perbarui
                         </a>{" "}
-                        | <a href="">Hapus</a>
+                        |{" "}
+                        <a
+                          onClick={() => {
+                            handleDelAdd(), setId(items.id);
+                          }}
+                        >
+                          Hapus
+                        </a>
                       </td>
                     </tr>
                   );
@@ -365,7 +430,9 @@ const Index = (props) => {
         handleStatus={handleStatus}
         handleJalan={handleJalan}
         handleTambahAlamat={handleTambahAlamat}
+        handleEditAlamat={handleEditAlamat}
       />
+      {/* <EditAlamat show={edit} editClose={editClose} /> */}
     </div>
   );
 };

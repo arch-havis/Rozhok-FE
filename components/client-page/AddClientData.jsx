@@ -18,6 +18,7 @@ const AddClientData = ({
   handleStatus,
   handleJalan,
   handleTambahAlamat,
+  handleEditAlamat
 }) => {
   return (
     <>
@@ -30,15 +31,16 @@ const AddClientData = ({
         <Modal.Header closeButton>
           <Modal.Title>
             {" "}
-            {type === "nama" ? <>Ganti Nama</> : <>Tambah Alamat</>}{" "}
+            {type === "nama" && "Ganti Nama" || type === "alamat" && "Tambah Alamat" || type === "edit" && "Edit Alamat"}{" "}
           </Modal.Title>
         </Modal.Header>
 
         <Form
           onSubmit={
             type === "nama"
-              ? (e) => handleSubmit(e)
-              : (e) => handleTambahAlamat(e)
+              && ((e) => handleSubmit(e))
+              || type === "alamat" && ((e) => handleTambahAlamat(e))
+              || type === "edit" &&  ((e) => handleEditAlamat(e))
           }
         >
           <Modal.Body>
