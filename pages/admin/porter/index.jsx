@@ -1,87 +1,143 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import HeaderAdmin from "../../../components/HeaderAdmin";
 import Footer from "../../../components/Footer";
 import { Button, Col, Row, Table } from "react-bootstrap";
+import Cookies from "js-cookie";
+import axios from "axios";
+import Router from "next/router";
 
 const Index = () => {
-  const hargaClient = 666666;
-  const hargaMitra = 7777777;
+    const [dataPorters, setDataPorters] = useState([]);
 
-  const goTambah = (e) => {
-    location.href = "/admin/porter/tambah";
-  };
+    useEffect(() => {
+        getDataPorters();
+    }, []);
 
-  const formatClient = new Intl.NumberFormat("id-ID", {
-    style: "currency",
-    currency: "IDR",
-    currencyDisplay: "symbol",
-  }).format(hargaClient);
+    // Get Data All Porters
+    const getDataPorters = async () => {
+        try {
+            const response = await axios.get("https://altagp3.online/porters", {
+                headers: {
+                    accept: "application/json",
+                    Authorization: `Bearer ${Cookies.get("token")}`,
+                },
+            });
+            setDataPorters(response.data.data);
+        } catch (error) {
+            console.log(error);
+        }
+    };
 
-  const formatMitra = new Intl.NumberFormat("id-ID", {
-    style: "currency",
-    currency: "IDR",
-    currencyDisplay: "symbol",
-  }).format(hargaMitra);
+    // Delete Porter
+    const deleteDataPorters = (idPorter) => {
+        console.log(idPorter);
+        var axios = require("axios");
 
-  return (
-    <div>
-      <HeaderAdmin />
-      <Row className="m-0 mb-5">
-        <Col></Col>
-        <Col></Col>
-        <Col>
-          <Button variant="lime mt-5 border-alpukat" onClick={() => goTambah()}>
-            Tambah Porter
-          </Button>
-        </Col>
-      </Row>
-      <Row className="m-0 mt-5">
-        <Col></Col>
-        <Col md={8} className="text-center">
-          <Table>
-            <thead className="bg-alpukat text-putihan">
-              <tr>
-                <th>No.</th>
-                <th>Nama</th>
-                <th>No. Telpon</th>
-                <th>Email</th>
-                <th>Aksi</th>
-              </tr>
-            </thead>
-            <tbody className="border-tea border">
-              <tr>
-                <td>1</td>
-                <td>Usopp</td>
-                <td>0951372864</td>
-                <td>usopp@strawhat.com</td>
-                <td>
-                  <a
-                    href="/admin/porter/tambah"
-                    className="text-alpukat text-decoration-none"
-                  >
-                    Edit
-                  </a>
-                  {" | "}
-                  <a
-                    href="/admin/porter/detail"
-                    className="text-alpukat text-decoration-none"
-                  >
-                    Detail
-                  </a>
-                  {" | "}
-                  <a href="" className="text-alpukat text-decoration-none">
-                    Hapus
-                  </a>
-                </td>
-              </tr>
-            </tbody>
-          </Table>
-        </Col>
-        <Col></Col>
-      </Row>
-      <Footer />
-    </div>
-  );
+        var config = {
+            method: "delete",
+            url: `https://altagp3.online/porter/${idPorter}`,
+            headers: {
+                Authorization: `Bearer ${Cookies.get("token")}`,
+            },
+        };
+
+        axios(config)
+            .then((response) => {
+                console.log(JSON.stringify(response.data));
+                getDataPorters();
+            })
+            .catch((error) => {
+                console.log(error);
+            });
+    };
+
+    // -----------------put api
+    const editDataPorters = (idPorter) => {
+        Router.push({
+            pathname: `/admin/porter/edit`,
+            query: {
+                idPorter: idPorter,
+            },
+        });
+    };
+
+    const hargaClient = 666666;
+    const hargaMitra = 7777777;
+
+    const goTambah = () => {
+        Router.push({ pathname: "/admin/porter/tambah" });
+    };
+
+    const formatClient = new Intl.NumberFormat("id-ID", {
+        style: "currency",
+        currency: "IDR",
+        currencyDisplay: "symbol",
+    }).format(hargaClient);
+
+    const formatMitra = new Intl.NumberFormat("id-ID", {
+        style: "currency",
+        currency: "IDR",
+        currencyDisplay: "symbol",
+    }).format(hargaMitra);
+
+    return (
+        <div>
+            <HeaderAdmin />
+            <Row className="m-0 mb-5">
+                <Col></Col>
+                <Col></Col>
+                <Col>
+                    <Button variant="lime mt-5 border-alpukat" onClick={() => goTambah()}>
+                        Tambah Porter
+                    </Button>
+                </Col>
+            </Row>
+            <Row className="m-0 mt-5">
+                <Col></Col>
+                <Col md={8} className="text-center">
+                    <Table>
+                        <thead className="bg-alpukat text-putihan">
+                            <tr>
+                                <th>No.</th>
+                                <th>Nama</th>
+                                <th>No. Telpon</th>
+                                <th>Email</th>
+                                <th>Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody className="border-tea border">
+                            {dataPorters.map((porter, i) => {
+                                return (
+                                    <tr key={porter.id}>
+                                        <td>{i + 1}</td>
+                                        <td>{porter.name}</td>
+                                        <td>{porter.no_telp}</td>
+                                        <td>{porter.email}</td>
+                                        <td>
+                                            <a className="text-alpukat text-decoration-none" onClick={() => editDataPorters(porter.id)}>
+                                                Edit
+                                            </a>
+
+                                            {" | "}
+                                            <a href="/admin/porter/detail" className="text-alpukat text-decoration-none">
+                                                Detail
+                                            </a>
+                                            {" | "}
+                                            <a className="text-alpukat text-decoration-none" onClick={() => deleteDataPorters(porter.id)}>
+                                                Hapus
+                                            </a>
+                                        </td>
+                                    </tr>
+                                );
+                            })}
+                        </tbody>
+                    </Table>
+                </Col>
+                <Col></Col>
+            </Row>
+            <Footer />
+        </div>
+    );
 };
 
 export default Index;

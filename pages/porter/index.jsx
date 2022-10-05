@@ -4,6 +4,7 @@ import React from "react";
 import { useState } from "react";
 import { Col, Row, Form, Button } from "react-bootstrap";
 import cookie from "js-cookie";
+import Cookies from "js-cookie";
 
 const Index = () => {
     const [email, setEmail] = useState("");

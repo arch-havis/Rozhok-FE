@@ -4,7 +4,7 @@ import Footer from "../../../../components/Footer";
 import { Button, Col, Form, Row } from "react-bootstrap";
 import axios from "axios";
 import Cookies from "js-cookie";
-import Router from "next/router";
+import Router, { useRouter } from "next/router";
 
 const Index = () => {
     const [name, setName] = useState("");
@@ -22,7 +22,9 @@ const Index = () => {
     const [kec, setKec] = useState([]);
     const [kecId, setKecId] = useState();
 
-    // Untuk add data porter
+    const router = useRouter();
+
+    // Untuk edit data porter
     const handleSubmit = async () => {
         var axios = require("axios");
         var data = JSON.stringify({
@@ -37,8 +39,8 @@ const Index = () => {
         });
 
         var config = {
-            method: "post",
-            url: "https://altagp3.online/porter",
+            method: "put",
+            url: `https://altagp3.online/porter/${router.query.idPorter}`,
             headers: {
                 Authorization: `Bearer ${Cookies.get("token")}`,
                 "Content-Type": "application/json",
@@ -198,7 +200,7 @@ const Index = () => {
                     <Row id="bawah" className="mt-5">
                         <Col>
                             <Button variant="lime text-putihan" onClick={() => handleSubmit()}>
-                                Tambah
+                                Update
                             </Button>
                         </Col>
                         <Col></Col>
