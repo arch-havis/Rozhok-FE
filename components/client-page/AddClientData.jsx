@@ -9,6 +9,15 @@ const AddClientData = ({
   type,
   handleSubmit,
   handleInputUpdate,
+  props,
+  kab,
+  kec,
+  handleProvinsi,
+  handleKab,
+  handleKec,
+  handleStatus,
+  handleJalan,
+  handleTambahAlamat,
 }) => {
   return (
     <>
@@ -25,7 +34,13 @@ const AddClientData = ({
           </Modal.Title>
         </Modal.Header>
 
-        <Form onSubmit={(e) => handleSubmit(e)}>
+        <Form
+          onSubmit={
+            type === "nama"
+              ? (e) => handleSubmit(e)
+              : (e) => handleTambahAlamat(e)
+          }
+        >
           <Modal.Body>
             {type === "nama" ? (
               <>
@@ -47,48 +62,92 @@ const AddClientData = ({
               <>
                 <Form.Group
                   className="mb-3"
-                  controlId="formBasicEmail"
-                  onChange={(e) => handleInput(e)}
+                  // controlId="formBasicEmail"
+                  // onChange={(e) => handleInput(e)}
                 >
                   <Form.Label>Provinsi</Form.Label>
-                  <Form.Control
-                    name="username"
-                    type="email"
-                    placeholder="Provinsi"
-                  />
+                  <Form.Select
+                    classname="text-alpukat"
+                    onChange={(e) => handleProvinsi(e)}
+                  >
+                    <option selected disabled>
+                      Pilih Provinsi
+                    </option>
+                    {props.provinsi.map((item, index) => {
+                      return (
+                        <option value={item.id} label={item.nama} key={index}>
+                          {item.nama}
+                        </option>
+                      );
+                    })}
+                  </Form.Select>
                 </Form.Group>
                 <Form.Group
                   className="mb-3"
                   controlId="formBasicEmail"
-                  onChange={(e) => handleInput(e)}
+                  // onChange={(e) => handleInput(e)}
                 >
                   <Form.Label>Kabupaten</Form.Label>
-                  <Form.Control
-                    name="username"
-                    type="email"
-                    placeholder="Kabupaten"
-                  />
+                  <Form.Select
+                    className="text-alpukat"
+                    onChange={(e) => handleKab(e)}
+                  >
+                    <option selected disabled>
+                      Pilih Kab./Kota
+                    </option>
+                    {kab.map((item, index) => {
+                      return (
+                        <option value={item.id} key={index}>
+                          {item.nama}
+                        </option>
+                      );
+                    })}
+                  </Form.Select>
                 </Form.Group>
                 <Form.Group
                   className="mb-3"
                   controlId="formBasicEmail"
-                  onChange={(e) => handleInput(e)}
+                  // onChange={(e) => handleInput(e)}
                 >
                   <Form.Label>Kecamatan</Form.Label>
-                  <Form.Control
-                    name="username"
-                    type="email"
-                    placeholder="Kecamatan"
-                  />
+                  <Form.Select
+                    className="text-alpukat"
+                    onChange={(e) => handleKec(e)}
+                  >
+                    <option selected disabled>
+                      Pilih Kec.
+                    </option>
+                    {kec.map((item, index) => {
+                      return (
+                        <option value={item.id} key={index}>
+                          {item.nama}
+                        </option>
+                      );
+                    })}
+                  </Form.Select>
                 </Form.Group>
-                <Form.Select aria-label="Default select example">
-                  <option selected disabled>
-                    Status
-                  </option>
-                  <option value="1">One</option>
-                  <option value="2">Two</option>
-                  <option value="3">Three</option>
-                </Form.Select>
+
+                <Form.Group className="mb-3">
+                  <Form.Label>Status</Form.Label>
+                  <Form.Select
+                    aria-label="Default select example"
+                    onChange={(e) => handleStatus(e)}
+                  >
+                    <option selected disabled>
+                      Status
+                    </option>
+                    <option value="Utama">Utama</option>
+                    <option value="Cadangan">Cadangan</option>
+                  </Form.Select>
+                </Form.Group>
+
+                <Form.Group>
+                  <Form.Label>Jalan</Form.Label>
+                  <Form.Control
+                    as="textarea"
+                    onChange={(e) => handleJalan(e)}
+                  ></Form.Control>
+                </Form.Group>
               </>
             )}
           </Modal.Body>
