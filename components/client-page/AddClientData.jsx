@@ -3,7 +3,13 @@ import { Form } from "react-bootstrap";
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
 
-const AddClientData = ({ show, handleClose, type }) => {
+const AddClientData = ({
+  show,
+  handleClose,
+  type,
+  handleSubmit,
+  handleInputUpdate,
+}) => {
   return (
     <>
       <Modal
@@ -19,19 +25,20 @@ const AddClientData = ({ show, handleClose, type }) => {
           </Modal.Title>
         </Modal.Header>
 
-        <Form onSubmit={handleClose}>
+        <Form onSubmit={(e) => handleSubmit(e)}>
           <Modal.Body>
             {type === "nama" ? (
               <>
                 <Form.Group
                   className="mb-3"
                   controlId="formBasicEmail"
-                  onChange={(e) => handleInput(e)}
+                  // onChange={(e) => handleInput(e)}
                 >
                   <Form.Label>Nama Baru</Form.Label>
                   <Form.Control
                     name="username"
-                    type="email"
+                    type="text"
+                    onChange={(e) => handleInputUpdate(e)}
                     placeholder="Nama"
                   />
                 </Form.Group>
@@ -75,7 +82,9 @@ const AddClientData = ({ show, handleClose, type }) => {
                   />
                 </Form.Group>
                 <Form.Select aria-label="Default select example">
-                  <option selected disabled>Status</option>
+                  <option selected disabled>
+                    Status
+                  </option>
                   <option value="1">One</option>
                   <option value="2">Two</option>
                   <option value="3">Three</option>

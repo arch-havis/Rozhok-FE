@@ -3,13 +3,20 @@ import { Row, Col, Button, Table } from "react-bootstrap";
 import Footer from "../../../components/Footer";
 import HeaderClient from "../../../components/HeaderClient";
 import AddModal from "../../../components/client-page/AddClientData";
+import { getCookie } from "cookies-next";
+import axios from "axios";
 
 const Index = () => {
   const [show, setShow] = useState(false);
+  const [nama, setNama] = useState();
+  console.log(nama);
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
   const [type, setType] = useState();
+
+  let token = getCookie("token");
+  console.log(getCookie("token"));
 
   const handleEditName = () => {
     setType("nama");
@@ -19,6 +26,55 @@ const Index = () => {
   const handleAddress = () => {
     setType("alamat");
     handleShow();
+  };
+
+  const handleInputUpdate = (e) => {
+    e.preventDefault();
+    setNama(e.target.value);
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    var data = JSON.stringify({
+      username: nama,
+    });
+
+    var config = {
+      method: "put",
+      url: "https://altagp3.online/client",
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
+      data: data,
+    };
+
+    axios(config)
+      .then(function (response) {
+        console.log(JSON.stringify(response.data));
+        alert(JSON.stringify(response.data));
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+  };
+
+  const handleDelete = async (e) => {
+    e.preventDefault();
+    await axios
+    .delete("https://altagp3.online/client", {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    })
+    .then((response)=>{
+      console.log(response.data.message);
+      alert(response.data.message)
+    })
+    .catch((error)=> {
+      console.log(error.message);
+    });
   };
 
   return (
@@ -113,7 +169,10 @@ const Index = () => {
             <Col></Col>
             <Col></Col>
             <Col>
-              <Button variant="danger text-putih border border-alpukat mt-3">
+              <Button
+                variant="danger text-putih border border-alpukat mt-3"
+                onClick={(e) => handleDelete(e)}
+              >
                 Hapus Akun
               </Button>
             </Col>
@@ -122,7 +181,13 @@ const Index = () => {
         <Col md={2} className="p-0 m-0"></Col>
       </Row>
       <Footer />
-      <AddModal show={show} handleClose={handleClose} type={type} />
+      <AddModal
+        show={show}
+        handleClose={handleClose}
+        type={type}
+        handleSubmit={handleSubmit}
+        handleInputUpdate={handleInputUpdate}
+      />
     </div>
   );
 };

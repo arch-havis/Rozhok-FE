@@ -2,7 +2,7 @@ import Link from "next/link";
 import React from "react";
 import { useState, useRef } from "react";
 import { Col, Row, Form, Button } from "react-bootstrap";
-import Router from "next/router";
+import Router, { useRouter } from "next/router";
 import axios from "axios";
 import { setCookie } from "cookies-next";
 
@@ -11,6 +11,8 @@ const Index = () => {
   const onButtonClick = () => {
     // inputRef.current.value = "";
   };
+  const router = useRouter();
+  const refreshData = () => router.replace(router.asPath);
 
   const [Register, setRegister] = useState(false);
   console.log(Register);
@@ -66,7 +68,9 @@ const Index = () => {
 
   const handleRegist = (e) => {
     e.preventDefault();
-    setRegister(!Register);
+    // window.location.reload();
+    // refreshData()
+    setRegister(!Register)
   };
 
   const handleRegistMitra = (e) => {
@@ -74,11 +78,10 @@ const Index = () => {
     Router.push("/junk-station");
   };
 
-  const handleCancel = (e) => {
+  const handleCancel = async (e) => {
     e.preventDefault();
-    // setRegist(e.target.value);
-    setRegister(!Register);
-    // document.getElementById("login-email").reset();
+    await window.location.reload();
+    // setRegister(!Register);
   };
 
   const handleInput = (e) => {
@@ -116,7 +119,8 @@ const Index = () => {
       .then((response) => {
         console.log(response.data);
         alert(response.data.message);
-        setRegister(!Register);
+        // setRegister(!Register);
+        window.location.reload()
       })
       .catch((error) => {
         console.log(error.data);
@@ -142,26 +146,28 @@ const Index = () => {
               onSubmit={(e) => handlePostRegist(e)}
               className="border border-lime p-5 bg-putihan text-alpukat rounded-3 border-2"
             >
-              <Form.Group className="mb-3" controlId="formBasicEmail">
+              <Form.Group className="mb-3" controlId="regist-email">
                 <Form.Label>Email address</Form.Label>
                 <Form.Control
                   name="email"
                   type="email"
                   placeholder="Enter Email"
+                  value={regist.email}
                   onChange={(e) => handleInputRegister(e)}
                 />
               </Form.Group>
-              <Form.Group className="mb-3" controlId="formBasicEmail">
+              <Form.Group className="mb-3" controlId="regist-password">
                 <Form.Label>Password</Form.Label>
                 <Form.Control
                   name="password"
                   type="password"
                   placeholder="Enter Password"
+                  value={regist.password}
                   onChange={(e) => handleInputRegister(e)}
                 />
               </Form.Group>
 
-              <Form.Group className="mb-3" controlId="formBasicEmail">
+              <Form.Group className="mb-3" controlId="regist-username">
                 <Form.Label>Username</Form.Label>
                 <Form.Control
                   name="username"
@@ -170,7 +176,7 @@ const Index = () => {
                   onChange={(e) => handleInputRegister(e)}
                 />
               </Form.Group>
-              <Form.Group className="mb-3" controlId="formBasicPassword">
+              <Form.Group className="mb-3" controlId="regist-tel">
                 <Form.Label>Telepon</Form.Label>
                 <Form.Control
                   name="telepon"
@@ -203,7 +209,6 @@ const Index = () => {
               className="border border-lime p-5 bg-putihan rounded-3 text-alpukat border-2"
             >
               <Form.Group
-                controlId="login-email"
                 className="mb-3"
                 controlId="formBasicEmail"
                 onChange={(e) => handleInput(e)}
