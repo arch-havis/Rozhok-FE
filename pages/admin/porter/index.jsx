@@ -4,9 +4,14 @@ import Footer from "../../../components/Footer";
 import { Button, Col, Row, Table } from "react-bootstrap";
 import Cookies from "js-cookie";
 import axios from "axios";
+import Router from "next/router";
 
 const Index = () => {
     const [dataPorters, setDataPorters] = useState([]);
+
+    useEffect(() => {
+        getDataPorters();
+    }, []);
 
     // Get Data All Porters
     const getDataPorters = async () => {
@@ -24,30 +29,43 @@ const Index = () => {
     };
 
     // Delete Porter
+    const deleteDataPorters = (idPorter) => {
+        console.log(idPorter);
+        var axios = require("axios");
 
-    const deleteDataPorters = async (idPorter) => {
-        try {
-            const response = await axios.delete(`https://altagp3.online/porter/${idPorter}`, {
-                headers: {
-                    accept: "application/json",
-                    Authorization: `Bearer ${Cookies.get("token")}`,
-                },
+        var config = {
+            method: "delete",
+            url: `https://altagp3.online/porter/${idPorter}`,
+            headers: {
+                Authorization: `Bearer ${Cookies.get("token")}`,
+            },
+        };
+
+        axios(config)
+            .then((response) => {
+                console.log(JSON.stringify(response.data));
+                getDataPorters();
+            })
+            .catch((error) => {
+                console.log(error);
             });
-            setDataPorters(response.data.data);
-        } catch (error) {
-            console.log(error);
-        }
     };
 
-    useEffect(() => {
-        getDataPorters();
-    }, []);
+    // -----------------put api
+    const editDataPorters = (idPorter) => {
+        Router.push({
+            pathname: `/admin/porter/edit`,
+            query: {
+                idPorter: idPorter,
+            },
+        });
+    };
 
     const hargaClient = 666666;
     const hargaMitra = 7777777;
 
-    const goTambah = (e) => {
-        location.href = "/admin/porter/tambah";
+    const goTambah = () => {
+        Router.push({ pathname: "/admin/porter/tambah" });
     };
 
     const formatClient = new Intl.NumberFormat("id-ID", {
@@ -90,21 +108,22 @@ const Index = () => {
                         <tbody className="border-tea border">
                             {dataPorters.map((porter, i) => {
                                 return (
-                                    <tr key={i}>
+                                    <tr key={porter.id}>
                                         <td>{i + 1}</td>
                                         <td>{porter.name}</td>
                                         <td>{porter.no_telp}</td>
                                         <td>{porter.email}</td>
                                         <td>
-                                            <a href="/admin/porter/tambah" className="text-alpukat text-decoration-none">
+                                            <a className="text-alpukat text-decoration-none" onClick={() => editDataPorters(porter.id)}>
                                                 Edit
                                             </a>
+
                                             {" | "}
                                             <a href="/admin/porter/detail" className="text-alpukat text-decoration-none">
                                                 Detail
                                             </a>
                                             {" | "}
-                                            <a href="" className="text-alpukat text-decoration-none" onClick={() => deleteDataPorters(i)}>
+                                            <a className="text-alpukat text-decoration-none" onClick={() => deleteDataPorters(porter.id)}>
                                                 Hapus
                                             </a>
                                         </td>
