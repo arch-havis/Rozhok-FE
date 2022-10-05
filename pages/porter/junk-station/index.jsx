@@ -91,6 +91,7 @@ const Index = () => {
     return (
         <div>
             <HeaderPorter />
+
             <div className="container">
                 <h3 className="d-flex float-end text-alpukat fw-bolder mt-5">List Junk Station</h3>
                 <br />
@@ -117,6 +118,7 @@ const Index = () => {
                                 );
                             })}
                         </Form.Select>
+
                         <Form.Select aria-label="Default select example" onChange={(e) => handleKecamatan(e)}>
                             <option>Kecamatan</option>
                             {dataKecamatan.map((daerah) => {
