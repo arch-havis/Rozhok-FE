@@ -2,8 +2,9 @@ import React from "react";
 import { Row, Col, Carousel, Table, Button } from "react-bootstrap";
 import HeaderClient from "../../../components/HeaderClient";
 import Footer from "../../../components/Footer";
-import { getCookie } from "cookies-next";
+import { setCookie, getCookie } from "cookies-next";
 import axios from "axios";
+import Router from "next/router";
 // import { propTypes } from "react-bootstrap/esm/Image";
 
 export const getServerSideProps = async () => {
@@ -139,12 +140,24 @@ const Index = (props) => {
                     className="border border-2 border-lime rounded-2 bg-tea pt-2"
                     key={index}
                   >
-                    <img
-                      src="https://cdn-brilio-net.akamaized.net/news/2017/11/02/134250/698323-lampu-hias-botol-bekas.jpg"
-                      alt=""
-                      style={{ maxWidth: "100%" }}
-                      className="rounded-2"
-                    />
+                    <a
+                      onClick={() => {
+                        setCookie("idProduk", items.id),
+                          Router.push({
+                            pathname: `/client/toko/${items.nama_product}`,
+                            query: {
+                              id: items.id,
+                            },
+                          });
+                      }}
+                    >
+                      <img
+                        src="https://cdn-brilio-net.akamaized.net/news/2017/11/02/134250/698323-lampu-hias-botol-bekas.jpg"
+                        alt=""
+                        style={{ maxWidth: "100%" }}
+                        className="rounded-2"
+                      />
+                    </a>
                     <h4>
                       <b>{items.nama_product}</b>
                     </h4>
