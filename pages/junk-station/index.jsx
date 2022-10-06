@@ -11,10 +11,14 @@ const Index = () => {
   const [Register, setRegister] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-
-  //   const handleSubmit = (e) => {
-  //     e.preventDefault();
-  //   };
+  const [foto, setFoto] = useState("");
+  const [namaJs, setNamaJS] = useState("");
+  const [namaPemilikJS, setNamaPemilikJS] = useState("");
+  const [prov, setProv] = useState("");
+  const [kec, setKec] = useState("");
+  const [kab, setKab] = useState("");
+  const [noTelp, setNoTelp] = useState("");
+  const [jalan, setJalan] = useState("");
 
   const handleToRegister = () => {
     setRegister(!Register);
@@ -27,9 +31,50 @@ const Index = () => {
 
   const handlePostRegister = (e) => {
     e.preventDefault();
-    setRegister(!Register);
+    var axios = require("axios");
+    var data = JSON.stringify({
+      // foto: foto,
+      // email: "usop@gmail.com",
+      // password: "usop123",
+      // junk_station_name: "TPA BENOWO",
+      // junk_station_owner: "usopp",
+      // provinsi: "Jawa Timur",
+      // kota: "Surabaya",
+      // kecamatan: "Benowo",
+      // no_telp: "09971250057",
+      // jalan: "jl.Doremi",
+
+      foto: foto,
+      email: email,
+      password: password,
+      junk_station_name: namaJs,
+      junk_station_owner: namaPemilikJS,
+      provinsi: "Jawa Timur",
+      kota: "Surabaya",
+      kecamatan: "Benowo",
+      no_telp: noTelp,
+      jalan: jalan,
+    });
+
+    var config = {
+      method: "post",
+      url: "https://altagp3.online/junk-station",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      data: data,
+    };
+
+    axios(config)
+      .then(function (response) {
+        console.log(JSON.stringify(response.data));
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
   };
 
+  // login
   const handlePostLogin = async (e) => {
     e.preventDefault();
     var axios = require("axios");
@@ -85,11 +130,13 @@ const Index = () => {
               //   onSubmit={(e) => handleSubmit(e)}
               className="border border-lime p-5 bg-putihan text-alpukat rounded-3 border-2"
             >
+              {/* {foto} */}
               <Form.Group className="mb-3" controlId="formBasicEmail">
                 <Form.Label>Nama Junk Station</Form.Label>
                 <Form.Control
                   type="text"
                   placeholder="Masukkan nama junk station"
+                  onChange={(e) => setNamaJS(e.target.value)}
                 />
               </Form.Group>
               <Form.Group className="mb-3" controlId="formBasicEmail">
@@ -97,21 +144,31 @@ const Index = () => {
                 <Form.Control
                   type="text"
                   placeholder="Masukkan nama pemilik junk station"
+                  onChange={(e) => setNamaPemilikJS(e.target.value)}
                 />
               </Form.Group>
               <Form.Group className="mb-3" controlId="formBasicEmail">
                 <Form.Label>Email</Form.Label>
-                <Form.Control type="email" placeholder="Masukkan email anda" />
+                <Form.Control
+                  type="email"
+                  placeholder="Masukkan email anda"
+                  onChange={(e) => setEmail(e.target.value)}
+                />
               </Form.Group>
               <Form.Group className="mb-3" controlId="formBasicPassword">
                 <Form.Label>Password</Form.Label>
-                <Form.Control type="password" placeholder="Masukkan password" />
+                <Form.Control
+                  type="password"
+                  placeholder="Masukkan password"
+                  onChange={(e) => setPassword(e.target.value)}
+                />
               </Form.Group>
               <Form.Group className="mb-3" controlId="formBasicEmail">
                 <Form.Label>No Telepon</Form.Label>
                 <Form.Control
-                  type="number"
+                  type="text"
                   placeholder="Masukkan no telepon anda"
+                  onChange={(e) => setNoTelp(e.target.value)}
                 />
               </Form.Group>
               <div className="mb-3">
@@ -149,15 +206,23 @@ const Index = () => {
                   as="textarea"
                   rows={3}
                   placeholder="Masukkan alamat nama jalan atau desa"
+                  onChange={(e) => setJalan(e.target.value)}
                 />
               </Form.Group>
               <Form.Group controlId="formFileLg" className="mb-3">
                 <Form.Label>Foto Junk Station</Form.Label>
-                <Form.Control type="file" size="md" />
+                <Form.Control
+                  type="file"
+                  size="md"
+                  onChange={(e) => {
+                    setFoto(URL.createObjectURL(e.target.files[0]));
+                  }}
+                />
               </Form.Group>
 
               <div className="d-flex justify-content-end">
                 <Button
+                  type="submit"
                   variant="danger"
                   onClick={(e) => handleCancel(e)}
                   style={{ color: "white" }}
