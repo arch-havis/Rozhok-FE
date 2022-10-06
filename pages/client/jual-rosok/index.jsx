@@ -1,3 +1,5 @@
+import axios from "axios";
+import { getCookie } from "cookies-next";
 import React, { useState } from "react";
 import {
   Row,
@@ -11,10 +13,42 @@ import {
 import Footer from "../../../components/Footer";
 import HeaderClient from "../../../components/HeaderClient";
 
-const Index = () => {
+export const getServerSideProps = async (context) => {
+  const token = getCookie("token", context);
+  const getList = await fetch("https://altagp3.online/penjualan/client", {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+  const list = await getList.json();
+
+  const getKat = await fetch("https://altagp3.online/categories");
+  const kat = await getKat.json();
+  return {
+    props: {
+      listRosok: list.data,
+      kat: kat.data,
+    },
+  };
+};
+
+const Index = (props) => {
+  const token = getCookie("token");
+
+  const [status, setStatus] = useState();
+  const [idJual, setIdJual] = useState();
+
   const [show, setShow] = useState(false);
   const [berat, setBerat] = useState();
-  let est = 100000 * berat;
+  const [id, setId] = useState();
+  const [harga, setHarga] = useState();
+  let est = harga * berat;
+  console.log(idJual);
+  // console.log(props.listRosok);
+  // console.log(props.kat);
+  // console.log(harga, berat);
+  // console.log(est);
+  // console.log(status);
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
@@ -23,6 +57,84 @@ const Index = () => {
     e.preventDefault();
     setBerat(e.target.value);
   };
+
+  const handleTambah = async () => {
+    await axios({
+      method: "post",
+      url: "https://altagp3.online/penjualan/client",
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+      data: {
+        id_kategori: parseInt(id),
+      },
+    })
+      .then((response) => {
+        console.log(response.data.message);
+        window.location.reload();
+      })
+      .catch((error) => {
+        console.log(error.message);
+      });
+  };
+
+  const handleUpdate = async () => {
+    await axios({
+      method: "put",
+      url: `https://altagp3.online/penjualan/${idJual}/client`,
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+      data: {
+        id_kategori: parseInt(id),
+      },
+    })
+      .then((response) => {
+        console.log(response.data.message);
+        alert(response.data.message);
+        window.location.reload();
+      })
+      .catch((error) => {
+        console.log(error.message);
+      });
+  };
+
+  const handleDelete = async () => {
+    await axios({
+      method: "delete",
+      url: `https://altagp3.online/penjualan/${idJual}/client`,
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
+      .then((response) => {
+        console.log(response.data.message);
+        alert(response.data.message);
+        window.location.reload();
+      })
+      .catch((error) => {
+        console.log(error.message);
+      });
+  };
+
+  const handleProses = async () => {
+    await axios({
+      method: "post",
+      url: `https://altagp3.online/transaksi/client`,
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
+      .then((response) => {
+        console.log(response.data.message);
+        alert(response.data.message);
+        window.location.reload();
+      })
+      .catch((error) => {
+        console.log(error.message);
+      });
+  };
+
   return (
     <div>
       <HeaderClient />
@@ -39,7 +151,9 @@ const Index = () => {
               <Col className="text-end p-0">
                 <Button
                   variant="lime text-putihan border border-alpukat"
-                  onClick={handleShow}
+                  onClick={() => {
+                    setStatus("tambah"), handleShow();
+                  }}
                 >
                   Tambah Transaksi
                 </Button>
@@ -55,19 +169,35 @@ const Index = () => {
                   </tr>
                 </thead>
                 <tbody>
-                  <tr className="text-alpukat text-center">
-                    <td>1</td>
-                    <td>Besi</td>
-                    <td>
-                      <a onClick={handleShow} className="text-alpukat">
-                        Perbarui
-                      </a>{" "}
-                      |{" "}
-                      <a href="" className="text-alpukat">
-                        Hapus
-                      </a>
-                    </td>
-                  </tr>
+                  {props.listRosok.map((items, index) => {
+                    return (
+                      <tr className="text-alpukat text-center" key={index}>
+                        <td>{index + 1}</td>
+                        <td className="text-uppercase">{items.kategori}</td>
+                        <td>
+                          <a
+                            onClick={() => {
+                              setStatus("edit"),
+                                handleShow(),
+                                setIdJual(items.id_penjualan);
+                            }}
+                            className="text-alpukat"
+                          >
+                            Perbarui
+                          </a>{" "}
+                          |{" "}
+                          <a
+                            onClick={() => {
+                              handleDelete(), setIdJual(items.id_penjualan);
+                            }}
+                            className="text-alpukat"
+                          >
+                            Hapus
+                          </a>
+                        </td>
+                      </tr>
+                    );
+                  })}
                 </tbody>
               </Table>
             </Row>
@@ -75,7 +205,10 @@ const Index = () => {
               <Col></Col>
               <Col></Col>
               <Col className="pe-0 me-0 text-end">
-                <Button variant="lime text-putihan border border-alpukat mt-3">
+                <Button
+                  variant="lime text-putihan border border-alpukat mt-3"
+                  onClick={handleProses}
+                >
                   Proses Transaksi
                 </Button>
               </Col>
@@ -94,13 +227,25 @@ const Index = () => {
             <Form.Label>
               <b>Kategori</b>
             </Form.Label>
-            <Form.Select aria-label="Default select example">
+            <Form.Select
+              aria-label="Default select example"
+              onChange={(e) => {
+                setId(e.target.value),
+                  setHarga(
+                    props.kat[e.target.options.selectedIndex - 1].harga_client
+                  );
+              }}
+            >
               <option disabled selected>
                 Kategori
               </option>
-              <option value="1">Besi</option>
-              <option value="2">Kayu</option>
-              <option value="3">Plastik</option>
+              {props.kat.map((items, index) => {
+                return (
+                  <option value={items.id} key={index}>
+                    {items.nama}
+                  </option>
+                );
+              })}
             </Form.Select>
           </Form.Group>
           <Form.Group className="mb-2">
@@ -145,7 +290,10 @@ const Index = () => {
           <Button variant="secondary" onClick={handleClose}>
             Close
           </Button>
-          <Button variant="primary" onClick={handleClose}>
+          <Button
+            variant="primary"
+            onClick={status === "tambah" ? handleTambah : handleUpdate}
+          >
             Save Changes
           </Button>
         </Modal.Footer>
