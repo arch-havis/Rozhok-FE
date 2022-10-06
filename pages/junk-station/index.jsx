@@ -2,10 +2,15 @@ import Link from "next/link";
 import Router from "next/router";
 import React from "react";
 import { useState } from "react";
+import cookie from "js-cookie";
+
 import { Col, Row, Form, Button, Container } from "react-bootstrap";
+import axios from "axios";
 
 const Index = () => {
   const [Register, setRegister] = useState(false);
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
 
   //   const handleSubmit = (e) => {
   //     e.preventDefault();
@@ -17,7 +22,7 @@ const Index = () => {
 
   const handleCancel = (e) => {
     e.preventDefault();
-    location.href = "/";
+    setRegister(!Register);
   };
 
   const handlePostRegister = (e) => {
@@ -25,9 +30,41 @@ const Index = () => {
     setRegister(!Register);
   };
 
-  const handlePostLogin = (e) => {
+  const handlePostLogin = async (e) => {
     e.preventDefault();
-    Router.push({ pathname: "/junk-station/dashboard" });
+    var axios = require("axios");
+    var data = JSON.stringify({
+      email: email,
+      password: password,
+
+      // email: "hashirama@gmail.com",
+      // password: "usoop123",
+    });
+
+    var config = {
+      method: "post",
+      url: "https://altagp3.online/login",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      data: data,
+    };
+
+    axios(config)
+      .then(function (response) {
+        console.log(JSON.stringify(response.data.data));
+        cookie.set("token", response.data.data.token);
+        cookie.set("role", response.data.data.role);
+        cookie.set("username", response.data.data.username);
+        data.role === "admin"
+          ? Router.push({ pathname: "/admin/dashboard" })
+          : null;
+        Router.push({ pathname: "/junk-station/dashboard" });
+      })
+      .catch(function (error) {
+        console.log(error);
+        alert("email atau password tidak sesuai");
+      });
   };
 
   return (
@@ -154,17 +191,25 @@ const Index = () => {
         >
           <Col xxl={6} xl="5" lg="6" md="8" sm="9" className="pt-5 ">
             <Form
-              // onSubmit={(e) => handleSubmit(e)}
+              // onSubmit={(e) => handle(e)}
               className="border border-lime p-3 p-md-5 bg-putihan rounded-3 text-alpukat border-2"
             >
               <Form.Group className="mb-3" controlId="formBasicEmail">
-                <Form.Label>Username</Form.Label>
-                <Form.Control type="email" placeholder="Masukkan email" />
+                <Form.Label></Form.Label>
+                <Form.Control
+                  type="email"
+                  placeholder="Masukkan email"
+                  onChange={(e) => setEmail(e.target.value)}
+                />
               </Form.Group>
 
               <Form.Group className="mb-3" controlId="formBasicPassword">
                 <Form.Label>Password</Form.Label>
-                <Form.Control type="password" placeholder="Masukkan password" />
+                <Form.Control
+                  type="password"
+                  placeholder="Masukkan password"
+                  onChange={(e) => setPassword(e.target.value)}
+                />
               </Form.Group>
               <div className="d-flex justify-content-end">
                 <Button
@@ -187,15 +232,6 @@ const Index = () => {
                   {" "}
                   <b>Register !</b>
                 </a>
-              </p>
-              <p>
-                Apakah mau jadi mitra kami?
-                <Link href="/client-page" className="text-decoration-none">
-                  <a className="text-lime text-decoration-none">
-                    {" "}
-                    <b>Daftar Sekarang !</b>
-                  </a>
-                </Link>
               </p>
             </Form>
           </Col>
