@@ -33,8 +33,8 @@ const Index = () => {
       method: "post",
       url: "https://altagp3.online/category",
       headers: {
-        Authorization: `Bearer ${Cookies.get("token")}`,
         "Content-Type": "application/json",
+        Authorization: `Bearer ${Cookies.get("token")}`,
       },
       data: data,
     };
