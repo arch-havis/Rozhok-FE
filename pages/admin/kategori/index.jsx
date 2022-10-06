@@ -31,7 +31,7 @@ const Index = () => {
 
     axios(config)
       .then(function (response) {
-        console.log(JSON.stringify(response.data.data));
+        // console.log(JSON.stringify(response.data.data));
         setKategori(response.data.data);
       })
       .catch(function (error) {
@@ -53,7 +53,7 @@ const Index = () => {
 
     axios(config)
       .then(function (response) {
-        console.log(JSON.stringify(response.data));
+        // console.log(JSON.stringify(response.data));
         getKategori();
       })
       .catch(function (error) {

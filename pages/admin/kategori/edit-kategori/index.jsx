@@ -41,7 +41,10 @@ const Index = () => {
 
     axios(config)
       .then(function (response) {
-        console.log(JSON.stringify(response.data));
+        // console.log(JSON.stringify(response.data));
+        Router.push({
+          pathname: `/admin/kategori`,
+        });
       })
       .catch(function (error) {
         console.log(error);
