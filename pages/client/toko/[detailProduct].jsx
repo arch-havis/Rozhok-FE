@@ -1,12 +1,28 @@
-import Router from "next/router";
+import Router, { useRouter } from "next/router";
 import React from "react";
 import { Row, Col, Button } from "react-bootstrap";
 import Footer from "../../../components/Footer";
 import HeaderClient from "../../../components/HeaderClient";
+import axios from "axios";
+import { getCookie } from "cookies-next";
 
-const Detail = () => {
+export const getServerSideProps = async (context) => {
+  const id = getCookie("idProduk", context);
+  const getProduct = await axios.get(`https://altagp3.online/product/${id}`);
+  const product = await getProduct;
+
+  return {
+    props: {
+      produk: product.data,
+    },
+  };
+};
+
+const Detail = (props) => {
   const harga = 100000;
   const product = "kerajinan-botol";
+  console.log(Router.query);
+  console.log(props.produk);
   const goProductName = () => {
     Router.push({
       pathname: `/client/toko/${product}`,
@@ -17,7 +33,7 @@ const Detail = () => {
       <HeaderClient />
       <div className="text-center p-5 text-lime">
         <h1>
-          <b>Detail Produk</b>
+          <b>{props.produk.data.nama_product}</b>
         </h1>
       </div>
       <div className="pt-0 p-5 me-5 ms-5">
@@ -41,33 +57,26 @@ const Detail = () => {
                 <Col md={9}>
                   <Row className="p-0 m-0">
                     <Col>
-                      <h5>Nama Produk</h5>
+                      <h5>{props.produk.data.nama_product}</h5>
                       <br />
+                      <h6>{props.produk.data.desc}</h6>
+
                       <h6>
-                        Est voluptas consequatur et voluptatem. Amet quasi
-                        quidem eaque rem iure. Et vitae quaerat nihil aspernatur
-                        deleniti dolor. Reprehenderit consequatur natus cum
-                        autem. Vel ex ut ab. Qui voluptatem est aut quia
-                        cupiditate est fuga. Repudiandae nam non ut et
-                        repellendus ipsum et. Rerum et sit repellat. Blanditiis
-                        autem nobis et voluptatem blanditiis voluptatem ut.
-                        Voluptatem officia quam rerum rerum voluptatem ab quam.
-                        Quibusdam nostrum omnis veritatis est. Vero dolorum amet
-                        neque.
+                        <b>
+                          {new Intl.NumberFormat("id-ID", {
+                            style: "currency",
+                            currency: "IDR",
+                            currencyDisplay: "symbol",
+                            minimumFractionDigits: 0,
+                          }).format(props.produk.data.harga)}
+                        </b>
                       </h6>
-                      <br />
-                      <h6>
-                        {new Intl.NumberFormat("id-ID", {
-                          style: "currency",
-                          currency: "IDR",
-                          currencyDisplay: "symbol",
-                        }).format(harga)}
-                      </h6>
+                      <h6>Stok : {props.produk.data.stok}</h6>
                     </Col>
                     <Col className="text-center">
-                        <Button variant="lime">
-                          <b className="text-putihan">Remove</b>
-                        </Button>
+                      <Button variant="lime">
+                        <b className="text-putihan">Remove</b>
+                      </Button>
                     </Col>
                   </Row>
                 </Col>
