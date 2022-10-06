@@ -8,12 +8,6 @@ import Cookies from "js-cookie";
 
 const Index = () => {
   const [kategori, setKategori] = useState([]);
-  const [katId, setKatId] = useState(0);
-  const [nama, setName] = useState("");
-  const [hargaMitra, setHargaMitra] = useState("");
-  const [hargaClient, setHargaClient] = useState("");
-  const [desc, setDesc] = useState("");
-
   const router = useRouter();
 
   // get Kategori
