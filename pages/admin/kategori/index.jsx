@@ -1,21 +1,53 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Router, { useRouter } from "next/router";
 
 import HeaderAdmin from "../../../components/HeaderAdmin";
 import Footer from "../../../components/Footer";
 import { Button, Col, Container, Row, Table } from "react-bootstrap";
+import Cookies from "js-cookie";
 
 const Index = () => {
+  const [kategori, setKategori] = useState([]);
+  const [katId, setKatId] = useState(0);
+  const [nama, setName] = useState("");
+  const [hargaMitra, setHargaMitra] = useState("");
+  const [hargaClient, setHargaClient] = useState("");
+  const [desc, setDesc] = useState("");
+
   const router = useRouter();
-  const hargaClient = 666666;
-  const hargaMitra = 7777777;
+
+  // get Kategori
+  useEffect(() => {
+    getKategori();
+  }, []);
+
+  const getKategori = () => {
+    var axios = require("axios");
+    var data = "";
+
+    var config = {
+      method: "get",
+      url: "https://altagp3.online/categories",
+      headers: {
+        accept: "application/json",
+        Authorization: `Bearer ${Cookies}`,
+      },
+      data: data,
+    };
+
+    axios(config)
+      .then(function (response) {
+        console.log(JSON.stringify(response.data.data));
+        setKategori(response.data.data);
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+  };
 
   const gotoTambahKategori = () => {
     Router.push({
       pathname: `/admin/kategori/tambah-kategori`,
-      // query: {
-      //   transaksiId: transaksiId,
-      // },
     });
   };
 
@@ -27,18 +59,6 @@ const Index = () => {
       // },
     });
   };
-
-  const formatClient = new Intl.NumberFormat("id-ID", {
-    style: "currency",
-    currency: "IDR",
-    currencyDisplay: "symbol",
-  }).format(hargaClient);
-
-  const formatMitra = new Intl.NumberFormat("id-ID", {
-    style: "currency",
-    currency: "IDR",
-    currencyDisplay: "symbol",
-  }).format(hargaMitra);
 
   return (
     <div>
@@ -63,29 +83,45 @@ const Index = () => {
             </tr>
           </thead>
           <tbody className="border-tea border">
-            <tr>
-              <td>1</td>
-              <td>Besi</td>
-              <td>{formatClient}</td>
-              <td>{formatMitra}</td>
-              <td>
-                <Button
-                  variant="putihan"
-                  className="text-alpukat text-decoration-none p-0"
-                  onClick={() => handleEditKategori()}
-                >
-                  Edit
-                </Button>
-                {" | "}
-                <Button
-                  variant="putihan"
-                  className="text-alpukat text-decoration-none p-0"
-                  // onClick={() => handleEditKategori()}
-                >
-                  Hapus
-                </Button>
-              </td>
-            </tr>
+            {kategori.map((item, index) => {
+              return (
+                <tr key={item.id}>
+                  <td> {index + 1} </td>
+                  <td>{item.nama}</td>
+                  <td>
+                    {Intl.NumberFormat("id-ID", {
+                      style: "currency",
+                      currency: "IDR",
+                      currencyDisplay: "symbol",
+                    }).format(item.harga_client)}
+                  </td>
+
+                  <td>
+                    {Intl.NumberFormat("id-ID", {
+                      style: "currency",
+                      currency: "IDR",
+                      currencyDisplay: "symbol",
+                    }).format(item.harga_mitra)}
+                  </td>
+                  <td>
+                    <Button
+                      variant="putihan"
+                      className="text-alpukat text-decoration-none p-0"
+                      onClick={() => handleEditKategori()}
+                    >
+                      Edit
+                    </Button>
+                    {" | "}
+                    <Button
+                      variant="putihan"
+                      className="text-alpukat text-decoration-none p-0"
+                    >
+                      Hapus
+                    </Button>
+                  </td>
+                </tr>
+              );
+            })}
           </tbody>
         </Table>
       </Container>
