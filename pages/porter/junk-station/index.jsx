@@ -3,6 +3,7 @@ import { Card, Row, Button, Form } from "react-bootstrap";
 import HeaderPorter from "../../../components/HeaderPorter";
 import axios from "axios";
 import Router from "next/router";
+import Footer from "../../../components/Footer";
 
 const Index = () => {
     const [dataProvinsi, setDataProvinsi] = useState([]);
@@ -92,7 +93,7 @@ const Index = () => {
         <div>
             <HeaderPorter />
 
-            <div className="container">
+            <div className="container" style={{ marginBottom: "100px" }}>
                 <h3 className="d-flex float-end text-alpukat fw-bolder mt-5">List Junk Station</h3>
                 <br />
                 <br />
@@ -129,7 +130,7 @@ const Index = () => {
                                 );
                             })}
                         </Form.Select>
-                        <Button variant="alpukat" className="ms-2">
+                        <Button variant="alpukat" className="ms-2 my-2 my-xl-0 my-lg-0">
                             Filter
                         </Button>
                     </div>
@@ -164,6 +165,7 @@ const Index = () => {
                     })}
                 </div>
             </div>
+            <Footer />
         </div>
     );
 };
