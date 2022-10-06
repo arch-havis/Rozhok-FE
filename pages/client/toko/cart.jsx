@@ -1,15 +1,36 @@
+import axios from "axios";
+import { getCookie } from "cookies-next";
 import Router from "next/router";
 import React, { useEffect, useState } from "react";
 import { Row, Col, Button, Form } from "react-bootstrap";
 import Footer from "../../../components/Footer";
 import HeaderClient from "../../../components/HeaderClient";
 
-const Cart = () => {
+export const getServerSideProps = async (context) => {
+  const token = getCookie("token", context);
+  const getCart = await axios.get("https://altagp3.online/carts", {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+  const cart = await getCart;
+
+  return {
+    props: {
+      cart: cart.data,
+    },
+  };
+};
+
+const Cart = (props) => {
   const harga = 100000;
+
+  const token = getCookie("token");
 
   const [jumlah, setJumlah] = useState(1);
   let sub = harga * jumlah;
 
+  console.log(props.cart.data);
   // const format = Intl.NumberFormat("id", {
   //     style: "currency",
   //     currency: "IDR"
@@ -34,13 +55,38 @@ const Cart = () => {
 
   const handleBuy = (e) => {
     Router.push({
-      pathname:"/client/toko/checkout",
+      pathname: "/client/toko/checkout",
       query: {
-        total : sub
-      }
-    })
-  }
+        total: sub,
+      },
+    });
+  };
 
+  const [stat, setStat] = useState(false);
+  console.log(stat);
+  const handleCheck = () => {
+    setStat(!stat);
+  };
+
+  const [id, setId] = useState();
+  console.log(id);
+
+  const handleDelete = async (e) => {
+    await axios({
+      method: "delete",
+      url: `https://altagp3.online/cart/${id}`,
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
+      .then((response) => {
+        alert(response.data.message);
+        window.location.reload();
+      })
+      .catch((error) => {
+        console.log(error.data.message);
+      });
+  };
   return (
     <div>
       <HeaderClient />
@@ -53,146 +99,99 @@ const Cart = () => {
         <div className="border-bottom border-gray border-2 text-end"></div>
       </div>
       <div id="product" className="mb-5">
-        <Row className="p-0 m-0">
-          <Col md={3} />
-          <div key={`default-checkbox`} className="col-md-6 mb-3">
-            <Form.Check
-              type="checkbox"
-              id={`default-checkbox`}
-              label={
-                <>
-                  <Row className="border border-2 border-lime rounded-2 bg-tea pt-2 ms-2">
-                    <Col md={3}>
-                      <img
-                        src="https://cdn-brilio-net.akamaized.net/news/2017/11/02/134250/698323-lampu-hias-botol-bekas.jpg"
-                        alt=""
-                        style={{ maxWidth: "100%", minHeight: "100%" }}
-                        className="rounded-2"
-                      />
-                    </Col>
-                    <Col md={9}>
-                      <Row className="p-0 m-0">
-                        <Col>
-                          <h5>Nama Produk</h5>
-                          <h6>
-                            <b>{harga}</b>
-                          </h6>
-                          <h6>
-                            Sub-Total{" "}
-                            {new Intl.NumberFormat("id-ID", {
-                              style: "currency",
-                              currency: "IDR",
-                              currencyDisplay: "symbol",
-                            }).format(sub)}
-                          </h6>
+        {props.cart.data.map((items, index) => {
+          return (
+            <Row className="p-0 m-0" key={index}>
+              <Col md={3} />
+              <div key={`default-checkbox`} className="col-md-6 mb-3">
+                <Form.Check
+                  type="checkbox"
+                  onChange={handleCheck}
+                  id={`default-checkbox`}
+                  label={
+                    <>
+                      <Row className="border border-2 border-lime rounded-2 bg-tea pt-2 ms-2">
+                        <Col md={3}>
+                          <img
+                            src="https://cdn-brilio-net.akamaized.net/news/2017/11/02/134250/698323-lampu-hias-botol-bekas.jpg"
+                            alt=""
+                            style={{ maxWidth: "100%", minHeight: "100%" }}
+                            className="rounded-2"
+                          />
                         </Col>
-                        <Col className="text-center">
-                          <p>Jumlah : {jumlah}</p>
-                          <div className="mb-2">
-                            <Button
-                              variant="lime"
-                              className="text-putihan me-1"
-                              onClick={(e) => handleDecrease(e)}
-                            >
-                              -
-                            </Button>
-                            <Button
-                              variant="lime"
-                              className="text-putihan"
-                              onClick={(e) => handleIncrease(e)}
-                            >
-                              +
-                            </Button>
-                          </div>
-                          <div>
-                            <Button variant="danger">
-                              <b className="text-putihan">Remove</b>
-                            </Button>
-                          </div>
+                        <Col md={9}>
+                          <Row className="p-0 m-0">
+                            <Col>
+                              <h5>{items.product_name}</h5>
+                              <h6>
+                                <b>
+                                  {new Intl.NumberFormat("id-ID", {
+                                    style: "currency",
+                                    currency: "IDR",
+                                    currencyDisplay: "symbol",
+                                    minimumFractionDigits: 0,
+                                  }).format(items.price)}
+                                </b>
+                              </h6>
+                              <h6>
+                                Sub-Total{" "}
+                                {new Intl.NumberFormat("id-ID", {
+                                  style: "currency",
+                                  currency: "IDR",
+                                  currencyDisplay: "symbol",
+                                  minimumFractionDigits: 0,
+                                }).format(sub)}
+                              </h6>
+                            </Col>
+                            <Col className="text-center">
+                              <p>Jumlah : {jumlah}</p>
+                              <div className="mb-2">
+                                <Button
+                                  variant="lime"
+                                  className="text-putihan me-1"
+                                  onClick={(e) => handleDecrease(e)}
+                                >
+                                  -
+                                </Button>
+                                <Button
+                                  variant="lime"
+                                  className="text-putihan"
+                                  onClick={(e) => handleIncrease(e)}
+                                >
+                                  +
+                                </Button>
+                              </div>
+                              <div>
+                                <Button
+                                  variant="danger"
+                                  onClick={async (e) => {
+                                    await setId(items.id_cart), handleDelete(e);
+                                  }}
+                                >
+                                  <b className="text-putihan">Remove</b>
+                                </Button>
+                              </div>
+                            </Col>
+                          </Row>
                         </Col>
+                        <p></p>
                       </Row>
-                    </Col>
-                    <p></p>
-                  </Row>
-                  <p></p>
-                </>
-              }
-            />
-          </div>
-        </Row>
-        <Row className="p-0 m-0">
-          <Col md={3} />
-          <div key={`default-checkbox`} className="col-md-6 mb-3">
-            <Form.Check
-              type="checkbox"
-              id={`default-checkbox`}
-              label={
-                <>
-                  <Row className="border border-2 border-lime rounded-2 bg-tea pt-2 ms-2">
-                    <Col md={3}>
-                      <img
-                        src="https://cdn-brilio-net.akamaized.net/news/2017/11/02/134250/698323-lampu-hias-botol-bekas.jpg"
-                        alt=""
-                        style={{ maxWidth: "100%", minHeight: "100%" }}
-                        className="rounded-2"
-                      />
-                    </Col>
-                    <Col md={9}>
-                      <Row className="p-0 m-0">
-                        <Col>
-                          <h5>Nama Produk</h5>
-                          <h6>
-                            <b>{harga}</b>
-                          </h6>
-                          <h6>
-                            Sub-Total{" "}
-                            {new Intl.NumberFormat("id-ID", {
-                              style: "currency",
-                              currency: "IDR",
-                              currencyDisplay: "symbol",
-                            }).format(sub)}
-                          </h6>
-                        </Col>
-                        <Col className="text-center">
-                          <p>Jumlah : {jumlah}</p>
-                          <div className="mb-2">
-                            <Button
-                              variant="lime"
-                              className="text-putihan me-1"
-                              onClick={(e) => handleDecrease(e)}
-                            >
-                              -
-                            </Button>
-                            <Button
-                              variant="lime"
-                              className="text-putihan"
-                              onClick={(e) => handleIncrease(e)}
-                            >
-                              +
-                            </Button>
-                          </div>
-                          <div>
-                            <Button variant="danger">
-                              <b className="text-putihan">Remove</b>
-                            </Button>
-                          </div>
-                        </Col>
-                      </Row>
-                    </Col>
-                    <p></p>
-                  </Row>
-                  <p></p>
-                </>
-              }
-            />
-          </div>
-        </Row>
+                      <p></p>
+                    </>
+                  }
+                />
+              </div>
+            </Row>
+          );
+        })}
         <Row className="p-0 m-0">
           <Col md={3} className="text-end">
             <b>Grand Total</b>
           </Col>
           <Col md={6} className="text-end p-0 m-0">
-            <Button variant="lime text-putihan" onClick={(e) => handleBuy(e)}>Beli</Button>
+            <Button variant="lime text-putihan" onClick={(e) => handleBuy(e)}>
+              Beli
+            </Button>
           </Col>
         </Row>
       </div>
