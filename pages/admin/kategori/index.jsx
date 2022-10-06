@@ -39,18 +39,42 @@ const Index = () => {
       });
   };
 
+  // delete kategori
+  const handleDeleteKategori = (id) => {
+    var axios = require("axios");
+
+    var config = {
+      method: "delete",
+      url: `https://altagp3.online/category/${id}`,
+      headers: {
+        Authorization: `Bearer ${Cookies.get("token")}`,
+      },
+    };
+
+    axios(config)
+      .then(function (response) {
+        console.log(JSON.stringify(response.data));
+        getKategori();
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+  };
+
+  // goto tambah kategori
   const gotoTambahKategori = () => {
     Router.push({
       pathname: `/admin/kategori/tambah-kategori`,
     });
   };
 
-  const handleEditKategori = () => {
+  // goto edit kategori
+  const handleEditKategori = (id) => {
     Router.push({
       pathname: `/admin/kategori/edit-kategori`,
-      // query: {
-      //   transaksiId: transaksiId,
-      // },
+      query: {
+        kategori: id,
+      },
     });
   };
 
@@ -101,7 +125,7 @@ const Index = () => {
                     <Button
                       variant="putihan"
                       className="text-alpukat text-decoration-none p-0"
-                      onClick={() => handleEditKategori()}
+                      onClick={() => handleEditKategori(item.id)}
                     >
                       Edit
                     </Button>
@@ -109,6 +133,7 @@ const Index = () => {
                     <Button
                       variant="putihan"
                       className="text-alpukat text-decoration-none p-0"
+                      onClick={() => handleDeleteKategori(item.id)}
                     >
                       Hapus
                     </Button>
