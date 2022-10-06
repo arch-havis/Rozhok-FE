@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Modal,
   Button,
@@ -11,14 +11,110 @@ import {
 import HeaderJunkStation from "../../../components/HeaderJunkStation";
 import { FiEdit } from "react-icons/fi";
 import { AiFillCheckCircle, AiTwotoneDelete } from "react-icons/ai";
+import Cookies from "js-cookie";
 
 const Index = () => {
+  const [pembelian, setPembelian] = useState([]);
+  const [kategori, setKategori] = useState([]);
+  const [idKategori, setIdKategori] = useState(0);
+  const [berat, setBerat] = useState(0);
+  const [harga, setHarga] = useState(0);
+
   const [show, setShow] = useState(false);
   const [showAlert, setShowAlert] = useState(false);
   const handleClose = () => setShow(false);
   const handleCloseAlert = () => setShowAlert(false);
   const handleShow = () => setShow(true);
   const handleShowAlert = () => setShowAlert(true);
+
+  // get Kategori
+  useEffect(() => {
+    getKategori();
+  }, []);
+
+  const getKategori = () => {
+    var axios = require("axios");
+    var data = "";
+
+    var config = {
+      method: "get",
+      url: "https://altagp3.online/categories",
+      headers: {
+        accept: "application/json",
+        Authorization: `Bearer ${Cookies.get("token")}`,
+      },
+      data: data,
+    };
+
+    axios(config)
+      .then(function (response) {
+        console.log(JSON.stringify(response.data.data));
+        setKategori(response.data.data);
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+  };
+
+  // get pembelian
+  useEffect(() => {
+    getPembelian();
+  }, []);
+
+  const getPembelian = () => {
+    var axios = require("axios");
+    var data = "";
+
+    var config = {
+      method: "get",
+      url: "https://altagp3.online/pembelian/junk-station",
+      headers: {
+        accept: "application/json",
+        Authorization: `Bearer ${Cookies.get("token")}`,
+      },
+      data: data,
+    };
+
+    axios(config)
+      .then(function (response) {
+        console.log(JSON.stringify(response.data.data));
+        setPembelian(response.data.data);
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+  };
+
+  // post pembelian
+  const tambahPembelian = () => {
+    var axios = require("axios");
+    var data = JSON.stringify({
+      kategori: parseInt(idKategori),
+      berat: parseInt(berat),
+      // berat: 2344,
+      harga: parseInt(harga),
+    });
+
+    var config = {
+      method: "post",
+      url: "https://altagp3.online/pembelian/junk-station",
+      headers: {
+        Authorization: `Bearer ${Cookies.get("token")}`,
+        "Content-Type": "application/json",
+      },
+      data: data,
+    };
+
+    axios(config)
+      .then(function (response) {
+        console.log(JSON.stringify(response.data));
+        getPembelian();
+        setShow(false);
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+  };
 
   return (
     <div className="bg-putih min-vh-100">
@@ -53,10 +149,19 @@ const Index = () => {
                 <Form.Label>Kategori</Form.Label>
                 <div className="d-flex flex-sm-row flex-column">
                   <Form.Select aria-label="Default select example">
-                    <option>Pilih Kategori</option>
-                    <option value="1">Besi</option>
-                    <option value="2">Plastik</option>
-                    <option value="3">Organik</option>
+                    <option selected disabled>
+                      Pilih Kategori
+                    </option>
+                    {kategori.map((item) => {
+                      return (
+                        <option
+                          key={item.id}
+                          onClick={() => setIdKategori(item.id)}
+                        >
+                          {item.nama}
+                        </option>
+                      );
+                    })}
                   </Form.Select>
                 </div>
               </div>
@@ -64,6 +169,7 @@ const Index = () => {
                 <Form.Label>Berat (kg)</Form.Label>
                 <Form.Control
                   type="number"
+                  onChange={(e) => setBerat(e.target.value)}
                   // placeholder="Masukkan no telepon anda"
                 />
               </Form.Group>
@@ -72,6 +178,7 @@ const Index = () => {
                 <Form.Control
                   type="number"
                   // placeholder="Masukkan no telepon anda"
+                  onChange={(e) => setHarga(e.target.value)}
                 />
               </Form.Group>
             </Form>
@@ -86,7 +193,7 @@ const Index = () => {
               <Button
                 variant="lime"
                 className="text-putih"
-                onClick={handleClose}
+                onClick={() => tambahPembelian()}
               >
                 Tambahkan
               </Button>
@@ -104,20 +211,27 @@ const Index = () => {
             </tr>
           </thead>
           <tbody>
-            <tr>
-              <td className=" text-center">1</td>
-              <td className=" ">Besi</td>
-              <td className="text-end ">
-                <button className="p-0 bg-tea border-0 " onClick={handleShow}>
-                  <FiEdit size={25} className="text-alpukat " />
-                </button>
-              </td>
-              <td className="text-center ">
-                <button className="p-0 bg-tea border-0  ">
-                  <AiTwotoneDelete size={25} className="text-alpukat" />
-                </button>
-              </td>
-            </tr>
+            {pembelian.map((item, index) => {
+              return (
+                <tr key={item.id_pembelian}>
+                  <td className=" text-center">{index + 1}</td>
+                  <td className=" ">{item.kategori}</td>
+                  <td className="text-end ">
+                    <button
+                      className="p-0 bg-tea border-0 "
+                      onClick={handleShow}
+                    >
+                      <FiEdit size={25} className="text-alpukat " />
+                    </button>
+                  </td>
+                  <td className="text-center ">
+                    <button className="p-0 bg-tea border-0  ">
+                      <AiTwotoneDelete size={25} className="text-alpukat" />
+                    </button>
+                  </td>
+                </tr>
+              );
+            })}
           </tbody>
         </Table>
 
