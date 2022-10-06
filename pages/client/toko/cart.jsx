@@ -63,10 +63,7 @@ const Cart = (props) => {
   };
 
   const [stat, setStat] = useState(false);
-  console.log(stat);
-  const handleCheck = () => {
-    setStat(!stat);
-  };
+  // console.log(stat);
 
   const [id, setId] = useState();
   console.log(id);
@@ -90,17 +87,34 @@ const Cart = (props) => {
   };
 
   const [counter, setCounter] = useState();
-  const [checklist, setChecklist] = useState();
+  const [checklist, setChecklist] = useState(false);
+  console.log(checklist);
+  const handleCheck = (e) => {
+    // e.preventDefault();
+    setChecklist(!checklist);
+    console.log(e);
+    setData({
+      counter: counter,
+      checklist: !checklist,
+    });
+    handleUpdate(e);
+    // handleUpdate();
+  };
 
   const [data, setData] = useState({
     counter: counter,
     checklist: checklist,
   });
 
-  const handleCount = async () => {
+  console.log(data);
+  // const handleData = () => [
+
+  // ]
+
+  const handleUpdate = async (e) => {
     await axios({
       method: "put",
-      url: `https://altagp3.online/cart/${id}`,
+      url: `https://altagp3.online/cart/${parseInt(e.target.value)}`,
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -133,8 +147,9 @@ const Cart = (props) => {
               <div key={`default-checkbox`} className="col-md-6 mb-3">
                 <Form.Check
                   type="checkbox"
-                  onChange={handleCheck}
+                  onChange={(e) => handleCheck(e)}
                   id={`default-checkbox`}
+                  value={items.id_cart}
                   label={
                     <>
                       <Row className="border border-2 border-lime rounded-2 bg-tea pt-2 ms-2">
@@ -176,14 +191,14 @@ const Cart = (props) => {
                                 <Button
                                   variant="lime"
                                   className="text-putihan me-1"
-                                  onClick={(e) => handleCount(e)}
+                                  onClick={(e) => handleDecrease(e)}
                                 >
                                   -
                                 </Button>
                                 <Button
                                   variant="lime"
                                   className="text-putihan"
-                                  onClick={(e) => handleCount(e)}
+                                  onClick={(e) => handleIncrease(e)}
                                 >
                                   +
                                 </Button>
