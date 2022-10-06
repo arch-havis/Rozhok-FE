@@ -11,6 +11,7 @@ const Index = () => {
 
     const [dataDetailPenjemputan, setDataDetailPenjemputan] = useState([]);
 
+    // get detail penjemputan rosok
     const detailPenjemputan = async () => {
         var axios = require("axios");
 
@@ -36,6 +37,28 @@ const Index = () => {
         detailPenjemputan();
     }, []);
 
+    // post data penjemputan rosok
+    const postDataPenjemputan = async () => {
+        var axios = require("axios");
+
+        var config = {
+            method: "get",
+            url: `https://altagp3.online/pengambilan/${router.query.item}/porter`,
+            headers: {
+                Authorization: `Bearer ${Cookies.get("token")}`,
+            },
+        };
+
+        axios(config)
+            .then(function (response) {
+                console.log(JSON.stringify(response.data.data));
+                setDataDetailPenjemputan(response.data.data);
+            })
+            .catch(function (error) {
+                console.log(error);
+            });
+    };
+
     console.log("ini router", router.query.item);
 
     return (
@@ -45,6 +68,7 @@ const Index = () => {
                 <h3 className="text-alpukat float-end mt-5 fw-bolder">Detail Rosok</h3>
                 <br />
                 <br />
+                {/* Code ga ada yang tak ubah wallahi */}
                 <Row className="" style={{ marginTop: "100px" }}>
                     <div className="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-6">
                         <h4 className="text-alpukat">Nama: {dataDetailPenjemputan.client.name}</h4>
@@ -68,7 +92,9 @@ const Index = () => {
                         </div>
                     </Card.Body>
                 </Card>
-                <Button variant="alpukat fw-bolder mt-4 float-end">Ambil</Button>
+                <Button variant="alpukat fw-bolder mt-4 float-end" onClick={() => postDataPenjemputan()}>
+                    Ambil
+                </Button>
             </div>
         </div>
     );
