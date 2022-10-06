@@ -72,21 +72,48 @@ const Cart = (props) => {
   console.log(id);
 
   const handleDelete = async (e) => {
+    setId(),
+      await axios({
+        method: "delete",
+        url: `https://altagp3.online/cart/${e.target.parentElement.value}`,
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
+        .then((response) => {
+          alert(response.data.message);
+          window.location.reload();
+        })
+        .catch((error) => {
+          console.log(error.data.message);
+        });
+  };
+
+  const [counter, setCounter] = useState();
+  const [checklist, setChecklist] = useState();
+
+  const [data, setData] = useState({
+    counter: counter,
+    checklist: checklist,
+  });
+
+  const handleCount = async () => {
     await axios({
-      method: "delete",
+      method: "put",
       url: `https://altagp3.online/cart/${id}`,
       headers: {
         Authorization: `Bearer ${token}`,
       },
+      data: data,
     })
       .then((response) => {
         alert(response.data.message);
-        window.location.reload();
       })
       .catch((error) => {
         console.log(error.data.message);
       });
   };
+
   return (
     <div>
       <HeaderClient />
@@ -149,14 +176,14 @@ const Cart = (props) => {
                                 <Button
                                   variant="lime"
                                   className="text-putihan me-1"
-                                  onClick={(e) => handleDecrease(e)}
+                                  onClick={(e) => handleCount(e)}
                                 >
                                   -
                                 </Button>
                                 <Button
                                   variant="lime"
                                   className="text-putihan"
-                                  onClick={(e) => handleIncrease(e)}
+                                  onClick={(e) => handleCount(e)}
                                 >
                                   +
                                 </Button>
@@ -164,8 +191,9 @@ const Cart = (props) => {
                               <div>
                                 <Button
                                   variant="danger"
-                                  onClick={async (e) => {
-                                    await setId(items.id_cart), handleDelete(e);
+                                  value={items.id_cart}
+                                  onClick={(e) => {
+                                    handleDelete(e);
                                   }}
                                 >
                                   <b className="text-putihan">Remove</b>
