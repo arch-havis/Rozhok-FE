@@ -31,8 +31,9 @@ const Index = (props) => {
 
   const token = getCookie("token");
   const [id, setId] = useState();
-
-  const handleAdd = async () => {
+  console.log(id);
+  const handleAdd = async (e) => {
+    setId(e);
     await axios({
       method: "post",
       url: "https://altagp3.online/cart",
@@ -40,7 +41,7 @@ const Index = (props) => {
         Authorization: `Bearer ${token}`,
       },
       data: {
-        id_barang: id,
+        id_barang: parseInt(e.target.parentElement.value),
       },
     })
       .then((response) => {
@@ -122,8 +123,9 @@ const Index = (props) => {
                 <br></br>
                 <Button
                   variant="lime border border-alpukat border-2"
-                  onClick={() => {
-                    setId(items.id), handleAdd();
+                  value={items.id}
+                  onClick={(e) => {
+                    handleAdd(e);
                   }}
                 >
                   <b className="text-alpukat">Add Cart</b>
