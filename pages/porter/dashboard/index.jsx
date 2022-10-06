@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Form from "react-bootstrap/Form";
 import { Button, Row } from "react-bootstrap";
 import Card from "react-bootstrap/Card";
@@ -7,8 +7,51 @@ import { GiCash } from "react-icons/gi";
 import kurir from "../../../assets/kurir.svg";
 import Image from "next/image";
 import HeaderPorter from "../../../components/HeaderPorter";
+import axios from "axios";
+import Cookies from "js-cookie";
+import Footer from "../../../components/Footer";
 
 const Index = () => {
+    const [dataDashboard, setDataDashboard] = useState([]);
+
+    const getDataDashboard = async () => {
+        try {
+            const response = await axios.get(`https://altagp3.online/porter/dashboard`, {
+                headers: {
+                    Authorization: `Bearer ${Cookies.get("token")}`,
+                },
+            });
+            setDataDashboard(response.data.data);
+            console.log(dataDashboard);
+        } catch (error) {
+            if (status === 400) {
+                alert(error, "masih ada yang salah");
+            }
+        }
+    };
+
+    useEffect(() => {
+        getDataDashboard();
+    }, []);
+
+    const formatPembelian = new Intl.NumberFormat("id-ID", {
+        style: "currency",
+        currency: "IDR",
+        currencyDisplay: "symbol",
+    }).format(dataDashboard.total_pembelian);
+
+    const formatPenjualan = new Intl.NumberFormat("id-ID", {
+        style: "currency",
+        currency: "IDR",
+        currencyDisplay: "symbol",
+    }).format(dataDashboard.total_penjualan);
+
+    const formatLaba = new Intl.NumberFormat("id-ID", {
+        style: "currency",
+        currency: "IDR",
+        currencyDisplay: "symbol",
+    }).format(dataDashboard.total_laba);
+
     return (
         <div>
             <HeaderPorter />
@@ -26,6 +69,9 @@ const Index = () => {
                 </div>
                 <br />
                 <br />
+                <div className="d-flex justify-content-center justify-content-lg-start justify-content-xl-start">
+                    <p className="mt-5 mb-2 text-alpukat fw-bold bg-lime w-25 text-center p-2 rounded-2 shadow">Total Laba: {formatLaba}</p>
+                </div>
                 <Row className="mt-5">
                     <div className="col-xl-6 col-lg-6 col-md-12 col-sm-12 d-flex justify-content-center justify-content-xl-start justify-content-lg-start">
                         <Card style={{ width: "25rem" }} className="bg-tea shadow border border-lime">
@@ -36,17 +82,22 @@ const Index = () => {
                                             <BiPurchaseTag style={{ fontSize: "90px" }} />
                                         </Card.Title>
                                     </div>
+
                                     <div className="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-6">
                                         <div className="mt-4 fw-bolder text-alpukat">
                                             <Card.Text style={{ fontSize: "23px" }}>Total Pembelian</Card.Text>
-                                            <Card.Text style={{ fontSize: "23px" }}>Rp 50.000,00</Card.Text>
+                                            <Card.Text style={{ fontSize: "23px" }}>{formatPembelian}</Card.Text>
                                         </div>
                                     </div>
                                 </Row>
                             </Card.Body>
                         </Card>
+                        {/* {dataDashboard.map((data, i) => {
+                            return (
+                                
+                            );
+                        })} */}
                     </div>
-
                     <div className="col-xl-6 col-lg-6 col-md-12 col-sm-12 d-flex justify-content-xl-end justify-content-lg-end justify-content-center">
                         <Card style={{ width: "25rem" }} className="mt-md-3 mt-3 mt-xl-0 mt-lg-0 bg-tea shadow border border-lime">
                             <Card.Body>
@@ -59,7 +110,7 @@ const Index = () => {
                                     <div className="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-6">
                                         <div className="mt-4 fw-bolder text-alpukat">
                                             <Card.Text style={{ fontSize: "23px" }}>Total Penjualan</Card.Text>
-                                            <Card.Text style={{ fontSize: "23px" }}>Rp 50.000,00</Card.Text>
+                                            <Card.Text style={{ fontSize: "23px" }}>{formatPenjualan}</Card.Text>
                                         </div>
                                     </div>
                                 </Row>
@@ -67,12 +118,13 @@ const Index = () => {
                         </Card>
                     </div>
                 </Row>
+
                 <div className="d-flex justify-content-center mt-5">
                     {/* <img src="kurir.svg" alt="kurir" /> */}
                     <Image src={kurir} height={350} width={1250} />
                 </div>
             </div>
-            {/* <Footer style={{ marginTop: "1410px" }} /> */}
+            <Footer />
         </div>
     );
 };
