@@ -82,7 +82,10 @@ const Index = () => {
             >
               {kategori.map((item) => {
                 return (
-                  <Carousel.Item className="my-5 px-5 text-center ">
+                  <Carousel.Item
+                    className="my-5 px-5 text-center "
+                    key={item.id}
+                  >
                     <h3 className="text-center fs-1">
                       {item.nama}
                       <span className="fs-5 ms-1">
