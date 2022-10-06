@@ -1,11 +1,43 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Button, Carousel, Col, Container, Form, Row } from "react-bootstrap";
-import HeaderJunkStation from "../../../components/HeaderJunkStation";
 import { AiOutlineBell } from "react-icons/ai";
+import Cookies from "js-cookie";
+
+import HeaderJunkStation from "../../../components/HeaderJunkStation";
 
 const Index = () => {
   const [index, setIndex] = useState(0);
   const [totalPembelian, setTotalPembelian] = useState(500000);
+  const [kategori, setKategori] = useState([]);
+
+  // get Kategori
+  useEffect(() => {
+    getKategori();
+  }, []);
+
+  const getKategori = () => {
+    var axios = require("axios");
+    var data = "";
+
+    var config = {
+      method: "get",
+      url: "https://altagp3.online/categories",
+      headers: {
+        accept: "application/json",
+        Authorization: `Bearer ${Cookies}`,
+      },
+      data: data,
+    };
+
+    axios(config)
+      .then(function (response) {
+        console.log(JSON.stringify(response.data.data));
+        setKategori(response.data.data);
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+  };
 
   const handleSelect = (selectedIndex, e) => {
     setIndex(selectedIndex);
@@ -40,6 +72,7 @@ const Index = () => {
           </Col>
         </Row>
 
+        {/* Carousel */}
         <Row className=" my-5">
           <Col xs="12" md="11" lg="10" className="m-auto bg-tea rounded-2">
             <Carousel
@@ -47,33 +80,25 @@ const Index = () => {
               onSelect={handleSelect}
               variant="dark"
             >
-              <Carousel.Item className="my-5 px-5 text-center ">
-                <h3 className="text-center fs-1">
-                  Besi <span className="fs-5">(Rp 10000/kg)</span>
-                </h3>
-                <p>
-                  Limbah yang berasal dari logam besi seperti paku, pagar besi
-                  dll
-                </p>
-              </Carousel.Item>
-              <Carousel.Item className="my-5 px-5 text-center ">
-                <h3 className="text-center fs-1">
-                  Organik <span className="fs-5">(Rp 10000/kg)</span>
-                </h3>
-                <p>
-                  Limbah yang berasal dari logam besi seperti paku, pagar besi
-                  dll
-                </p>
-              </Carousel.Item>
-              <Carousel.Item className="my-5 px-5 text-center ">
-                <h3 className="text-center fs-1">
-                  Plastik <span className="fs-5">(Rp 10000/kg)</span>
-                </h3>
-                <p>
-                  Limbah yang berasal dari logam besi seperti paku, pagar besi
-                  dll
-                </p>
-              </Carousel.Item>
+              {kategori.map((item) => {
+                return (
+                  <Carousel.Item className="my-5 px-5 text-center ">
+                    <h3 className="text-center fs-1">
+                      {item.nama}
+                      <span className="fs-5 ms-1">
+                        (
+                        {Intl.NumberFormat("id-ID", {
+                          style: "currency",
+                          currency: "IDR",
+                          currencyDisplay: "symbol",
+                        }).format(item.harga_mitra)}
+                        )
+                      </span>
+                    </h3>
+                    <p>{item.desc}</p>
+                  </Carousel.Item>
+                );
+              })}
             </Carousel>
           </Col>
         </Row>
