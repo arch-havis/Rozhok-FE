@@ -30,7 +30,7 @@ const Cart = (props) => {
   const [jumlah, setJumlah] = useState(1);
   let sub = harga * jumlah;
 
-  console.log(props.cart.data);
+  // console.log(props.cart.data);
   // const format = Intl.NumberFormat("id", {
   //     style: "currency",
   //     currency: "IDR"
@@ -39,19 +39,19 @@ const Cart = (props) => {
   // let n = format.format(jumlah)
   // console.log(n);
 
-  const handleDecrease = (e) => {
-    e.preventDefault();
-    if (jumlah == 1) {
-      null;
-    } else {
-      setJumlah(jumlah - 1);
-    }
-  };
+  // const handleDecrease = (e) => {
+  //   e.preventDefault();
+  //   if (jumlah == 1) {
+  //     null;
+  //   } else {
+  //     setJumlah(jumlah - 1);
+  //   }
+  // };
 
-  const handleIncrease = (e) => {
-    e.preventDefault();
-    setJumlah(jumlah + 1);
-  };
+  // const handleIncrease = (e) => {
+  //   e.preventDefault();
+  //   setJumlah(jumlah + 1);
+  // };
 
   const handleBuy = (e) => {
     Router.push({
@@ -66,7 +66,7 @@ const Cart = (props) => {
   // console.log(stat);
 
   const [id, setId] = useState();
-  console.log(id);
+  // console.log(id);
 
   const handleDelete = async (e) => {
     setId(),
@@ -88,16 +88,19 @@ const Cart = (props) => {
 
   const [counter, setCounter] = useState();
   const [checklist, setChecklist] = useState(false);
-  console.log(checklist);
-  const handleCheck = (e) => {
+
+  // console.log(checklist);
+
+  const handleCheck = async (e) => {
     // e.preventDefault();
-    setChecklist(!checklist);
-    console.log(e);
-    setData({
+    // setChecklist(!checklist);
+    // console.log(e);
+    await setData({
       counter: counter,
       checklist: !checklist,
     });
-    handleUpdate(e);
+    console.log("data is :" + checklist);
+    // handleUpdate(e);
     // handleUpdate();
   };
 
@@ -106,12 +109,47 @@ const Cart = (props) => {
     checklist: checklist,
   });
 
-  console.log(data);
+  // console.log(data);
   // const handleData = () => [
 
   // ]
 
   const handleUpdate = async (e) => {
+    // e.preventDefault();
+    // data.preventDefault();
+    setData({
+      counter: counter,
+      checklist: !checklist,
+    });
+    console.log("data is " + data.checklist);
+    await axios({
+      method: "put",
+      url: `https://altagp3.online/cart/${parseInt(e.target.value)}`,
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+      data: data,
+    })
+      .then((response) => {
+        alert(response.data.message);
+      })
+      .catch((error) => {
+        console.log(error.data.message);
+      });
+  };
+
+  const handleDecrease = async (e) => {
+    console.log(e.target.id);
+    setCounter(parseInt(e.target.id) + 1);
+    setData({
+      counter: parseInt(e.target.id) + 1,
+      checklist: checklist,
+    });
+    await updateDecrease(e);
+  };
+
+  const updateDecrease = async (e) => {
+    e.preventDefault();
     await axios({
       method: "put",
       url: `https://altagp3.online/cart/${parseInt(e.target.value)}`,
@@ -147,7 +185,7 @@ const Cart = (props) => {
               <div key={`default-checkbox`} className="col-md-6 mb-3">
                 <Form.Check
                   type="checkbox"
-                  onChange={(e) => handleCheck(e)}
+                  onChange={(e) => handleUpdate(e)}
                   id={`default-checkbox`}
                   value={items.id_cart}
                   label={
@@ -191,6 +229,8 @@ const Cart = (props) => {
                                 <Button
                                   variant="lime"
                                   className="text-putihan me-1"
+                                  value={items.id_cart}
+                                  id={items.qty}
                                   onClick={(e) => handleDecrease(e)}
                                 >
                                   -
