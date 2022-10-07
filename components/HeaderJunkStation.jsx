@@ -4,14 +4,15 @@ import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
 import Link from "next/link";
 import { Button } from "react-bootstrap";
-// import Cookies from "js-cookie";
+import Router from "next/router";
+import cookie from "js-cookie";
 
 const HeaderJunkStation = () => {
-  //   const handleLogOut = async () => {
-  //     await cookie.remove("token");
-  //     await cookie.remove("role");
-  //     await Router.push({ pathname: "/" });
-  //   };
+  const handleLogOut = async () => {
+    await cookie.remove("token");
+    await cookie.remove("role");
+    await Router.push({ pathname: "/" });
+  };
 
   return (
     <Navbar collapseOnSelect expand="lg" bg="alpukat" sticky="top">
@@ -66,7 +67,7 @@ const HeaderJunkStation = () => {
               style={{ marginTop: -7 }}
               variant="alpukat"
               className=" text-putih fs-5 fw-bold text-decoration-none ms-3"
-              //   onClick={() => handleLogOut()}
+              onClick={() => handleLogOut()}
             >
               Logout
             </Button>
