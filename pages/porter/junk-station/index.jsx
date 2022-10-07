@@ -4,6 +4,7 @@ import HeaderPorter from "../../../components/HeaderPorter";
 import axios from "axios";
 import Router from "next/router";
 import Footer from "../../../components/Footer";
+import Cookies from "js-cookie";
 
 const Index = () => {
     const [dataProvinsi, setDataProvinsi] = useState([]);
@@ -11,23 +12,31 @@ const Index = () => {
     const [dataKotaKab, setDataKotaKab] = useState([]);
     const [dataKecamatan, setDataKecamatan] = useState([]);
     const [kotaId, setKotaId] = useState("");
+    const [dataJunkStation, setDataJunkStation] = useState([]);
 
-    // data dummy
-    const rosok = [
-        { id: 1, nama: "Rosok CBA", provinsi: "Jawa Timur", kota: "Trenggalek", kecamatan: "Panggul", jalan: "Jl. Wiro II Dusun hahaha RT 02/19" },
-        { id: 2, nama: "Rosok ABC", provinsi: "Jawa Timur", kota: "Trenggalek", kecamatan: "Munjungan", jalan: "Jl. Wiro II Dusun hihihi RT 02/05" },
-    ];
+    useEffect(() => {
+        getListJunkStation();
+    }, []);
+
+    const getListJunkStation = async () => {
+        try {
+            const response = await axios.get("https://altagp3.online/junk-station", {
+                headers: {
+                    Authentication: `Bearer ${Cookies.get("token")}`,
+                },
+            });
+            setDataJunkStation(response.data);
+            console.log("ini response.data.data", JSON.stringify(response.data.data));
+        } catch (error) {
+            console.log(error);
+        }
+    };
 
     const DetailJunkStation = (item) => {
         Router.push({
-            pathname: `/porter/junk-station/${item.id}`,
+            pathname: `/porter/junk-station/${item}`,
             query: {
-                id: item.id,
-                nama: item.nama,
-                provinsi: item.provinsi,
-                kota: item.kota,
-                kecamatan: item.kecamatan,
-                jalan: item.jalan,
+                item: item,
             },
         });
     };
@@ -136,17 +145,17 @@ const Index = () => {
                     </div>
                 </div>
                 <div className="" style={{ marginTop: "80px" }}>
-                    {rosok.map((client, i) => {
+                    {dataJunkStation.map((client) => {
                         return (
-                            <Card className="w-100 mb-5 border border-lime" key={i}>
+                            <Card className="w-100 mb-5 border border-lime" key={client?.id_junk_station}>
                                 <Card.Body className="bg-tea shadow-md">
-                                    <Card.Title className="mb-4 text-alpukat">Nama: {client.nama}</Card.Title>
+                                    <Card.Title className="mb-4 text-alpukat">Nama: {client?.junk_station_name}</Card.Title>
                                     <Card.Title className="mb-4 text-alpukat">Provinsi: {client.provinsi}</Card.Title>
                                     <Card.Title className="mb-4 text-alpukat">Kota: {client.kota}</Card.Title>
                                     <Card.Title className="mb-4 text-alpukat">Kecamatan: {client.kecamatan}</Card.Title>
                                     <Row>
                                         <div className="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-6">
-                                            <Card.Title className="text-alpukat">Jalan: {client.jalan}</Card.Title>
+                                            {/* <Card.Title className="text-alpukat">Jalan: {client.jalan}</Card.Title> */}
                                         </div>
                                         <div className="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-6 d-flex justify-content-end">
                                             <Button
