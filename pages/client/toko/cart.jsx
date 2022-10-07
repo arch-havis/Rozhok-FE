@@ -178,95 +178,99 @@ const Cart = (props) => {
         <div className="border-bottom border-gray border-2 text-end"></div>
       </div>
       <div id="product" className="mb-5">
-        {props.cart.data.map((items, index) => {
-          return (
-            <Row className="p-0 m-0" key={index}>
-              <Col md={3} />
-              <div key={`default-checkbox`} className="col-md-6 mb-3">
-                <Form.Check
-                  type="checkbox"
-                  onChange={(e) => handleUpdate(e)}
-                  id={`default-checkbox`}
-                  value={items.id_cart}
-                  label={
-                    <>
-                      <Row className="border border-2 border-lime rounded-2 bg-tea pt-2 ms-2">
-                        <Col md={3}>
-                          <img
-                            src="https://cdn-brilio-net.akamaized.net/news/2017/11/02/134250/698323-lampu-hias-botol-bekas.jpg"
-                            alt=""
-                            style={{ maxWidth: "100%", minHeight: "100%" }}
-                            className="rounded-2"
-                          />
-                        </Col>
-                        <Col md={9}>
-                          <Row className="p-0 m-0">
-                            <Col>
-                              <h5>{items.product_name}</h5>
-                              <h6>
-                                <b>
+        {props.cart.data === null ? (
+          <></>
+        ) : (
+          props.cart.data.map((items, index) => {
+            return (
+              <Row className="p-0 m-0" key={index}>
+                <Col md={3} />
+                <div key={`default-checkbox`} className="col-md-6 mb-3">
+                  <Form.Check
+                    type="checkbox"
+                    onChange={(e) => handleUpdate(e)}
+                    id={`default-checkbox`}
+                    value={items.id_cart}
+                    label={
+                      <>
+                        <Row className="border border-2 border-lime rounded-2 bg-tea pt-2 ms-2">
+                          <Col md={3}>
+                            <img
+                              src="https://cdn-brilio-net.akamaized.net/news/2017/11/02/134250/698323-lampu-hias-botol-bekas.jpg"
+                              alt=""
+                              style={{ maxWidth: "100%", minHeight: "100%" }}
+                              className="rounded-2"
+                            />
+                          </Col>
+                          <Col md={9}>
+                            <Row className="p-0 m-0">
+                              <Col>
+                                <h5>{items.product_name}</h5>
+                                <h6>
+                                  <b>
+                                    {new Intl.NumberFormat("id-ID", {
+                                      style: "currency",
+                                      currency: "IDR",
+                                      currencyDisplay: "symbol",
+                                      minimumFractionDigits: 0,
+                                    }).format(items.price)}
+                                  </b>
+                                </h6>
+                                <h6>
+                                  Sub-Total{" "}
                                   {new Intl.NumberFormat("id-ID", {
                                     style: "currency",
                                     currency: "IDR",
                                     currencyDisplay: "symbol",
                                     minimumFractionDigits: 0,
-                                  }).format(items.price)}
-                                </b>
-                              </h6>
-                              <h6>
-                                Sub-Total{" "}
-                                {new Intl.NumberFormat("id-ID", {
-                                  style: "currency",
-                                  currency: "IDR",
-                                  currencyDisplay: "symbol",
-                                  minimumFractionDigits: 0,
-                                }).format(sub)}
-                              </h6>
-                            </Col>
-                            <Col className="text-center">
-                              <p>Jumlah : {jumlah}</p>
-                              <div className="mb-2">
-                                <Button
-                                  variant="lime"
-                                  className="text-putihan me-1"
-                                  value={items.id_cart}
-                                  id={items.qty}
-                                  onClick={(e) => handleDecrease(e)}
-                                >
-                                  -
-                                </Button>
-                                <Button
-                                  variant="lime"
-                                  className="text-putihan"
-                                  onClick={(e) => handleIncrease(e)}
-                                >
-                                  +
-                                </Button>
-                              </div>
-                              <div>
-                                <Button
-                                  variant="danger"
-                                  value={items.id_cart}
-                                  onClick={(e) => {
-                                    handleDelete(e);
-                                  }}
-                                >
-                                  <b className="text-putihan">Remove</b>
-                                </Button>
-                              </div>
-                            </Col>
-                          </Row>
-                        </Col>
+                                  }).format(sub)}
+                                </h6>
+                              </Col>
+                              <Col className="text-center">
+                                <p>Jumlah : {jumlah}</p>
+                                <div className="mb-2">
+                                  <Button
+                                    variant="lime"
+                                    className="text-putihan me-1"
+                                    value={items.id_cart}
+                                    id={items.qty}
+                                    onClick={(e) => handleDecrease(e)}
+                                  >
+                                    -
+                                  </Button>
+                                  <Button
+                                    variant="lime"
+                                    className="text-putihan"
+                                    onClick={(e) => handleIncrease(e)}
+                                  >
+                                    +
+                                  </Button>
+                                </div>
+                                <div>
+                                  <Button
+                                    variant="danger"
+                                    value={items.id_cart}
+                                    onClick={(e) => {
+                                      handleDelete(e);
+                                    }}
+                                  >
+                                    <b className="text-putihan">Remove</b>
+                                  </Button>
+                                </div>
+                              </Col>
+                            </Row>
+                          </Col>
+                          <p></p>
+                        </Row>
                         <p></p>
-                      </Row>
-                      <p></p>
-                    </>
-                  }
-                />
-              </div>
-            </Row>
-          );
-        })}
+                      </>
+                    }
+                  />
+                </div>
+              </Row>
+            );
+          })
+        )}
         <Row className="p-0 m-0">
           <Col md={3} className="text-end">
             <b>Grand Total</b>

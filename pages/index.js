@@ -53,7 +53,7 @@ const Index = () => {
           lg={8}
           className="p-5 mt-5 bg-putihan border border-lime rounded-2"
         >
-          <Row>
+          <Row className="mb-2">
             <Col lg={6}>
               <img
                 src="https://i0.wp.com/www.oakpark.com/wp-content/uploads/2022/06/Recycling_278963590.jpeg?fit=1200%2C800&ssl=1"
