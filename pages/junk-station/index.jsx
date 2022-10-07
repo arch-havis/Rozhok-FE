@@ -81,9 +81,6 @@ const Index = () => {
     var data = JSON.stringify({
       email: email,
       password: password,
-
-      // email: "hashirama@gmail.com",
-      // password: "usoop123",
     });
 
     var config = {
