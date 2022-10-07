@@ -28,7 +28,7 @@ const Index = () => {
 
     axios(config)
       .then(function (response) {
-        console.log(JSON.stringify(response.data.data.barang_rosok));
+        // console.log(JSON.stringify(response.data.data.barang_rosok));
         setDetailTransaksi(response.data.data);
         setBarangRosok(response.data.data.barang_rosok);
       })
