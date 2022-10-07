@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import HeaderPorter from "../../../components/HeaderPorter";
 import { Row, Card, Button } from "react-bootstrap";
-import { useRouter } from "next/router";
+import Router, { useRouter } from "next/router";
 import { CgProfile } from "react-icons/cg";
 import axios from "axios";
 import Cookies from "js-cookie";
@@ -15,6 +15,7 @@ const Index = () => {
     const [harga, setHarga] = useState();
     const [subTotal, setSubTotal] = useState();
 
+    // get data details
     const getDataDetails = async () => {
         try {
             const response = await axios.get(`https://altagp3.online/transaksi/${router.query.idTransaksi}/porter?type_transaction=${router.query.tipeTransaksi}`, {
@@ -30,6 +31,61 @@ const Index = () => {
         } catch (error) {
             console.log("hayo kenapa", error);
         }
+    };
+
+    // put data details
+    const putDataDetails = async () => {
+        Router.push({ pathname: "/porter/transaksi" });
+        var axios = require("axios");
+        var data = JSON.stringify({
+            barang_rosok: [
+                {
+                    id_barang_rosok: barangRosokId,
+                    berat: berat,
+                    subtotal: subTotal,
+                },
+            ],
+        });
+
+        var config = {
+            method: "put",
+            url: `https://altagp3.online/transaksi/${router.query.idTransaksi}/porter`,
+            headers: {
+                Authorization: `Bearer ${Cookies.get("token")}`,
+            },
+            data: data,
+        };
+
+        axios(config)
+            .then(function (response) {
+                console.log(JSON.stringify(response.data));
+            })
+            .catch(function (error) {
+                console.log(error);
+            });
+    };
+
+    // post data penjemputan rosok
+    const postDataTransaksi = async () => {
+        Router.push({ pathname: "/porter/transaksi" });
+        var axios = require("axios");
+
+        var config = {
+            method: "post",
+            url: `https://altagp3.online/transaksi/${router.query.item}/porter`,
+            headers: {
+                Authorization: `Bearer ${Cookies.get("token")}`,
+            },
+        };
+
+        axios(config)
+            .then(function (response) {
+                console.log(JSON.stringify(response.data.data));
+                setDataDetailPenjemputan(response.data.data);
+            })
+            .catch(function (error) {
+                console.log(error);
+            });
     };
 
     useEffect(() => {
@@ -99,14 +155,14 @@ const Index = () => {
                     </Card.Body>
                 </Card>
                 {detailList?.status === "belum_bayar" ? (
-                    <Button variant="alpukat" className="hover-overlay hover-zoom text-white fs-5 float-end">
+                    <Button variant="alpukat" className="hover-overlay hover-zoom text-white fs-5 float-end" onClick={() => putDataDetails()}>
                         Simpan
                     </Button>
                 ) : (
                     <>
                         {" "}
                         {detailList?.status === "sudah_bayar" ? (
-                            <Button variant="danger" className="hover-overlay hover-zoom text-white fs-5 float-end">
+                            <Button variant="danger" className="hover-overlay hover-zoom text-white fs-5 float-end" onClick={() => postDataTransaksi()}>
                                 Jual
                             </Button>
                         ) : null}
