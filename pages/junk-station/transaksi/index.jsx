@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Router, { useRouter } from "next/router";
 import {
   Modal,
@@ -10,17 +10,45 @@ import {
   Alert,
 } from "react-bootstrap";
 import HeaderJunkStation from "../../../components/HeaderJunkStation";
+import Cookies from "js-cookie";
 
 const Index = () => {
   const router = useRouter();
 
+  const [allTransaksi, setAllTransaksi] = useState([]);
+
+  useEffect(() => {
+    getAllTransaksi();
+  }, []);
+
+  // get All Transaksi
+  const getAllTransaksi = () => {
+    var axios = require("axios");
+
+    var config = {
+      method: "get",
+      url: "https://altagp3.online/transaksi/junk-station",
+      headers: {
+        Authorization: `Bearer ${Cookies.get("token")}`,
+      },
+    };
+
+    axios(config)
+      .then(function (response) {
+        console.log(JSON.stringify(response.data.data));
+        setAllTransaksi(response.data.data);
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+  };
+
   // get Detail Transaksi
   const getDetailTransaksi = (transaksiId) => {
-    // console.log(menteeId);
     Router.push({
       pathname: `/junk-station/detail-transaksi`,
       query: {
-        transaksiId: transaksiId,
+        transaksi_Id: transaksiId,
       },
     });
   };
@@ -49,29 +77,35 @@ const Index = () => {
               <th>Kode Transaksi</th>
               <th>Biaya Transaksi</th>
               <th>Tanggal Transaksi</th>
-              {/* <th></th>
-              <th></th> */}
               <th colSpan={2} className=" text-center"></th>
             </tr>
           </thead>
           <tbody>
-            <tr>
-              <td className=" text-center">1</td>
-              <td className=" ">TF-192740</td>
-              <td className=" ">Rp 300000</td>
-              <td>2022-01-02</td>
-              {/* <td></td>
-              <td></td> */}
-              <td className="text-end ">
-                <button
-                  className="p-0 bg-tea border-0 text-decoration-underline "
-                  onClick={() => getDetailTransaksi(1)}
-                >
-                  Detail
-                </button>
-              </td>
-              <td className="text-center "></td>
-            </tr>
+            {allTransaksi.map((item, index) => {
+              return (
+                <tr key={item.id_transaksi}>
+                  <td className=" text-center"> {index + 1} </td>
+                  <td className=" ">{item.kode_tf}</td>
+                  <td className=" ">
+                    {Intl.NumberFormat("id-ID", {
+                      style: "currency",
+                      currency: "IDR",
+                      currencyDisplay: "symbol",
+                    }).format(item.harga_transaksi)}
+                  </td>
+                  <td>{item.tanggal_dibuat}</td>
+                  <td className="text-end ">
+                    <button
+                      className="p-0 bg-tea border-0 text-decoration-underline text-alpukat"
+                      onClick={() => getDetailTransaksi(1)}
+                    >
+                      Detail
+                    </button>
+                  </td>
+                  <td className="text-center "></td>
+                </tr>
+              );
+            })}
           </tbody>
         </Table>
       </Container>
