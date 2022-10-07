@@ -9,6 +9,8 @@ import Footer from "../../../components/Footer";
 
 const Index = () => {
     const [dataTransaksi, setDataTransaksi] = useState([]);
+    const [idTransaksi, setIdTransaksi] = useState();
+    const [tipeTransaksi, setTipeTransaksi] = useState("");
 
     const getDataTransaksi = async () => {
         try {
@@ -18,7 +20,11 @@ const Index = () => {
                 },
             });
             setDataTransaksi(response.data.data);
-            console.log(dataTransaksi);
+            setIdTransaksi(response.data.data.id_transaksi);
+            setTipeTransaksi(response.data.data.tipe_transaksi);
+            console.log("ini response.data.data", JSON.stringify(response.data.data));
+            console.log("ini untuk get data id_transaksi", JSON.stringify(response.data.data[0].id_transaksi));
+            console.log("ini untuk get data tipe_transaksi", JSON.stringify(response.data.data[0].tipe_transaksi));
         } catch (error) {
             console.log(error);
         }
@@ -28,17 +34,12 @@ const Index = () => {
         getDataTransaksi();
     }, []);
 
-    const DetailTransaksi = (item) => {
+    const DetailIdTransaksi = (item) => {
         Router.push({
-            pathname: `/porter/transaksi/${item.id}`,
+            pathname: `/porter/transaksi/${item}`,
             query: {
-                id: item.id,
-                nama: item.nama,
-                provinsi: item.provinsi,
-                kota: item.kota,
-                kecamatan: item.kecamatan,
-                jalan: item.jalan,
-                status: item.status,
+                idTransaksi: item, //ini state ku untuk menangkap ID
+                tipeTransaksi: "pembelian", //ini state ku untuk menangkap transaksi
             },
         });
     };
@@ -84,7 +85,11 @@ const Index = () => {
                                     <td>{data.tipe_transaksi}</td>
                                     <td>{data.status}</td>
                                     <td>
-                                        <AiTwotoneEdit className="fs-4 text-lime user-select-auto" onChange={(e) => e.target.value(e)} onClick={() => DetailTransaksi(data)} />
+                                        <AiTwotoneEdit
+                                            className="fs-4 text-lime user-select-auto"
+                                            onChange={(e) => e.target.value(e)}
+                                            onClick={() => DetailIdTransaksi(data.id_transaksi) /* DetailTipeTransaksi(data.tipe_transaksi)*/}
+                                        />
                                         <AiTwotoneDelete className="fs-4 text-danger ms-4 user-select-auto" />
                                     </td>
                                 </tr>
