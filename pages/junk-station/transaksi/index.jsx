@@ -97,7 +97,7 @@ const Index = () => {
                   <td className="text-end ">
                     <button
                       className="p-0 bg-tea border-0 text-decoration-underline text-alpukat"
-                      onClick={() => getDetailTransaksi(1)}
+                      onClick={() => getDetailTransaksi(item.id_transaksi)}
                     >
                       Detail
                     </button>
