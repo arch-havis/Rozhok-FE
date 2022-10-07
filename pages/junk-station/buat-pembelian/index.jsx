@@ -13,6 +13,7 @@ import { FiEdit } from "react-icons/fi";
 import { AiFillCheckCircle, AiTwotoneDelete } from "react-icons/ai";
 import Cookies from "js-cookie";
 import Footer from "../../../components/Footer";
+import Router, { useRouter } from "next/router";
 
 const Index = () => {
   const [pembelian, setPembelian] = useState([]);
@@ -98,7 +99,7 @@ const Index = () => {
   const tambahPembelian = () => {
     var axios = require("axios");
     var data = JSON.stringify({
-      kategori: parseInt(idKategori),
+      id_kategori: parseInt(idKategori),
       berat: parseInt(berat),
       harga: parseInt(harga),
     });
@@ -128,7 +129,7 @@ const Index = () => {
   const editPembelian = () => {
     var axios = require("axios");
     var data = JSON.stringify({
-      kategori: parseInt(idKategori),
+      id_kategori: parseInt(idKategori),
       berat: parseInt(berat),
       harga: parseInt(harga),
     });
@@ -170,6 +171,30 @@ const Index = () => {
       .then(function (response) {
         console.log(JSON.stringify(response.data));
         getPembelian();
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+  };
+
+  // post Transaksi
+  const postTransaksi = () => {
+    var axios = require("axios");
+
+    var config = {
+      method: "post",
+      url: "https://altagp3.online/transaksi/junk-station",
+      headers: {
+        Authorization: `Bearer ${Cookies.get("token")}`,
+      },
+    };
+
+    axios(config)
+      .then(function (response) {
+        console.log(JSON.stringify(response.data));
+        Router.push({
+          pathname: `/junk-station/transaksi`,
+        });
       })
       .catch(function (error) {
         console.log(error);
@@ -370,7 +395,7 @@ const Index = () => {
           <Button
             variant="alpukat"
             className="px-4"
-            onClick={() => setShowAlert(true)}
+            onClick={() => postTransaksi()}
           >
             Beli
           </Button>
