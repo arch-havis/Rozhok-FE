@@ -6,6 +6,7 @@ import AddModal from "../../../components/client-page/AddClientData";
 import EditAlamat from "../../../components/client-page/Alamat";
 import { getCookie } from "cookies-next";
 import axios from "axios";
+import Router from "next/router";
 
 export const getServerSideProps = async (context) => {
   const resProv = await axios.get(
@@ -109,6 +110,7 @@ const Index = (props) => {
       .then((response) => {
         console.log(response.data.message);
         alert(response.data.message);
+        Router.push("/client");
       })
       .catch((error) => {
         console.log(error.message);
