@@ -7,24 +7,27 @@ import axios from "axios";
 import Footer from "../../../components/Footer";
 
 const Index = () => {
-    // const router = useRouter();
-
     const [dataListPenjemputan, setDataListPenjemputan] = useState([]);
 
     const getDataPenjemputan = async () => {
-        try {
-            const response = await axios.get("https://altagp3.online/pengambilan/porter", {
-                headers: {
-                    Authorization: `Bearer ${Cookies.get("token")}`,
-                },
+        var axios = require("axios");
+
+        var config = {
+            method: "get",
+            url: "https://altagp3.online/pengambilan/porter",
+            headers: {
+                Authorization: `Bearer ${Cookies.get("token")}`,
+            },
+        };
+
+        axios(config)
+            .then(function (response) {
+                console.log(JSON.stringify(response.data));
+                setDataListPenjemputan(response.data.data);
+            })
+            .catch(function (error) {
+                console.log(error);
             });
-            setDataListPenjemputan(response.data.data);
-            console.log(response.data.data);
-        } catch (error) {
-            if (error === "400") {
-                alert("masih ada yang salah");
-            }
-        }
     };
 
     useEffect(() => {
