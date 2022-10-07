@@ -6,6 +6,7 @@ import AddModal from "../../../components/client-page/AddClientData";
 import EditAlamat from "../../../components/client-page/Alamat";
 import { getCookie } from "cookies-next";
 import axios from "axios";
+import Router from "next/router";
 
 export const getServerSideProps = async (context) => {
   const resProv = await axios.get(
@@ -109,6 +110,7 @@ const Index = (props) => {
       .then((response) => {
         console.log(response.data.message);
         alert(response.data.message);
+        Router.push("/client");
       })
       .catch((error) => {
         console.log(error.message);
@@ -266,6 +268,8 @@ const Index = (props) => {
     })
       .then((response) => {
         console.log(response.data.message);
+        alert(response.data.message);
+        window.location.reload();
       })
       .catch((error) => {
         console.log(error.message);
@@ -273,18 +277,21 @@ const Index = (props) => {
   };
 
   const handleDelAdd = async (e) => {
+    e.preventDefault();
+    console.log(e);
     await axios({
       method: "delete",
-      url: `https://altagp3.online/alamat/${id}`,
+      url: `https://altagp3.online/alamat/${e.target.id}`,
       headers: {
         Authorization: `Bearer ${token}`,
       },
     })
       .then((response) => {
         alert(response.data.message);
+        window.location.reload();
       })
       .catch((error) => {
-        console.log(error.data.message);
+        console.log(error.message);
       });
   };
 
@@ -327,7 +334,7 @@ const Index = (props) => {
             <Col>
               <h3 className="text-alpukat">
                 <p>
-                  <b>{props.listAlamat.data[0].user}</b>
+                  <b>{props.profile.data.username}</b>
                 </p>
               </h3>
             </Col>
@@ -367,35 +374,35 @@ const Index = (props) => {
                 </tr>
               </thead>
               <tbody>
-                {props.listAlamat.data.map((items, index) => {
-                  return (
-                    <tr className="text-alpukat" key={index}>
-                      <td>{index + 1}</td>
-                      <td>{items.provinsi}</td>
-                      <td>{items.kota}</td>
-                      <td>{items.kecamatan}</td>
-                      <td>{items.status}</td>
-                      <td>{items.jalan}</td>
-                      <td>
-                        <a
-                          onClick={() => {
-                            handleEditAdd(), setId(items.id);
-                          }}
-                        >
-                          Perbarui
-                        </a>{" "}
-                        |{" "}
-                        <a
-                          onClick={() => {
-                            handleDelAdd(), setId(items.id);
-                          }}
-                        >
-                          Hapus
-                        </a>
-                      </td>
-                    </tr>
-                  );
-                })}
+                {props.listAlamat.data === null ? (
+                  <></>
+                ) : (
+                  props.listAlamat.data.map((items, index) => {
+                    return (
+                      <tr className="text-alpukat" key={index}>
+                        <td>{index + 1}</td>
+                        <td>{items.provinsi}</td>
+                        <td>{items.kota}</td>
+                        <td>{items.kecamatan}</td>
+                        <td>{items.status}</td>
+                        <td>{items.jalan}</td>
+                        <td>
+                          <a
+                            onClick={() => {
+                              handleEditAdd(), setId(items.id);
+                            }}
+                          >
+                            Perbarui
+                          </a>{" "}
+                          |{" "}
+                          <a id={items.id} onClick={(e) => handleDelAdd(e)}>
+                            Hapus
+                          </a>
+                        </td>
+                      </tr>
+                    );
+                  })
+                )}
               </tbody>
             </Table>
           </Row>

@@ -1,17 +1,58 @@
 import Router from "next/router";
-import React from "react";
+import React, { useState } from "react";
 import { Row, Col, Button } from "react-bootstrap";
 import Footer from "../../../components/Footer";
 import HeaderClient from "../../../components/HeaderClient";
+import axios from "axios";
+import { getCookie } from "cookies-next";
 
-const Index = () => {
+export const getServerSideProps = async () => {
+  const getProduct = await axios.get("https://altagp3.online/products");
+  const product = await getProduct;
+
+  return {
+    props: {
+      produk: product.data,
+    },
+  };
+};
+
+const Index = (props) => {
   const harga = "Rp. 100.000";
   const product = "kerajinan-botol";
+
   const goProductName = () => {
     Router.push({
       pathname: `/client/toko/${product}`,
     });
   };
+
+  console.log(props.produk.data);
+
+  const token = getCookie("token");
+  const [id, setId] = useState();
+  console.log(id);
+  const handleAdd = async (e) => {
+    setId(e);
+    await axios({
+      method: "post",
+      url: "https://altagp3.online/cart",
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+      data: {
+        id_barang: parseInt(e.target.parentElement.value),
+      },
+    })
+      .then((response) => {
+        console.log(response.data.message);
+        alert(response.data.message);
+      })
+      .catch((error) => {
+        console.log(error.data);
+      });
+  };
+
   return (
     <div>
       <HeaderClient />
@@ -38,82 +79,61 @@ const Index = () => {
       </div>
       <div id="product" className="mb-5">
         <Row className="p-0 m-0">
-          <Col
-            md={3}
-            className="border border-2 border-lime rounded-2 bg-tea pt-2"
-          >
-            <img
-              src="https://cdn-brilio-net.akamaized.net/news/2017/11/02/134250/698323-lampu-hias-botol-bekas.jpg"
-              alt=""
-              style={{ maxWidth: "100%" }}
-              className="rounded-2"
-              onClick={goProductName}
-            />
-            <h6>
-              <b>{harga}</b>
-            </h6>
-            <Button variant="lime border border-alpukat border-2">
-              <b className="text-alpukat">Add To Cart</b>
-            </Button>
-            <p></p>
-          </Col>
-          <Col
-            md={3}
-            className="border border-2 border-lime rounded-2 bg-tea pt-2"
-          >
-            <img
-              src="https://cdn-brilio-net.akamaized.net/news/2017/11/02/134250/698323-lampu-hias-botol-bekas.jpg"
-              alt=""
-              style={{ maxWidth: "100%" }}
-              className="rounded-2"
-              onClick={goProductName}
-            />
-            <h6>
-              <b>{harga}</b>
-            </h6>
-            <Button variant="lime border border-alpukat border-2">
-              <b className="text-alpukat">Add To Cart</b>
-            </Button>
-            <p></p>
-          </Col>
-          <Col
-            md={3}
-            className="border border-2 border-lime rounded-2 bg-tea pt-2"
-          >
-            <img
-              src="https://cdn-brilio-net.akamaized.net/news/2017/11/02/134250/698323-lampu-hias-botol-bekas.jpg"
-              alt=""
-              style={{ maxWidth: "100%" }}
-              className="rounded-2"
-              onClick={goProductName}
-            />
-            <h6>
-              <b>{harga}</b>
-            </h6>
-            <Button variant="lime border border-alpukat border-2">
-              <b className="text-alpukat">Add To Cart</b>
-            </Button>
-            <p></p>
-          </Col>
-          <Col
-            md={3}
-            className="border border-2 border-lime rounded-2 bg-tea pt-2"
-          >
-            <img
-              src="https://cdn-brilio-net.akamaized.net/news/2017/11/02/134250/698323-lampu-hias-botol-bekas.jpg"
-              alt=""
-              style={{ maxWidth: "100%" }}
-              className="rounded-2"
-              onClick={goProductName}
-            />
-            <h6>
-              <b>{harga}</b>
-            </h6>
-            <Button variant="lime border border-alpukat border-2">
-              <b className="text-alpukat">Add To Cart</b>
-            </Button>
-            <p></p>
-          </Col>
+          {props.produk.data.map((items, index) => {
+            return (
+              <Col
+                md={3}
+                className="border border-2 border-lime rounded-2 bg-tea pt-2"
+                key={index}
+              >
+                <a
+                  onClick={() => {
+                    setCookie("idProduk", items.id),
+                      Router.push({
+                        pathname: `/client/toko/${items.nama_product}`,
+                        query: {
+                          id: items.id,
+                        },
+                      });
+                  }}
+                >
+                  <img
+                    src="https://cdn-brilio-net.akamaized.net/news/2017/11/02/134250/698323-lampu-hias-botol-bekas.jpg"
+                    alt=""
+                    style={{ maxWidth: "100%" }}
+                    className="rounded-2"
+                  />
+                </a>
+                <h4>
+                  <b>{items.nama_product}</b>
+                </h4>
+                <h5>
+                  <b>Stok : {items.stok}</b>
+                  <br></br>
+                  <b>
+                    {new Intl.NumberFormat("id-ID", {
+                      style: "currency",
+                      currency: "IDR",
+                      currencyDisplay: "symbol",
+                      minimumFractionDigits: 0,
+                    }).format(items.harga)}
+                  </b>
+                </h5>
+                <b>{items.desc}</b>
+                <br></br>
+                <Button
+                  variant="lime border border-alpukat border-2"
+                  value={items.id}
+                  onClick={(e) => {
+                    handleAdd(e);
+                  }}
+                >
+                  <b className="text-alpukat">Add Cart</b>
+                </Button>
+                <p></p>
+              </Col>
+            );
+          })}
         </Row>
       </div>
       <Footer />

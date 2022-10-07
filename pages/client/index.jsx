@@ -70,12 +70,12 @@ const Index = () => {
     e.preventDefault();
     // window.location.reload();
     // refreshData()
-    setRegister(!Register)
+    setRegister(!Register);
   };
 
   const handleRegistMitra = (e) => {
     e.preventDefault();
-    Router.push("/junk-station");
+    Router.push("/");
   };
 
   const handleCancel = async (e) => {
@@ -120,7 +120,7 @@ const Index = () => {
         console.log(response.data);
         alert(response.data.message);
         // setRegister(!Register);
-        window.location.reload()
+        window.location.reload();
       })
       .catch((error) => {
         console.log(error.data);

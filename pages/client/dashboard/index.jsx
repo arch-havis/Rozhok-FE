@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Row, Col, Carousel, Table, Button } from "react-bootstrap";
 import HeaderClient from "../../../components/HeaderClient";
 import Footer from "../../../components/Footer";
@@ -27,7 +27,32 @@ const Index = (props) => {
   console.log(props.kategori.data);
   console.log(props.produk.data);
 
+  const token = getCookie("token");
+
   console.log(getCookie("token"));
+
+  const [id, setId] = useState();
+  console.log(id);
+
+  const handleAdd = async () => {
+    await axios({
+      method: "post",
+      url: "https://altagp3.online/cart",
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+      data: {
+        id_barang: id,
+      },
+    })
+      .then((response) => {
+        console.log(response.data.message);
+        alert(response.data.message);
+      })
+      .catch((error) => {
+        console.log(error.data);
+      });
+  };
 
   return (
     <div>
@@ -175,7 +200,12 @@ const Index = (props) => {
                     </h5>
                     <b>{items.desc}</b>
                     <br></br>
-                    <Button variant="lime border border-alpukat border-2">
+                    <Button
+                      variant="lime border border-alpukat border-2"
+                      onClick={() => {
+                        setId(items.id), handleAdd();
+                      }}
+                    >
                       <b className="text-alpukat">Add Cart</b>
                     </Button>
                     <p></p>
