@@ -30,7 +30,7 @@ const Cart = (props) => {
   const [jumlah, setJumlah] = useState(1);
   let sub = harga * jumlah;
 
-  // console.log(props.cart.data);
+  console.log(props.cart.data.filter((items) => items.checklist === true));
   // const format = Intl.NumberFormat("id", {
   //     style: "currency",
   //     currency: "IDR"
@@ -53,11 +53,24 @@ const Cart = (props) => {
   //   setJumlah(jumlah + 1);
   // };
 
-  const handleBuy = (e) => {
+  const handleBuy = async (e) => {
+    // await axios({
+    //   method: "post",
+    //   url: "https://altagp3.online/transaksi/client",
+    //   headers: {
+    //     Authorization: `Bearer ${token}`,
+    //   },
+    // })
+    //   .then((respons) => {
+    //     alert(response.data.message);
+    //   })
+    //   .catch((error) => {
+    //     console.log(error.data.message);
+    //   });
     Router.push({
       pathname: "/client/toko/checkout",
       query: {
-        total: sub,
+        total: grand,
       },
     });
   };
@@ -117,21 +130,24 @@ const Cart = (props) => {
   const handleUpdate = async (e) => {
     // e.preventDefault();
     // data.preventDefault();
-    setData({
-      counter: counter,
-      checklist: !checklist,
-    });
-    console.log("data is " + data.checklist);
+    // setData({
+    //   counter: counter,
+    //   checklist: !checklist,
+    // });
+    // console.log("data is " + data.checklist);
     await axios({
       method: "put",
       url: `https://altagp3.online/cart/${parseInt(e.target.value)}`,
       headers: {
         Authorization: `Bearer ${token}`,
       },
-      data: data,
+      params: {
+        checklist: e.target.checked,
+      },
     })
       .then((response) => {
         alert(response.data.message);
+        window.location.reload();
       })
       .catch((error) => {
         console.log(error.data.message);
@@ -139,33 +155,58 @@ const Cart = (props) => {
   };
 
   const handleDecrease = async (e) => {
-    console.log(e.target.id);
-    setCounter(parseInt(e.target.id) + 1);
-    setData({
-      counter: parseInt(e.target.id) + 1,
-      checklist: checklist,
-    });
-    await updateDecrease(e);
-  };
-
-  const updateDecrease = async (e) => {
-    e.preventDefault();
+    console.log(e.target);
     await axios({
       method: "put",
       url: `https://altagp3.online/cart/${parseInt(e.target.value)}`,
       headers: {
         Authorization: `Bearer ${token}`,
       },
-      data: data,
+      params: {
+        // checklist:
+        //   e.target.parentElement.parentElement.parentElement.parentElement
+        //     .parentElement.parentElement.previousElementSibling.checked,
+        counter: e.target.id,
+      },
     })
       .then((response) => {
         alert(response.data.message);
+        window.location.reload();
       })
       .catch((error) => {
         console.log(error.data.message);
       });
   };
 
+  const handleIncrease = async (e) => {
+    console.log(e.target);
+    await axios({
+      method: "put",
+      url: `https://altagp3.online/cart/${parseInt(e.target.value)}`,
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+      params: {
+        // checklist:
+        //   e.target.parentElement.parentElement.parentElement.parentElement
+        //     .parentElement.parentElement.previousElementSibling.checked,
+        counter: e.target.id,
+      },
+    })
+      .then((response) => {
+        alert(response.data.message);
+        window.location.reload();
+      })
+      .catch((error) => {
+        console.log(error.data.message);
+      });
+  };
+  let grand = 0;
+  let grandData = props.cart.data.filter((items) => items.checklist === true);
+  grandData.map((items) => {
+    grand += items.price * items.qty;
+  });
+  console.log(grandData);
   return (
     <div>
       <HeaderClient />
@@ -186,86 +227,176 @@ const Cart = (props) => {
               <Row className="p-0 m-0" key={index}>
                 <Col md={3} />
                 <div key={`default-checkbox`} className="col-md-6 mb-3">
-                  <Form.Check
-                    type="checkbox"
-                    onChange={(e) => handleUpdate(e)}
-                    id={`default-checkbox`}
-                    value={items.id_cart}
-                    label={
-                      <>
-                        <Row className="border border-2 border-lime rounded-2 bg-tea pt-2 ms-2">
-                          <Col md={3}>
-                            <img
-                              src="https://cdn-brilio-net.akamaized.net/news/2017/11/02/134250/698323-lampu-hias-botol-bekas.jpg"
-                              alt=""
-                              style={{ maxWidth: "100%", minHeight: "100%" }}
-                              className="rounded-2"
-                            />
-                          </Col>
-                          <Col md={9}>
-                            <Row className="p-0 m-0">
-                              <Col>
-                                <h5>{items.product_name}</h5>
-                                <h6>
-                                  <b>
+                  {items.checklist === false ? (
+                    <Form.Check
+                      type="checkbox"
+                      onChange={(e) => handleUpdate(e)}
+                      id={items.qty}
+                      value={items.id_cart}
+                      label={
+                        <>
+                          <Row className="border border-2 border-lime rounded-2 bg-tea pt-2 ms-2">
+                            <Col md={3}>
+                              <img
+                                src="https://cdn-brilio-net.akamaized.net/news/2017/11/02/134250/698323-lampu-hias-botol-bekas.jpg"
+                                alt=""
+                                style={{ maxWidth: "100%", minHeight: "100%" }}
+                                className="rounded-2"
+                              />
+                            </Col>
+                            <Col md={9}>
+                              <Row className="p-0 m-0">
+                                <Col>
+                                  <h5>{items.product_name}</h5>
+                                  <h6>
+                                    <b>
+                                      {new Intl.NumberFormat("id-ID", {
+                                        style: "currency",
+                                        currency: "IDR",
+                                        currencyDisplay: "symbol",
+                                        minimumFractionDigits: 0,
+                                      }).format(items.price)}
+                                    </b>
+                                  </h6>
+                                  <h6>
+                                    Sub-Total{" "}
                                     {new Intl.NumberFormat("id-ID", {
                                       style: "currency",
                                       currency: "IDR",
                                       currencyDisplay: "symbol",
                                       minimumFractionDigits: 0,
-                                    }).format(items.price)}
-                                  </b>
-                                </h6>
-                                <h6>
-                                  Sub-Total{" "}
-                                  {new Intl.NumberFormat("id-ID", {
-                                    style: "currency",
-                                    currency: "IDR",
-                                    currencyDisplay: "symbol",
-                                    minimumFractionDigits: 0,
-                                  }).format(sub)}
-                                </h6>
-                              </Col>
-                              <Col className="text-center">
-                                <p>Jumlah : {jumlah}</p>
-                                <div className="mb-2">
-                                  <Button
-                                    variant="lime"
-                                    className="text-putihan me-1"
-                                    value={items.id_cart}
-                                    id={items.qty}
-                                    onClick={(e) => handleDecrease(e)}
-                                  >
-                                    -
-                                  </Button>
-                                  <Button
-                                    variant="lime"
-                                    className="text-putihan"
-                                    onClick={(e) => handleIncrease(e)}
-                                  >
-                                    +
-                                  </Button>
-                                </div>
-                                <div>
-                                  <Button
-                                    variant="danger"
-                                    value={items.id_cart}
-                                    onClick={(e) => {
-                                      handleDelete(e);
-                                    }}
-                                  >
-                                    <b className="text-putihan">Remove</b>
-                                  </Button>
-                                </div>
-                              </Col>
-                            </Row>
-                          </Col>
+                                    }).format(items.qty * items.price)}
+                                  </h6>
+                                </Col>
+                                <Col className="text-center">
+                                  <p id="2">Jumlah : {items.qty}</p>
+                                  <div className="mb-2">
+                                    <Button
+                                      variant="lime"
+                                      className="text-putihan me-1"
+                                      value={items.id_cart}
+                                      id="decrement"
+                                      onClick={(e) => handleDecrease(e)}
+                                    >
+                                      -
+                                    </Button>
+                                    <Button
+                                      variant="lime"
+                                      className="text-putihan"
+                                      id="increment"
+                                      value={items.id_cart}
+                                      onClick={(e) => handleIncrease(e)}
+                                    >
+                                      +
+                                    </Button>
+                                  </div>
+                                  <div>
+                                    <Button
+                                      variant="danger"
+                                      value={items.id_cart}
+                                      onClick={(e) => {
+                                        handleDelete(e);
+                                      }}
+                                    >
+                                      <b className="text-putihan">Remove</b>
+                                    </Button>
+                                  </div>
+                                </Col>
+                              </Row>
+                            </Col>
+                            <p></p>
+                          </Row>
                           <p></p>
-                        </Row>
-                        <p></p>
-                      </>
-                    }
-                  />
+                        </>
+                      }
+                    />
+                  ) : (
+                    // {total =+ (items.price*items.qty)}
+                    <Form.Check
+                      type="checkbox"
+                      // onChange={(e) => handleUpdate(e)}
+                      id={items.qty * items.price}
+                      value={items.id_cart}
+                      onChange={(e) => handleUpdate(e)}
+                      defaultChecked
+                      label={
+                        <>
+                          <Row className="border border-2 border-lime rounded-2 bg-tea pt-2 ms-2">
+                            <Col md={3}>
+                              <img
+                                src="https://cdn-brilio-net.akamaized.net/news/2017/11/02/134250/698323-lampu-hias-botol-bekas.jpg"
+                                alt=""
+                                style={{ maxWidth: "100%", minHeight: "100%" }}
+                                className="rounded-2"
+                              />
+                            </Col>
+                            <Col md={9}>
+                              <Row className="p-0 m-0">
+                                <Col>
+                                  <h5>{items.product_name}</h5>
+                                  <h6>
+                                    <b>
+                                      {new Intl.NumberFormat("id-ID", {
+                                        style: "currency",
+                                        currency: "IDR",
+                                        currencyDisplay: "symbol",
+                                        minimumFractionDigits: 0,
+                                      }).format(items.price)}
+                                    </b>
+                                  </h6>
+                                  <h6>
+                                    Sub-Total{" "}
+                                    {new Intl.NumberFormat("id-ID", {
+                                      style: "currency",
+                                      currency: "IDR",
+                                      currencyDisplay: "symbol",
+                                      minimumFractionDigits: 0,
+                                    }).format(items.qty * items.price)}
+                                  </h6>
+                                </Col>
+                                <Col className="text-center">
+                                  <p id="2">Jumlah : {items.qty}</p>
+                                  <div className="mb-2">
+                                    <Button
+                                      variant="lime"
+                                      className="text-putihan me-1"
+                                      value={items.id_cart}
+                                      id={items.qty}
+                                      onClick={(e) => handleDecrease(e)}
+                                    >
+                                      -
+                                    </Button>
+                                    <Button
+                                      variant="lime"
+                                      className="text-putihan"
+                                      id="increment"
+                                      value={items.id_cart}
+                                      onClick={(e) => handleIncrease(e)}
+                                    >
+                                      +
+                                    </Button>
+                                  </div>
+                                  <div>
+                                    <Button
+                                      variant="danger"
+                                      value={items.id_cart}
+                                      onClick={(e) => {
+                                        handleDelete(e);
+                                      }}
+                                    >
+                                      <b className="text-putihan">Remove</b>
+                                    </Button>
+                                  </div>
+                                </Col>
+                              </Row>
+                            </Col>
+                            <p></p>
+                          </Row>
+                          <p></p>
+                        </>
+                      }
+                    />
+                  )}
                 </div>
               </Row>
             );
@@ -273,7 +404,15 @@ const Cart = (props) => {
         )}
         <Row className="p-0 m-0">
           <Col md={3} className="text-end">
-            <b>Grand Total</b>
+            <b>
+              Grand Total{" "}
+              {Intl.NumberFormat("id-ID", {
+                style: "currency",
+                currency: "IDR",
+                currencyDisplay: "symbol",
+                minimumFractionDigits: 0,
+              }).format(grand)}
+            </b>
           </Col>
           <Col md={6} className="text-end p-0 m-0">
             <Button variant="lime text-putihan" onClick={(e) => handleBuy(e)}>
