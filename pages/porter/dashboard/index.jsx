@@ -55,7 +55,7 @@ const Index = () => {
     return (
         <div>
             <HeaderPorter />
-            <div className="container">
+            <div className="container " style={{ marginBottom: "100px" }}>
                 <div className="d-flex float-end mt-3 h-5">
                     <Form.Select aria-label="Default select example" className="w-75 flex me-3">
                         <option value="harian">Harian</option>
