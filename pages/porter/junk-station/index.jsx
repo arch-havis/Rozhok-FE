@@ -25,7 +25,7 @@ const Index = () => {
                     Authentication: `Bearer ${Cookies.get("token")}`,
                 },
             });
-            setDataJunkStation(response.data);
+            setDataJunkStation(response.data.data);
             console.log("ini response.data.data", JSON.stringify(response.data.data));
         } catch (error) {
             console.log(error);
