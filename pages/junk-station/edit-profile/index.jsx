@@ -5,6 +5,7 @@ import React, { useEffect, useState } from "react";
 import { Col, Row, Form, Button, Container } from "react-bootstrap";
 
 const Index = () => {
+  const [JS, setJS] = useState([]);
   const [namaJs, setNamaJS] = useState("");
   const [namaPemilikJS, setNamaPemilikJS] = useState("");
   const [noTelp, setNoTelp] = useState("");
@@ -90,6 +91,36 @@ const Index = () => {
     getKec();
   }, [kabId]);
 
+  // get Profile
+  useEffect(() => {
+    getProfile();
+  }, []);
+
+  const getProfile = () => {
+    var axios = require("axios");
+    var FormData = require("form-data");
+    var data = new FormData();
+
+    var config = {
+      method: "get",
+      url: "https://altagp3.online/junk-station/profile",
+      headers: {
+        Authorization: `Bearer ${Cookies.get("token")}`,
+      },
+      data: data,
+    };
+
+    axios(config)
+      .then(function (response) {
+        // console.log(JSON.stringify(response.data.data));
+        setJS(response.data.data);
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+  };
+
+  // putProfile
   const handleEditProfile = (e) => {
     e.preventDefault();
     var axios = require("axios");
@@ -105,7 +136,7 @@ const Index = () => {
 
     var config = {
       method: "put",
-      url: "https://altagp3.online/junk-station/6",
+      url: `https://altagp3.online/junk-station/${JS.id_junk_station}`,
       headers: {
         Authorization: `Bearer ${Cookies.get("token")}`,
         "Content-Type": "application/json",
@@ -140,9 +171,6 @@ const Index = () => {
             //   onSubmit={(e) => handleSubmit(e)}
             className="border border-lime p-5 bg-putihan text-alpukat rounded-3 border-2"
           >
-            {/* <p>
-              {provinsi} {kec} {kab}
-            </p> */}
             <h2 className="text-center">Edit Profile</h2>
             <Form.Group className="mb-3" controlId="formBasicEmail">
               <Form.Label>Nama Junk Station</Form.Label>
