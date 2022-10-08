@@ -27,7 +27,8 @@ const Index = () => {
             setBarangRosokId(response.data.data.barang_rosok[0].id);
             setBarangRosokKategori(response.data.data.barang_rosok[0].kategori);
             setHarga(response.data.data.barang_rosok[0].harga_kategori);
-            setSubTotal(response.data.data.barang_rosok[0].sub_total);
+            setSubTotal(response.data.data.barang_rosok[0].subtotal);
+            setBerat(response.data.data.barang_rosok[0].berat);
         } catch (error) {
             console.log("hayo kenapa", error);
         }
@@ -35,9 +36,8 @@ const Index = () => {
 
     // put data details
     const putDataDetails = async () => {
-        Router.push({ pathname: "/porter/transaksi" });
         var axios = require("axios");
-        var data = JSON.stringify({
+        var data = {
             barang_rosok: [
                 {
                     id_barang_rosok: barangRosokId,
@@ -45,8 +45,8 @@ const Index = () => {
                     subtotal: subTotal,
                 },
             ],
-        });
-
+        };
+        console.log("ini data", data);
         var config = {
             method: "put",
             url: `https://altagp3.online/transaksi/${router.query.idTransaksi}/porter`,
@@ -55,10 +55,10 @@ const Index = () => {
             },
             data: data,
         };
-
         axios(config)
             .then(function (response) {
                 console.log(JSON.stringify(response.data));
+                Router.push({ pathname: "/porter/transaksi" });
             })
             .catch(function (error) {
                 console.log(error);
@@ -67,12 +67,11 @@ const Index = () => {
 
     // post data penjemputan rosok
     const postDataTransaksi = async () => {
-        Router.push({ pathname: "/porter/transaksi" });
         var axios = require("axios");
 
         var config = {
             method: "post",
-            url: `https://altagp3.online/transaksi/${router.query.item}/porter`,
+            url: `https://altagp3.online/transaksi/${router.query.idTransaksi}/porter`,
             headers: {
                 Authorization: `Bearer ${Cookies.get("token")}`,
             },
@@ -81,7 +80,8 @@ const Index = () => {
         axios(config)
             .then(function (response) {
                 console.log(JSON.stringify(response.data.data));
-                setDataDetailPenjemputan(response.data.data);
+                setDetailList(response.data.data);
+                Router.push({ pathname: "/porter/transaksi" });
             })
             .catch(function (error) {
                 console.log(error);
@@ -108,7 +108,6 @@ const Index = () => {
                         <h4 className="text-alpukat">Provinsi: {detailList?.client?.provinsi}</h4>
                         <h4 className="text-alpukat">Kota/Kab: {detailList?.client?.kota}</h4>
                         <h4 className="text-alpukat">Kecamatan: {detailList?.client?.kecamatan}</h4>
-                        {/* <h4 className="text-alpukat">Jalan: {router.query.jalan}</h4> */}
                     </div>
                 </Row>
                 <Card className="w-100 mb-5 shadow-sm mt-5 border border-lime" key={barangRosokId}>
@@ -118,23 +117,23 @@ const Index = () => {
                                 <Card.Title className="text-alpukat fs-3">Kategori: {barangRosokKategori} </Card.Title>
                             </div>
                             <div className="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12 d-flex justify-content-end">
-                                {detailList?.status === "sudah_bayar" || detailList?.status === "terjual" ? (
+                                {detailList?.status === "dibayar" || detailList?.status === "terjual" ? (
                                     <Card.Title className="text-alpukat fs-5 pt-1 text-center text-white bg-lime rounded-3 w-25">{detailList?.status}</Card.Title>
                                 ) : (
                                     <Card.Title className="text-alpukat fs-5 pt-1 text-center text-white bg-danger rounded-3 w-25">{detailList?.status}</Card.Title>
                                 )}
                             </div>
                             <div className="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12 mt-5">
-                                {detailList?.status === "sudah_bayar" || detailList?.status === "terjual" ? (
+                                {detailList?.status === "dibayar" || detailList?.status === "terjual" ? (
                                     <Card.Title className="text-alpukat fs-3">{berat}</Card.Title>
                                 ) : (
                                     <Card.Title className="text-alpukat fs-3">
-                                        Berat <input className="w-25" type="number" onChange={(e) => setBerat(e.target.value)}></input> (Kg)
+                                        Berat <input className="w-25" type="number" onChange={(e) => setBerat(parseInt(e.target.value))}></input> (Kg)
                                     </Card.Title>
                                 )}
                             </div>
                             <div className="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12 d-flex justify-content-end mt-5">
-                                {detailList?.status === "sudah_bayar" || detailList?.status === "terjual" ? (
+                                {detailList?.status === "dibayar" || detailList?.status === "terjual" ? (
                                     <Card.Title
                                         className="text-alpukat fs-3 text-center text-alpukat rounded-3 w-50"
                                         value={new Intl.NumberFormat("id-ID", {
@@ -147,7 +146,7 @@ const Index = () => {
                                     </Card.Title>
                                 ) : (
                                     <Card.Title className="text-alpukat fs-3 text-center text-alpukat rounded-3 w-50">
-                                        Rp <input className="w-25" type="number"></input>
+                                        Rp <input className="w-25" type="number" onChange={(e) => setSubTotal(parseInt(e.target.value))}></input>
                                     </Card.Title>
                                 )}
                             </div>
@@ -161,7 +160,7 @@ const Index = () => {
                 ) : (
                     <>
                         {" "}
-                        {detailList?.status === "sudah_bayar" ? (
+                        {detailList?.status === "dibayar" ? (
                             <Button variant="danger" className="hover-overlay hover-zoom text-white fs-5 float-end" onClick={() => postDataTransaksi()}>
                                 Jual
                             </Button>
