@@ -22,7 +22,7 @@ const Index = () => {
         try {
             const response = await axios.get("https://altagp3.online/junk-station", {
                 headers: {
-                    Authentication: `Bearer ${Cookies.get("token")}`,
+                    Authorization: `Bearer ${Cookies.get("token")}`,
                 },
             });
             setDataJunkStation(response.data.data);
@@ -150,9 +150,9 @@ const Index = () => {
                             <Card className="w-100 mb-5 border border-lime" key={client?.id_junk_station}>
                                 <Card.Body className="bg-tea shadow-md">
                                     <Card.Title className="mb-4 text-alpukat">Nama: {client?.junk_station_name}</Card.Title>
-                                    <Card.Title className="mb-4 text-alpukat">Provinsi: {client.provinsi}</Card.Title>
-                                    <Card.Title className="mb-4 text-alpukat">Kota: {client.kota}</Card.Title>
-                                    <Card.Title className="mb-4 text-alpukat">Kecamatan: {client.kecamatan}</Card.Title>
+                                    <Card.Title className="mb-4 text-alpukat">Provinsi: {client?.provinsi}</Card.Title>
+                                    <Card.Title className="mb-4 text-alpukat">Kota: {client?.kota}</Card.Title>
+                                    <Card.Title className="mb-4 text-alpukat">Kecamatan: {client?.kecamatan}</Card.Title>
                                     <Row>
                                         <div className="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-6">
                                             {/* <Card.Title className="text-alpukat">Jalan: {client.jalan}</Card.Title> */}
@@ -162,7 +162,7 @@ const Index = () => {
                                                 variant="alpukat"
                                                 className="hover-overlay hover-zoom text-white fs-5"
                                                 onChange={(e) => e.target.value(e)}
-                                                onClick={() => DetailJunkStation(client)}
+                                                onClick={() => DetailJunkStation(client.id_junk_station)}
                                             >
                                                 lihat
                                             </Button>
