@@ -6,138 +6,142 @@ import cookie from "js-cookie";
 
 import { Col, Row, Form, Button, Container } from "react-bootstrap";
 import axios from "axios";
+import Cookies from "js-cookie";
 
 const Index = () => {
-  const [dataProvinsi, setDataProvinsi] = useState([]);
-  const [provinsiId, setProvinsiId] = useState("");
-  const [dataKotaKab, setDataKotaKab] = useState([]);
-  const [dataKecamatan, setDataKecamatan] = useState([]);
-  const [kotaId, setKotaId] = useState("");
-
-  const [register, setRegister] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [foto, setFoto] = useState("");
+
+  const [image, setImage] = useState(null);
+  const [createObjectURL, setCreateObjectURL] = useState(null);
+
   const [namaJs, setNamaJS] = useState("");
   const [namaPemilikJS, setNamaPemilikJS] = useState("");
-  const [prov, setProv] = useState("");
-  const [kec, setKec] = useState("");
-  const [kab, setKab] = useState("");
   const [noTelp, setNoTelp] = useState("");
   const [jalan, setJalan] = useState("");
 
+  const [kec, setKec] = useState("");
+  const [kab, setKab] = useState("");
+  const [provinces, setProvinces] = useState([]);
+  const [provinsi, setProvinsi] = useState();
+  const [provId, setProvId] = useState();
+  const [kabs, setKabs] = useState([]);
+  const [kabId, setKabId] = useState();
+  const [kecs, setKecs] = useState([]);
+  const [kecId, setKecId] = useState();
+
   const handleCancel = (e) => {
     e.preventDefault();
-    Router.push({ pathname: "/junk-station/" });
+    Router.push({ pathname: "/junk-station" });
   };
 
-  // get list provinsi
-  const getDataProvinsi = async () => {
+  // Provinsi
+  const handleProvinces = (item) => {
+    // e.preventDefault();
+    // console.log("ini item dot id", item.id);
+    setProvinsi(item.nama);
+    setProvId(item.id);
+  };
+
+  const handleKab = (item) => {
+    setKabId(item.id);
+    setKab(item.nama);
+  };
+
+  // console.log("ini ID Provinsi", provId);
+  const getProv = async () => {
     try {
-      const res1 = await axios.get(
+      const response = await axios.get(
         "https://dev.farizdotid.com/api/daerahindonesia/provinsi"
       );
-      setDataProvinsi(res1.data.provinsi);
+      setProvinces(response.data.provinsi);
     } catch (error) {
       alert(error);
     }
   };
 
-  // render data API provinsi
   useEffect(() => {
-    getDataProvinsi();
+    getProv();
   }, []);
 
-  // get ID Provinsi
-  const handleKotaKab = (event) => {
-    const getprovinsiid = event.target.value;
-    setProvinsiId(getprovinsiid);
+  // kabupaten
+  const getKab = async () => {
+    axios
+      .get(
+        `https://dev.farizdotid.com/api/daerahindonesia/kota?id_provinsi=${provId}`
+      )
+      .then((response) => {
+        setKabs(response.data.kota_kabupaten);
+        // console.log(kabs);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   };
+  useEffect(() => {
+    getKab();
+  }, [provId]);
 
-  // get list kota/kabupaten
-  const getDataKotaKab = async () => {
-    try {
-      const res2 = await axios.get(
-        `https://dev.farizdotid.com/api/daerahindonesia/kota?id_provinsi=${provinsiId}`
-      );
-      setDataKotaKab(res2.data.kota_kabupaten);
-    } catch (error) {
-      console.log(error);
+  // kecamatan
+  const handleKec = (item) => {
+    setKecId(item.id);
+    setKec(item.nama);
+  };
+  const getKec = async () => {
+    axios
+      .get(
+        `https://dev.farizdotid.com/api/daerahindonesia/kecamatan?id_kota=${kabId}`
+      )
+      .then((response) => {
+        setKecs(response.data.kecamatan);
+      });
+  };
+  useEffect(() => {
+    getKec();
+  }, [kabId]);
+
+  // upload file
+  const uploadToClient = (event) => {
+    if (event.target.files && event.target.files[0]) {
+      const i = event.target.files[0];
+
+      setImage(i);
+      setCreateObjectURL(URL.createObjectURL(i));
     }
   };
-
-  // render data API Kota Kabupaten
-  useEffect(() => {
-    getDataKotaKab();
-  }, [provinsiId]);
-
-  // get ID Kota Kabupaten
-  const handleKecamatan = (event) => {
-    const getkecamatanid = event.target.value;
-    setKotaId(getkecamatanid);
-  };
-
-  // get list kota/kabupaten
-  const getDataKecamatan = async () => {
-    try {
-      const res2 = await axios.get(
-        `https://dev.farizdotid.com/api/daerahindonesia/kecamatan?id_kota=${kotaId}`
-      );
-      setDataKecamatan(res2.data.kecamatan);
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-  // ini untuk render data API Kota Kabupaten
-  useEffect(() => {
-    getDataKecamatan();
-  }, [kotaId]);
 
   const handlePostRegister = (e) => {
     e.preventDefault();
-    var axios = require("axios");
-    var data = JSON.stringify({
-      // foto: foto,
-      // email: "usop@gmail.com",
-      // password: "usop123",
-      // junk_station_name: "TPA BENOWO",
-      // junk_station_owner: "usopp",
-      // provinsi: "Jawa Timur",
-      // kota: "Surabaya",
-      // kecamatan: "Benowo",
-      // no_telp: "09971250057",
-      // jalan: "jl.Doremi",
+    var myHeaders = new Headers();
+    myHeaders.append("Authorization", `Bearer ${Cookies.get("token")}`);
 
-      foto: foto,
-      email: email,
-      password: password,
-      junk_station_name: namaJs,
-      junk_station_owner: namaPemilikJS,
-      provinsi: "Jawa Timur",
-      kota: "Surabaya",
-      kecamatan: "Benowo",
-      no_telp: noTelp,
-      jalan: jalan,
-    });
+    var formdata = new FormData();
+    formdata.append("email", email);
+    formdata.append("password", password);
+    formdata.append("junk_station_name", namaJs);
+    formdata.append("junk_station_owner", namaPemilikJS);
+    formdata.append("provinsi", provinsi);
+    formdata.append("kota", kab);
+    formdata.append("kecamatan", kec);
+    formdata.append("no_telp", noTelp);
+    formdata.append("jalan", jalan);
+    formdata.append("foto", image);
 
-    var config = {
-      method: "post",
-      url: "https://altagp3.online/junk-station",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      data: data,
+    var requestOptions = {
+      method: "POST",
+      headers: myHeaders,
+      body: formdata,
+      redirect: "follow",
     };
 
-    axios(config)
-      .then(function (response) {
-        console.log(JSON.stringify(response.data));
-        Router.push({ pathname: "/junk-station/" });
+    fetch("https://altagp3.online/junk-station", requestOptions)
+      .then((response) => response.text())
+      .then((result) => {
+        // console.log(result);
+        Router.push({ pathname: "/junk-station" });
       })
-      .catch(function (error) {
-        console.log(error);
-      });
+      .catch((error) => console.log("error", error));
   };
   return (
     <Row
@@ -155,10 +159,11 @@ const Index = () => {
           //   onSubmit={(e) => handleSubmit(e)}
           className="border border-lime p-5 bg-putihan text-alpukat rounded-3 border-2"
         >
-          {/* <p>{dataProvinsi}</p> */}
-          {/* <p>{dataKotaKab}</p> */}
-          {/* <p>{dataKecamatan}</p> */}
-          {/* {foto} */}
+          {" "}
+          <p>
+            {provinsi} {kab} {kec}
+          </p>
+          {foto}
           <Form.Group className="mb-3" controlId="formBasicEmail">
             <Form.Label>Nama Junk Station</Form.Label>
             <Form.Control
@@ -202,43 +207,54 @@ const Index = () => {
           <div className="mb-3">
             <Form.Label>Alamat</Form.Label>
             <div className="d-flex flex-sm-row flex-column">
-              <Form.Select
-                aria-label="Default select example"
-                onChange={(e) => handleKotaKab(e)}
-              >
-                <option>Provinsi</option>
-                {dataProvinsi.map((daerah) => {
+              <Form.Select classname="text-alpukat">
+                <option selected disabled>
+                  Pilih Provinsi
+                </option>
+                {provinces.map((item, index) => {
                   return (
-                    <option value={daerah.id} key={daerah.id}>
-                      {daerah.nama}
+                    <option
+                      value={item}
+                      key={index}
+                      onClick={() => handleProvinces(item)}
+                    >
+                      {item.nama}
                     </option>
                   );
                 })}
               </Form.Select>
-              <Form.Select
-                aria-label="Default select example"
-                className="mx-0 mx-sm-2 my-2 my-sm-0"
-                onChange={(e) => handleKecamatan(e)}
-              >
-                <option>Kab/Kota</option>
-                {dataKotaKab.map((daerah) => {
+              <Form.Select className="text-alpukat">
+                <option selected disabled>
+                  Pilih Kab./Kota
+                </option>
+                {kabs.map((item, index) => {
                   return (
-                    <option value={daerah.id} key={daerah.id_provinsi}>
-                      {daerah.nama}
+                    <option
+                      value={item}
+                      key={index}
+                      onClick={() => handleKab(item)}
+                    >
+                      {item.nama}
                     </option>
                   );
                 })}
               </Form.Select>
 
               <Form.Select
-                aria-label="Default select example"
-                onChange={(e) => handleKecamatan(e)}
+                className="text-alpukat"
+                onChange={(e) => handleKec(e)}
               >
-                <option>Kecamatan</option>
-                {dataKecamatan.map((daerah) => {
+                <option selected disabled>
+                  Pilih Kec.
+                </option>
+                {kecs.map((item, index) => {
                   return (
-                    <option value={daerah.id_kota} key={daerah.id_kota}>
-                      {daerah.nama}
+                    <option
+                      value={item.id}
+                      key={index}
+                      onClick={() => handleKec(item)}
+                    >
+                      {item.nama}
                     </option>
                   );
                 })}
@@ -259,12 +275,14 @@ const Index = () => {
             <Form.Control
               type="file"
               size="md"
-              onChange={(e) => {
-                setFoto(URL.createObjectURL(e.target.files[0]));
-              }}
+              // onChange={uploadFile}
+              onChange={uploadToClient}
+              // onChange={(e) => {
+              //   setFoto(URL.createObjectURL(e.target.files[0]));
+              //   setFoto(e.target.value);
+              // }}
             />
           </Form.Group>
-
           <div className="d-flex justify-content-end">
             <Button
               type="submit"
@@ -281,7 +299,7 @@ const Index = () => {
               style={{ color: "white" }}
               onClick={(e) => handlePostRegister(e)}
             >
-              Register
+              Daftar
             </Button>
           </div>
         </Form>
