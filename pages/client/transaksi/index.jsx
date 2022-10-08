@@ -4,6 +4,7 @@ import Footer from "../../../components/Footer";
 import { Row, Col, Form, Button, Table } from "react-bootstrap";
 import axios from "axios";
 import { getCookie } from "cookies-next";
+import Router from "next/router";
 
 export const getServerSideProps = async (context) => {
   const token = getCookie("token", context);
@@ -94,7 +95,7 @@ const Index = (props) => {
         {data === undefined ? <>Kosong</> : <>Ada</>}
       </Button> */}
 
-      <Row>
+      <Row className="p-0 m-0">
         <Col md={2}></Col>
         <Col md={8}>
           {" "}
@@ -158,7 +159,7 @@ const Index = (props) => {
         <Col></Col>
       </Row>
 
-      <Row className="mt-5 text-alpukat text-center">
+      <Row className="mt-5 text-alpukat text-center p-0 m-0">
         <Col md={1}></Col>
         <Col md={10}>
           <Table>
@@ -193,8 +194,17 @@ const Index = (props) => {
                       </td>
                       <td>
                         <a
-                          href="/client/transaksi/penjualan"
+                          // href="/client/transaksi/penjualan"
                           className="text-alpukat text-decoration-none"
+                          onClick={() =>
+                            Router.push({
+                              pathname: `/client/transaksi/${items.tipe_transaksi}`,
+                              query: {
+                                id: items.id_transaksi,
+                                tipe: items.tipe_transaksi,
+                              },
+                            })
+                          }
                         >
                           Detail
                         </a>
