@@ -89,7 +89,8 @@ const Index = () => {
             <div className="d-flex ">
               <BiMap size={30} className="text-alpukat " />
               <p className=" mt-1 fs-6 ms-1 text-capitalize ">
-                {JS.jalan} {JS.kecamatan} {JS.kabutapen} {JS.provinsi}
+                {JS.jalan} Kecamatan {JS.kecamatan} Kabupaten {JS.kabutapen}{" "}
+                Provinsi {JS.provinsi}
               </p>
             </div>
           </Col>
