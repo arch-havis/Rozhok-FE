@@ -1,6 +1,6 @@
 import Link from "next/link";
 import Router from "next/router";
-import React from "react";
+import React, { useEffect } from "react";
 import { useState } from "react";
 import cookie from "js-cookie";
 
@@ -8,70 +8,19 @@ import { Col, Row, Form, Button, Container } from "react-bootstrap";
 import axios from "axios";
 
 const Index = () => {
-  const [Register, setRegister] = useState(false);
+  const [dataProvinsi, setDataProvinsi] = useState([]);
+  const [provinsiId, setProvinsiId] = useState("");
+  const [dataKotaKab, setDataKotaKab] = useState([]);
+  const [dataKecamatan, setDataKecamatan] = useState([]);
+  const [kotaId, setKotaId] = useState("");
+
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [foto, setFoto] = useState("");
-  const [namaJs, setNamaJS] = useState("");
-  const [namaPemilikJS, setNamaPemilikJS] = useState("");
-  const [prov, setProv] = useState("");
-  const [kec, setKec] = useState("");
-  const [kab, setKab] = useState("");
-  const [noTelp, setNoTelp] = useState("");
-  const [jalan, setJalan] = useState("");
 
   const handleToRegister = () => {
-    setRegister(!Register);
-  };
-
-  const handleCancel = (e) => {
-    e.preventDefault();
-    setRegister(!Register);
-  };
-
-  const handlePostRegister = (e) => {
-    e.preventDefault();
-    var axios = require("axios");
-    var data = JSON.stringify({
-      // foto: foto,
-      // email: "usop@gmail.com",
-      // password: "usop123",
-      // junk_station_name: "TPA BENOWO",
-      // junk_station_owner: "usopp",
-      // provinsi: "Jawa Timur",
-      // kota: "Surabaya",
-      // kecamatan: "Benowo",
-      // no_telp: "09971250057",
-      // jalan: "jl.Doremi",
-
-      foto: foto,
-      email: email,
-      password: password,
-      junk_station_name: namaJs,
-      junk_station_owner: namaPemilikJS,
-      provinsi: "Jawa Timur",
-      kota: "Surabaya",
-      kecamatan: "Benowo",
-      no_telp: noTelp,
-      jalan: jalan,
+    Router.push({
+      pathname: `/junk-station/register`,
     });
-
-    var config = {
-      method: "post",
-      url: "https://altagp3.online/junk-station",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      data: data,
-    };
-
-    axios(config)
-      .then(function (response) {
-        console.log(JSON.stringify(response.data));
-      })
-      .catch(function (error) {
-        console.log(error);
-      });
   };
 
   // login
@@ -81,9 +30,6 @@ const Index = () => {
     var data = JSON.stringify({
       email: email,
       password: password,
-
-      // email: "hashirama@gmail.com",
-      // password: "usoop123",
     });
 
     var config = {
@@ -114,194 +60,63 @@ const Index = () => {
 
   return (
     <div className="">
-      {Register ? (
-        <Row
-          className="p-0 p-lg-5 m-0 d-flex justify-content-center justify-content-xl-start"
-          style={{
-            backgroundImage: `url("/bg-login.jpg")`,
-            backgroundSize: "cover",
-            backgroundRepeat: "no-repeat",
-            minHeight: "60.9rem",
-            maxWidth: "100%",
-          }}
-        >
-          <Col xl="7" lg="8" md="10" sm="12" className=" mt-2 ">
-            <Form
-              //   onSubmit={(e) => handleSubmit(e)}
-              className="border border-lime p-5 bg-putihan text-alpukat rounded-3 border-2"
-            >
-              {/* {foto} */}
-              <Form.Group className="mb-3" controlId="formBasicEmail">
-                <Form.Label>Nama Junk Station</Form.Label>
-                <Form.Control
-                  type="text"
-                  placeholder="Masukkan nama junk station"
-                  onChange={(e) => setNamaJS(e.target.value)}
-                />
-              </Form.Group>
-              <Form.Group className="mb-3" controlId="formBasicEmail">
-                <Form.Label>Nama Pemilik</Form.Label>
-                <Form.Control
-                  type="text"
-                  placeholder="Masukkan nama pemilik junk station"
-                  onChange={(e) => setNamaPemilikJS(e.target.value)}
-                />
-              </Form.Group>
-              <Form.Group className="mb-3" controlId="formBasicEmail">
-                <Form.Label>Email</Form.Label>
-                <Form.Control
-                  type="email"
-                  placeholder="Masukkan email anda"
-                  onChange={(e) => setEmail(e.target.value)}
-                />
-              </Form.Group>
-              <Form.Group className="mb-3" controlId="formBasicPassword">
-                <Form.Label>Password</Form.Label>
-                <Form.Control
-                  type="password"
-                  placeholder="Masukkan password"
-                  onChange={(e) => setPassword(e.target.value)}
-                />
-              </Form.Group>
-              <Form.Group className="mb-3" controlId="formBasicEmail">
-                <Form.Label>No Telepon</Form.Label>
-                <Form.Control
-                  type="text"
-                  placeholder="Masukkan no telepon anda"
-                  onChange={(e) => setNoTelp(e.target.value)}
-                />
-              </Form.Group>
-              <div className="mb-3">
-                <Form.Label>Alamat</Form.Label>
-                <div className="d-flex flex-sm-row flex-column">
-                  <Form.Select aria-label="Default select example">
-                    <option>Provinsi</option>
-                    <option value="1">One</option>
-                    <option value="2">Two</option>
-                    <option value="3">Three</option>
-                  </Form.Select>
-                  <Form.Select
-                    aria-label="Default select example"
-                    className="mx-0 mx-sm-2 my-2 my-sm-0"
-                  >
-                    <option>Kab/Kota</option>
-                    <option value="1">One</option>
-                    <option value="2">Two</option>
-                    <option value="3">Three</option>
-                  </Form.Select>
-                  <Form.Select aria-label="Default select example">
-                    <option>Kecamatan</option>
-                    <option value="1">One</option>
-                    <option value="2">Two</option>
-                    <option value="3">Three</option>
-                  </Form.Select>
-                </div>
-              </div>
-              <Form.Group
-                className="my-3"
-                controlId="exampleForm.ControlTextarea1"
+      <Row
+        className="pt-5 p-lg-5  d-flex justify-content-center "
+        style={{
+          backgroundImage: `url("/bg-login.jpg")`,
+          backgroundSize: "cover",
+          backgroundRepeat: "no-repeat",
+          minHeight: "60.9rem",
+          maxWidth: "100%",
+        }}
+      >
+        <Col xxl={6} xl="5" lg="6" md="8" sm="9" className="pt-5 ">
+          <Form
+            // onSubmit={(e) => handle(e)}
+            className="border border-lime p-3 p-md-5 bg-putihan rounded-3 text-alpukat border-2"
+          >
+            <Form.Group className="mb-3" controlId="formBasicEmail">
+              <Form.Label></Form.Label>
+              <Form.Control
+                type="email"
+                placeholder="Masukkan email"
+                onChange={(e) => setEmail(e.target.value)}
+              />
+            </Form.Group>
+
+            <Form.Group className="mb-3" controlId="formBasicPassword">
+              <Form.Label>Password</Form.Label>
+              <Form.Control
+                type="password"
+                placeholder="Masukkan password"
+                onChange={(e) => setPassword(e.target.value)}
+              />
+            </Form.Group>
+            <div className="d-flex justify-content-end">
+              <Button
+                variant="lime"
+                type="submit"
+                style={{ color: "white" }}
+                onClick={(e) => handlePostLogin(e)}
               >
-                <Form.Label>Jalan</Form.Label>
-                <Form.Control
-                  as="textarea"
-                  rows={3}
-                  placeholder="Masukkan alamat nama jalan atau desa"
-                  onChange={(e) => setJalan(e.target.value)}
-                />
-              </Form.Group>
-              <Form.Group controlId="formFileLg" className="mb-3">
-                <Form.Label>Foto Junk Station</Form.Label>
-                <Form.Control
-                  type="file"
-                  size="md"
-                  onChange={(e) => {
-                    setFoto(URL.createObjectURL(e.target.files[0]));
-                  }}
-                />
-              </Form.Group>
-
-              <div className="d-flex justify-content-end">
-                <Button
-                  type="submit"
-                  variant="danger"
-                  onClick={(e) => handleCancel(e)}
-                  style={{ color: "white" }}
-                >
-                  Cancel
-                </Button>
-                <Button
-                  className="ms-5"
-                  variant="lime"
-                  type="submit"
-                  style={{ color: "white" }}
-                  onClick={(e) => handlePostRegister(e)}
-                >
-                  Register
-                </Button>
-              </div>
-            </Form>
-          </Col>
-        </Row>
-      ) : (
-        // form login
-        <Row
-          className="pt-5 p-lg-5  d-flex justify-content-center "
-          style={{
-            backgroundImage: `url("/bg-login.jpg")`,
-            backgroundSize: "cover",
-            backgroundRepeat: "no-repeat",
-            minHeight: "60.9rem",
-            maxWidth: "100%",
-          }}
-        >
-          <Col xxl={6} xl="5" lg="6" md="8" sm="9" className="pt-5 ">
-            <Form
-              // onSubmit={(e) => handle(e)}
-              className="border border-lime p-3 p-md-5 bg-putihan rounded-3 text-alpukat border-2"
-            >
-              <Form.Group className="mb-3" controlId="formBasicEmail">
-                <Form.Label></Form.Label>
-                <Form.Control
-                  type="email"
-                  placeholder="Masukkan email"
-                  onChange={(e) => setEmail(e.target.value)}
-                />
-              </Form.Group>
-
-              <Form.Group className="mb-3" controlId="formBasicPassword">
-                <Form.Label>Password</Form.Label>
-                <Form.Control
-                  type="password"
-                  placeholder="Masukkan password"
-                  onChange={(e) => setPassword(e.target.value)}
-                />
-              </Form.Group>
-              <div className="d-flex justify-content-end">
-                <Button
-                  variant="lime"
-                  type="submit"
-                  style={{ color: "white" }}
-                  onClick={(e) => handlePostLogin(e)}
-                >
-                  Login
-                </Button>
-              </div>
-              <br></br>
-              <p>
-                Belum punya akun?{" "}
-                <a
-                  style={{ cursor: "pointer" }}
-                  className="text-lime text-decoration-none "
-                  onClick={() => handleToRegister()}
-                >
-                  {" "}
-                  <b>Register !</b>
-                </a>
-              </p>
-            </Form>
-          </Col>
-        </Row>
-      )}
+                Login
+              </Button>
+            </div>
+            <br></br>
+            <p>
+              Belum punya akun?{" "}
+              <Button
+                style={{ cursor: "pointer" }}
+                className="text-lime text-decoration-none bg-putihan "
+                onClick={(e) => handleToRegister(e)}
+              >
+                {" "}
+                <b>Register !</b>
+              </Button>
+            </p>
+          </Form>
+        </Col>
+      </Row>
     </div>
   );
 };

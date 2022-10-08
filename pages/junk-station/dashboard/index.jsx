@@ -9,10 +9,12 @@ const Index = () => {
   const [index, setIndex] = useState(0);
   const [totalPembelian, setTotalPembelian] = useState(500000);
   const [kategori, setKategori] = useState([]);
+  const [filter, setFilter] = useState("year");
 
   // get Kategori
   useEffect(() => {
     getKategori();
+    getTotalPembelian();
   }, []);
 
   const getKategori = () => {
@@ -39,6 +41,28 @@ const Index = () => {
       });
   };
 
+  // get totalPembelian
+  const getTotalPembelian = () => {
+    var axios = require("axios");
+
+    var config = {
+      method: "get",
+      url: `https://altagp3.online/junk-station/dashboard?filter=${filter}`,
+      headers: {
+        Authorization: `Bearer ${Cookies.get("token")}`,
+      },
+    };
+
+    axios(config)
+      .then(function (response) {
+        console.log(JSON.stringify(response.data.data.total_pembelian));
+        setTotalPembelian(response.data.data.total_pembelian);
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+  };
+
   const handleSelect = (selectedIndex, e) => {
     setIndex(selectedIndex);
   };
@@ -49,11 +73,10 @@ const Index = () => {
         <Row style={{ marginTop: 30 }}>
           <Col xs="12" sm="8" md="6" lg="4" className="d-flex">
             <Form.Select aria-label="Default select example">
-              <option>Semua Pembelian</option>
-              <option value="1">Tahunan</option>
-              <option value="2">Bulanan</option>
-              <option value="3">Mingguan</option>
-              <option value="4">Harian</option>
+              <option disabled>Semua Pembelian</option>
+              <option onClick={() => setFilter("year")}>Tahunan</option>
+              <option onClick={() => setFilter("month")}>Bulanan</option>
+              <option onClick={() => setFilter("day")}>Harian</option>
             </Form.Select>
             <Button variant="lime" className="ms-2 px-4">
               Filter
@@ -67,7 +90,11 @@ const Index = () => {
               <p className="mt-3 fs-4">Total Pembelian</p>
             </div>
             <p className="fs-2 fw-bold text-end me-5 my-3">
-              Rp {totalPembelian}
+              {Intl.NumberFormat("id-ID", {
+                style: "currency",
+                currency: "IDR",
+                currencyDisplay: "symbol",
+              }).format(totalPembelian)}
             </p>
           </Col>
         </Row>
