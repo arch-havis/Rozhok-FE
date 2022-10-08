@@ -90,7 +90,6 @@ const Index = () => {
                                             onChange={(e) => e.target.value(e)}
                                             onClick={() => DetailIdTransaksi(data) /* DetailTipeTransaksi(data.tipe_transaksi)*/}
                                         />
-                                        <AiTwotoneDelete className="fs-4 text-danger ms-4 user-select-auto" />
                                     </td>
                                 </tr>
                             );
