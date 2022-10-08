@@ -5,10 +5,6 @@ import React, { useEffect, useState } from "react";
 import { Col, Row, Form, Button, Container } from "react-bootstrap";
 
 const Index = () => {
-  const [dataProvinsi, setDataProvinsi] = useState([]);
-  const [dataKotaKab, setDataKotaKab] = useState([]);
-  const [dataKecamatan, setDataKecamatan] = useState([]);
-
   const [namaJs, setNamaJS] = useState("");
   const [namaPemilikJS, setNamaPemilikJS] = useState("");
   const [noTelp, setNoTelp] = useState("");
