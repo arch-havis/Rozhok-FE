@@ -39,7 +39,6 @@ const Index = () => {
 
     // post data penjemputan rosok
     const postDataPenjemputan = async () => {
-        router.push("/porter/transaksi");
         var axios = require("axios");
 
         var config = {
@@ -54,6 +53,7 @@ const Index = () => {
             .then(function (response) {
                 console.log(JSON.stringify(response.data.data));
                 setDataDetailPenjemputan(response.data.data);
+                router.push("/porter/transaksi");
             })
             .catch(function (error) {
                 console.log(error);
