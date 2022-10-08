@@ -13,10 +13,11 @@ import Footer from "../../../components/Footer";
 
 const Index = () => {
     const [dataDashboard, setDataDashboard] = useState([]);
+    const [filter, setFilter] = useState("");
 
     const getDataDashboard = async () => {
         try {
-            const response = await axios.get(`https://altagp3.online/porter/dashboard`, {
+            const response = await axios.get(`https://altagp3.online/porter/dashboard?filter=${filter}`, {
                 headers: {
                     Authorization: `Bearer ${Cookies.get("token")}`,
                 },
@@ -58,10 +59,18 @@ const Index = () => {
             <div className="container " style={{ marginBottom: "100px" }}>
                 <div className="d-flex float-end mt-3 h-5">
                     <Form.Select aria-label="Default select example" className="w-75 flex me-3">
-                        <option value="harian">Harian</option>
-                        <option value="mingguan">Mingguan</option>
-                        <option value="bulanan">Bulanan</option>
-                        <option value="tahunan">Tahunan</option>
+                        <option value="day" onChange={(e) => setFilter(e.target.value)}>
+                            Harian
+                        </option>
+                        <option value="mingguan" onChange={(e) => setFilter(e.target.value)}>
+                            Mingguan
+                        </option>
+                        <option value="month" onChange={(e) => setFilter(e.target.value)}>
+                            Bulanan
+                        </option>
+                        <option value="year" onChange={(e) => setFilter(e.target.value)}>
+                            Tahunan
+                        </option>
                     </Form.Select>
                     <Button variant="success" className="hover-overlay hover-zoom text-white ">
                         Filter
