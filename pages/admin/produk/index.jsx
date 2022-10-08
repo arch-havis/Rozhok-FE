@@ -44,6 +44,28 @@ const Index = () => {
       });
   };
 
+  // deleteProduk
+  const handleDeleteProduk = (id) => {
+    var axios = require("axios");
+
+    var config = {
+      method: "delete",
+      url: `https://altagp3.online/product/${id}`,
+      headers: {
+        Authorization: `Bearer ${Cookies.get("token")}`,
+      },
+    };
+
+    axios(config)
+      .then(function (response) {
+        // console.log(JSON.stringify(response.data));
+        getAllProduk();
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+  };
+
   return (
     <div className="bg-putih">
       <HeaderAdmin />
