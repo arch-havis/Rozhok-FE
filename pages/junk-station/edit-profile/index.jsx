@@ -94,14 +94,6 @@ const Index = () => {
     e.preventDefault();
     var axios = require("axios");
     var data = JSON.stringify({
-      // junk_station_name: "TPA BERSIH",
-      // junk_station_owner: "usopp",
-      // provinsi: "Jawa Timur",
-      // kota: "Surabaya",
-      // kecamatan: "Benowo",
-      // no_telp: "09971250057",
-      // jalan: "jl.Doremi",
-
       junk_station_name: namaJs,
       junk_station_owner: namaPemilikJS,
       provinsi: provinsi,
