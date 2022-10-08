@@ -38,8 +38,8 @@ const Index = () => {
         Router.push({
             pathname: `/porter/transaksi/${item}`,
             query: {
-                idTransaksi: item, //ini state ku untuk menangkap ID
-                tipeTransaksi: "pembelian", //ini state ku untuk menangkap transaksi
+                idTransaksi: item.id_transaksi, //ini state ku untuk menangkap ID
+                tipeTransaksi: item.tipe_transaksi, //ini state ku untuk menangkap transaksi
             },
         });
     };
@@ -60,7 +60,7 @@ const Index = () => {
                         </Form.Select>
                         <Form.Select aria-label="Default select example" className="mx-0 mx-sm-2 my-2 my-sm-0" onChange={(e) => handleKecamatan(e)}>
                             <option>Status</option>
-                            <option value="sudah_bayar">Sudah Bayar</option>
+                            <option value="dibayar">Sudah Bayar</option>
                             <option value="belum_bayar">Belum Bayar</option>
                         </Form.Select>
                         <Button variant="alpukat" className="ms-2">
@@ -88,7 +88,7 @@ const Index = () => {
                                         <AiTwotoneEdit
                                             className="fs-4 text-lime user-select-auto"
                                             onChange={(e) => e.target.value(e)}
-                                            onClick={() => DetailIdTransaksi(data.id_transaksi) /* DetailTipeTransaksi(data.tipe_transaksi)*/}
+                                            onClick={() => DetailIdTransaksi(data) /* DetailTipeTransaksi(data.tipe_transaksi)*/}
                                         />
                                         <AiTwotoneDelete className="fs-4 text-danger ms-4 user-select-auto" />
                                     </td>
