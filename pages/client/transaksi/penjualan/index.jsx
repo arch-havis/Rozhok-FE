@@ -2,28 +2,20 @@ import React, { useState, useEffect } from "react";
 import HeaderClient from "../../../../components/HeaderClient";
 import Footer from "../../../../components/Footer";
 import { Row, Col, Button } from "react-bootstrap";
+import Router, { useRouter } from "next/router";
+import { getCookie } from "cookies-next";
 
-export const getServerSideProps = async () => {
-  const data = [
+export const getServerSideProps = async (context) => {
+  const token = getCookie("token", context);
+  const response = await fetch(
+    `https://altagp3.online/transaksi/${context.query.id}/client/${context.query.status}`,
     {
-      kategori: "Plastik",
-      berat: 1,
-      harga: new Intl.NumberFormat("id-ID", {
-        style: "currency",
-        currency: "IDR",
-        currencyDisplay: "symbol",
-      }).format(743985621),
-    },
-    {
-      kategori: "Besi",
-      berat: 2.5,
-      harga: new Intl.NumberFormat("id-ID", {
-        style: "currency",
-        currency: "IDR",
-        currencyDisplay: "symbol",
-      }).format(923864751),
-    },
-  ];
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }
+  );
+  const data = await response.json();
   return {
     props: {
       data: data,
@@ -32,6 +24,7 @@ export const getServerSideProps = async () => {
 };
 
 const Index = (props) => {
+  const [data, setData] = useState();
   console.log(props.data);
 
   return (
@@ -49,7 +42,9 @@ const Index = (props) => {
             </Col>
             <Col>
               <Button variant="lime text-white" className="w-100">
-                Sukses
+                {props.data.data.status.split("_").map((items) => {
+                  return items.charAt(0).toUpperCase() + items.slice(1) + " ";
+                })}
               </Button>
             </Col>
             <Col className="p-0 m-0"></Col>
@@ -70,7 +65,7 @@ const Index = (props) => {
                     style: "currency",
                     currency: "IDR",
                     currencyDisplay: "symbol",
-                  }).format(159364782)}
+                  }).format(undefined)}
                 </b>
               </p>
               <br></br>
@@ -79,10 +74,10 @@ const Index = (props) => {
                 <b>Informasi Porter</b>
               </h4>
               <p>
-                <b>Nama :</b> Eren
+                <b>Nama :</b> {props.data.porter}
               </p>
               <p>
-                <b>No. Telpon :</b> 321756948
+                <b>No. Telpon :</b> {props.data.porter}
               </p>
             </Col>
           </Row>
@@ -93,39 +88,43 @@ const Index = (props) => {
             <b>Penjual</b>
           </h4>
           <p>
-            <b>Nama :</b> Mikasa
+            <b>Nama :</b> {props.data.data.client.name}
           </p>
           <p>
-            <b>No. Telpon :</b> 963852147
+            <b>No. Telpon :</b> {parseInt(props.data.data.client.no_telp)}
           </p>
           <p>
-            <b>Provinsi :</b> Jawa Timur
+            <b>Provinsi :</b> {props.data.data.client.provinsi}
           </p>
           <p>
-            <b>Kota / Kabupaten :</b> Kediri
+            <b>Kota / Kabupaten :</b> {props.data.data.client.kota}
           </p>
           <p>
-            <b>Kecamatan :</b> Krass
+            <b>Kecamatan :</b> {props.data.data.client.kecamatan}
           </p>
         </Col>
       </Row>
-      {props.data.map((item, index) => {
-        return (
-          <Row key={index} className="p-0 m-0">
-            <Col md={2}></Col>
-            <Col md={8} className="bg-tea border-lime border mb-4 ">
-              <Row>
-                <Col md={3}></Col>
-                <Col md={9}>
-                  <Col>Kategori : {item.kategori}</Col>
-                  <Col>Berat : {item.berat} kg</Col>
-                  <Col>Harga : {item.harga}</Col>
-                </Col>
-              </Row>
-            </Col>
-          </Row>
-        );
-      })}
+      {props.data.data.barang_rosok === undefined ? (
+        <></>
+      ) : (
+        props.data.data.barang_rosok.map((item, index) => {
+          return (
+            <Row key={index} className="p-0 m-0">
+              <Col md={2}></Col>
+              <Col md={8} className="bg-tea border-lime border mb-4 ">
+                <Row>
+                  <Col md={3}></Col>
+                  <Col md={9}>
+                    <Col>Kategori : {item.kategori}</Col>
+                    <Col>Berat : {item.berat} kg</Col>
+                    <Col>Harga : {item.harga}</Col>
+                  </Col>
+                </Row>
+              </Col>
+            </Row>
+          );
+        })
+      )}
       <Footer />
     </div>
   );
