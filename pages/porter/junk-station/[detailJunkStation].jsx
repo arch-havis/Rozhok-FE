@@ -32,19 +32,22 @@ const Index = () => {
         <div>
             <HeaderPorter />
             <div className="container">
-                <h3 className="text-alpukat float-end mt-5 fw-bolder">Detail Junk Station</h3>
+                <h3 className="text-alpukat float-end mt-5 fw-bolder rounded-3 bg-tea p-2">Detail Junk Station</h3>
                 <br />
                 <br />
                 <Row className="d-flex justify-content-center" style={{ marginTop: "100px" }}>
                     <div className="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12 d-flex justify-content-center">
                         {/* <CgProfile className="text-alpukat" style={{ fontSize: "282.5px" }} /> */}
-                        <img src={dataJunkStation?.image_url} alt="gambar" style={{ width: "150px", height: "150px" }} />
+                        <img src={dataJunkStation?.image_url} className="rounded-5" alt="gambar" style={{ width: "350px", height: "350px" }} />
                     </div>
                     <div className="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-6 d-grid justify-content-end">
-                        <h1 className="text-alpukat fs-sm-5">Provinsi: {dataJunkStation?.provinsi}</h1>
-                        <h1 className="text-alpukat fs-sm-5">Kota/Kab: {dataJunkStation?.kota}</h1>
-                        <h1 className="text-alpukat fs-sm-5">Kecamatan: {dataJunkStation?.kecamatan}</h1>
-                        <h1 className="text-alpukat fs-sm-5">Status: {dataJunkStation?.status_kemitraan}</h1>
+                        <h3 className="text-alpukat fs-sm-5">Nama: {dataJunkStation?.junk_station_name}</h3>
+                        <h3 className="text-alpukat fs-sm-5">Status: {dataJunkStation?.status_kemitraan}</h3>
+                        <h3 className="text-alpukat fs-sm-5">Telepon: {dataJunkStation?.telp}</h3>
+                        <h3 className="text-alpukat fs-sm-5">Provinsi: {dataJunkStation?.provinsi}</h3>
+                        <h3 className="text-alpukat fs-sm-5">Kota/Kab: {dataJunkStation?.kota}</h3>
+                        <h3 className="text-alpukat fs-sm-5">Kecamatan: {dataJunkStation?.kecamatan}</h3>
+                        <h3 className="text-alpukat fs-sm-5">Jalan: {dataJunkStation?.jalan}</h3>
                     </div>
                 </Row>
             </div>
