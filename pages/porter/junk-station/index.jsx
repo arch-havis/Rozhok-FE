@@ -13,6 +13,11 @@ const Index = () => {
     const [dataKecamatan, setDataKecamatan] = useState([]);
     const [kotaId, setKotaId] = useState("");
     const [dataJunkStation, setDataJunkStation] = useState([]);
+    const [namaDaerah, setNamaDaerah] = useState({
+        provinsi: "",
+        kota: "",
+        kecamatan: "",
+    });
 
     useEffect(() => {
         getListJunkStation();
@@ -22,7 +27,7 @@ const Index = () => {
         try {
             const response = await axios.get("https://altagp3.online/junk-station", {
                 headers: {
-                    Authentication: `Bearer ${Cookies.get("token")}`,
+                    Authorization: `Bearer ${Cookies.get("token")}`,
                 },
             });
             setDataJunkStation(response.data.data);
@@ -72,6 +77,7 @@ const Index = () => {
         }
     };
 
+    // console.log("ini kota", dataKotaKab);
     // ini untuk render data API Kota Kabupaten
     useEffect(() => {
         getDataKotaKab();
@@ -98,6 +104,14 @@ const Index = () => {
         getDataKecamatan();
     }, [kotaId]);
 
+    // handle untuk filter wilayah
+    const handleFilter = () => {
+        const filter = dataJunkStation.filter((data) => data.provinsi === namaDaerah.provinsi && data.kota === namaDaerah.kota && data.kecamatan === namaDaerah.kecamatan);
+        setDataJunkStation(filter);
+    };
+
+    console.log("data junk", dataJunkStation);
+
     return (
         <div>
             <HeaderPorter />
@@ -109,21 +123,21 @@ const Index = () => {
                 <div className="d-flex justify-content-end" style={{ marginTop: "100px" }}>
                     <div className="d-flex flex-sm-row flex-column w-50">
                         <Form.Select aria-label="Default select example" onChange={(e) => handleKotaKab(e)}>
-                            <option>Provinsi</option>
-                            {dataProvinsi.map((daerah) => {
+                            <option onClick={() => getListJunkStation()}>Provinsi</option>
+                            {dataProvinsi.map((provinsi) => {
                                 return (
-                                    <option value={daerah.id} key={daerah.id}>
-                                        {daerah.nama}
+                                    <option value={provinsi.id} key={provinsi.id} onClick={() => setNamaDaerah({ ...namaDaerah, provinsi: provinsi.nama })}>
+                                        {provinsi.nama}
                                     </option>
                                 );
                             })}
                         </Form.Select>
                         <Form.Select aria-label="Default select example" className="mx-0 mx-sm-2 my-2 my-sm-0" onChange={(e) => handleKecamatan(e)}>
                             <option>Kab/Kota</option>
-                            {dataKotaKab.map((daerah) => {
+                            {dataKotaKab.map((kabupaten) => {
                                 return (
-                                    <option value={daerah.id} key={daerah.id_provinsi}>
-                                        {daerah.nama}
+                                    <option value={kabupaten.id} key={kabupaten.id_provinsi} onClick={() => setNamaDaerah({ ...namaDaerah, kota: kabupaten.nama })}>
+                                        {kabupaten.nama}
                                     </option>
                                 );
                             })}
@@ -131,15 +145,15 @@ const Index = () => {
 
                         <Form.Select aria-label="Default select example" onChange={(e) => handleKecamatan(e)}>
                             <option>Kecamatan</option>
-                            {dataKecamatan.map((daerah) => {
+                            {dataKecamatan.map((kecamatan) => {
                                 return (
-                                    <option value={daerah.id_kota} key={daerah.id_kota}>
-                                        {daerah.nama}
+                                    <option value={kecamatan.id_kota} key={kecamatan.id_kota} onClick={() => setNamaDaerah({ ...namaDaerah, kecamatan: kecamatan.nama })}>
+                                        {kecamatan.nama}
                                     </option>
                                 );
                             })}
                         </Form.Select>
-                        <Button variant="alpukat" className="ms-2 my-2 my-xl-0 my-lg-0">
+                        <Button variant="alpukat" className="ms-2 my-2 my-xl-0 my-lg-0" onClick={() => handleFilter()}>
                             Filter
                         </Button>
                     </div>
@@ -150,9 +164,9 @@ const Index = () => {
                             <Card className="w-100 mb-5 border border-lime" key={client?.id_junk_station}>
                                 <Card.Body className="bg-tea shadow-md">
                                     <Card.Title className="mb-4 text-alpukat">Nama: {client?.junk_station_name}</Card.Title>
-                                    <Card.Title className="mb-4 text-alpukat">Provinsi: {client.provinsi}</Card.Title>
-                                    <Card.Title className="mb-4 text-alpukat">Kota: {client.kota}</Card.Title>
-                                    <Card.Title className="mb-4 text-alpukat">Kecamatan: {client.kecamatan}</Card.Title>
+                                    <Card.Title className="mb-4 text-alpukat">Provinsi: {client?.provinsi}</Card.Title>
+                                    <Card.Title className="mb-4 text-alpukat">Kota: {client?.kota}</Card.Title>
+                                    <Card.Title className="mb-4 text-alpukat">Kecamatan: {client?.kecamatan}</Card.Title>
                                     <Row>
                                         <div className="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-6">
                                             {/* <Card.Title className="text-alpukat">Jalan: {client.jalan}</Card.Title> */}
@@ -162,7 +176,7 @@ const Index = () => {
                                                 variant="alpukat"
                                                 className="hover-overlay hover-zoom text-white fs-5"
                                                 onChange={(e) => e.target.value(e)}
-                                                onClick={() => DetailJunkStation(client)}
+                                                onClick={() => DetailJunkStation(client.id_junk_station)}
                                             >
                                                 lihat
                                             </Button>
