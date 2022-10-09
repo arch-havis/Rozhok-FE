@@ -202,10 +202,13 @@ const Cart = (props) => {
       });
   };
   let grand = 0;
-  let grandData = props.cart.data.filter((items) => items.checklist === true);
-  grandData.map((items) => {
-    grand += items.price * items.qty;
-  });
+  let grandData;
+  if (props.cart.data !== null) {
+    grandData = props.cart.data.filter((items) => items.checklist === true);
+    grandData.map((items) => {
+      grand += items.price * items.qty;
+    });
+  }
   console.log(grandData);
   return (
     <div>
