@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import HeaderPorter from "../../../components/HeaderPorter";
 import { Form, Button, Table } from "react-bootstrap";
-import { AiTwotoneEdit, AiTwotoneDelete } from "react-icons/ai";
+import { AiTwotoneEdit } from "react-icons/ai";
 import Router from "next/router";
 import Cookies from "js-cookie";
 import axios from "axios";
@@ -27,8 +27,10 @@ const Index = () => {
             setDataTransaksi(response.data.data);
             setIdTransaksi(response.data.data.id_transaksi);
             setTipeTransaksi(response.data.data.tipe_transaksi);
+            setTipeTransaksi(response.data.data.status);
             console.log("ini response.data.data", JSON.stringify(response.data.data));
             console.log("ini untuk get data id_transaksi", JSON.stringify(response.data.data[0].id_transaksi));
+            console.log("ini untuk get data tipe_transaksi", JSON.stringify(response.data.data[0].tipe_transaksi));
             console.log("ini untuk get data tipe_transaksi", JSON.stringify(response.data.data[0].tipe_transaksi));
         } catch (error) {
             console.log(error);
