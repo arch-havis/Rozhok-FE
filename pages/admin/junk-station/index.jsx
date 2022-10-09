@@ -24,7 +24,36 @@ const Index = () => {
   useEffect(() => {
     getAllJunkStation();
   }, []);
+
   const getAllJunkStation = () => {
+    var axios = require("axios");
+    var data = "";
+
+    var config = {
+      method: "get",
+      url: `https://altagp3.online/junk-station`,
+      headers: {
+        Authorization: `Bearer ${Cookies.get("token")}`,
+      },
+      data: data,
+    };
+
+    axios(config)
+      .then(function (response) {
+        // console.log(JSON.stringify(response.data.data));
+        setAllJS(response.data.data);
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+  };
+
+  // getFilterJS
+  useEffect(() => {
+    getFilterJunkStation();
+  }, []);
+
+  const getFilterJunkStation = () => {
     var axios = require("axios");
     var data = "";
 
@@ -51,29 +80,26 @@ const Index = () => {
     <div className="bg-putih">
       <HeaderAdmin />
       <Container className="min-vh-100">
-        {/* {filter} */}
         <h4 className="border-bottom  border-3 border-dark text-center mt-3">
           Daftar Junk Station
         </h4>
         <div className=" d-flex justify-content-end mt-5">
           <div>
-            <Form.Select aria-label="Default select example">
-              <option onClick={() => setFilter("")}>Semua Kategori</option>
-              <option value="1" onClick={() => setFilter("terverifikasi")}>
-                Terverifikasi
-              </option>
-              <option value="2" onClick={() => setFilter("gagal_verifikasi")}>
-                Gagal Verifikasi
-              </option>
-              <option
-                value="3"
-                onClick={() => setFilter("verifikasi_tertunda")}
-              >
-                Verifikasi Tertunda
-              </option>
+            <Form.Select
+              aria-label="Default select example"
+              onChange={(e) => setFilter(e.target.value)}
+            >
+              <option onClick={getAllJunkStation}>Semua Junk Station</option>
+              <option value="terverifikasi">Terverifikasi</option>
+              <option value="belum_terverifikasi">Belum Terverifikasi</option>
+              <option value="gagal_verifikasi">Gagal Verifikasi</option>
             </Form.Select>
           </div>
-          <Button variant="lime" className="fw-bold text-putih px-3 ms-2">
+          <Button
+            variant="lime"
+            className="fw-bold text-putih px-3 ms-2"
+            onClick={getFilterJunkStation}
+          >
             Filter
           </Button>
         </div>

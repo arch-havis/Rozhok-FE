@@ -1,6 +1,6 @@
 import Cookies from "js-cookie";
 import React, { useEffect, useState } from "react";
-import { useRouter } from "next/router";
+import Router, { useRouter } from "next/router";
 import { Button, Col, Container, Row } from "react-bootstrap";
 import {
   AiFillAlert,
@@ -45,15 +45,15 @@ const Index = () => {
   };
 
   // edit StatusJS
-  const editStatusJS = () => {
+
+  const handleTerimaKemitraan = () => {
     var axios = require("axios");
-    var data = JSON.stringify({
-      status_kemitraan: status,
-    });
+    var data = "";
 
     var config = {
       method: "put",
-      url: `https://altagp3.online/kemitraan/${router.query.id}`,
+      url: `https://altagp3.online/kemitraan/${router.query.id}?status_kemitraan=terverifikasi`,
+
       headers: {
         Authorization: `Bearer ${Cookies.get("token")}`,
       },
@@ -64,6 +64,9 @@ const Index = () => {
       .then(function (response) {
         console.log(JSON.stringify(response.data));
         getDetailJS();
+        Router.push({
+          pathname: `/admin/junk-station`,
+        });
       })
       .catch(function (error) {
         console.log(error);
@@ -71,13 +74,30 @@ const Index = () => {
   };
 
   const handleTolakKemitraan = () => {
-    setStatus("gagal_verifikasi");
-    editStatusJS();
-  };
+    var axios = require("axios");
+    var data = "";
 
-  const handleTerimaKemitraan = () => {
-    setStatus("tervirifikasi");
-    editStatusJS();
+    var config = {
+      method: "put",
+      url: `https://altagp3.online/kemitraan/${router.query.id}?status_kemitraan=gagal_verifikasi`,
+
+      headers: {
+        Authorization: `Bearer ${Cookies.get("token")}`,
+      },
+      data: data,
+    };
+
+    axios(config)
+      .then(function (response) {
+        console.log(JSON.stringify(response.data));
+        getDetailJS();
+        Router.push({
+          pathname: `/admin/junk-station`,
+        });
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
   };
 
   return (

@@ -70,7 +70,7 @@ const Index = () => {
     <div className="bg-putih pb-5">
       <HeaderJunkStation />
       <Container>
-        <Row style={{ marginTop: 30 }}>
+        {/* <Row style={{ marginTop: 30 }}>
           <Col xs="12" sm="8" md="6" lg="4" className="d-flex">
             <Form.Select aria-label="Default select example">
               <option disabled>Semua Pembelian</option>
@@ -82,7 +82,7 @@ const Index = () => {
               Filter
             </Button>
           </Col>
-        </Row>
+        </Row> */}
         <Row>
           <Col xs="12" sm="7" md="8" lg="6" className="bg-tea mt-4 rounded-2 ">
             <div className="d-flex align-items-center">
