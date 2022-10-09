@@ -1,10 +1,57 @@
-import { useRouter } from "next/router";
-import React from "react";
+import Router, { useRouter } from "next/router";
+import React, { useState, useEffect } from "react";
 import HeaderAdmin from "../../../components/HeaderAdmin";
 import { Card, Row, Button } from "react-bootstrap";
+import axios from "axios";
+import Cookies from "js-cookie";
 
 const Index = () => {
     const router = useRouter();
+
+    const [detailTransaksi, setDetailTransaksi] = useState([]);
+    const [detailProduk, setDetailProduk] = useState([]);
+
+    useEffect(() => {
+        getDetailTransaksi();
+    }, []);
+
+    const getDetailTransaksi = async () => {
+        try {
+            const response = await axios.get(`https://altagp3.online/transaksi/${router.query.item}/admin`, {
+                headers: {
+                    Authorization: `Bearer ${Cookies.get("token")}`,
+                },
+            });
+            setDetailTransaksi(response.data.data);
+            setDetailProduk(response.data.data.produk[0]);
+            console.log(detailProduk);
+        } catch (error) {
+            console.log(error);
+        }
+    };
+
+    const putDetailTransaksi = async () => {
+        var axios = require("axios");
+
+        var config = {
+            method: "put",
+            url: `https://altagp3.online/transaksi/${router.query.item}/admin`,
+            headers: {
+                Authorization: `Bearer ${Cookies.get("token")}`,
+            },
+        };
+
+        axios(config)
+            .then(function (response) {
+                console.log(JSON.stringify(response.data));
+                setDetailTransaksi(response.data.data);
+                Router.push({ pathname: "/admin/transaksi" });
+            })
+            .catch(function (error) {
+                console.log(error);
+            });
+    };
+
     return (
         <div>
             <HeaderAdmin />
@@ -14,17 +61,24 @@ const Index = () => {
                 <br />
                 <Row className="" style={{ marginTop: "100px" }}>
                     <div className="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-6 mt-4">
-                        <h4 className="text-alpukat mb-3">Kode Transaksi: {router.query.kodeTransaksi}</h4>
-                        <h4 className="text-alpukat mb-3">Total Harga: {router.query.biayaTransaksi}</h4>
-                        <h4 className="text-alpukat mb-3">Kurir: {router.query.kurir}</h4>
+                        <h4 className="text-alpukat mb-3">Kode Transaksi: {detailTransaksi?.kode_transaksi}</h4>
+                        <h4 className="text-alpukat mb-3">
+                            Total Harga:{" "}
+                            {new Intl.NumberFormat("id-ID", {
+                                style: "currency",
+                                currency: "IDR",
+                                currencyDisplay: "symbol",
+                            }).format(detailTransaksi?.grand_total)}
+                        </h4>{" "}
+                        <h4 className="text-alpukat mb-3">Kurir: {detailTransaksi?.kurir}</h4>
                     </div>
                     <div className="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-6 d-grid justify-content-end">
                         <Card className="bg-lime border-1 border-lime shadow-sm">
                             <Card.Body>
-                                <h4 className="text-alpukat">Nama Pembeli: {router.query.nama}</h4>
-                                <h4 className="text-alpukat">Nomor HP: {router.query.hp}</h4>
+                                <h4 className="text-alpukat">Nama Pembeli: {detailTransaksi?.client?.name}</h4>
+                                <h4 className="text-alpukat">Nomor HP: {detailTransaksi?.client?.no_telp}</h4>
                                 <h4 className="text-alpukat">
-                                    {router.query.jalan}, Kecamatan {router.query.kecamatan}, Kota/Kab {router.query.kota}, Provinsi {router.query.provinsi}
+                                    Domisili: Kecamatan {detailTransaksi?.client?.kecamatan}, Kota/Kab {detailTransaksi?.client?.kota}, Provinsi {detailTransaksi?.client?.provinsi}
                                 </h4>
                             </Card.Body>
                         </Card>
@@ -34,31 +88,44 @@ const Index = () => {
                     <Row>
                         <div className="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-6 d-flex">
                             <div className="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-6">
-                                <Card.Img src="https://jete.id/wp-content/uploads/2021/10/casing-hp-2-762x400.jpg" className="img-fluid mt-4 ms-2" style={{ height: "100px" }} />
+                                <Card.Img src={detailProduk?.image_url} className="img-fluid mt-4 ms-2" style={{ height: "100px" }} />
                             </div>
                             <div className="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-6">
                                 <Card.Body className="mt-3">
-                                    <Card.Title>Nama Produk: Casing HP</Card.Title>
-                                    <Card.Title>Qty: 5</Card.Title>
-                                    <Card.Title>Harga produk: Rp 50.000</Card.Title>
+                                    <Card.Title>Nama Produk: {detailProduk?.product_name}</Card.Title>
+                                    <Card.Title>Qty: {detailProduk?.qty}</Card.Title>
+                                    <Card.Title>
+                                        Harga produk:{" "}
+                                        {new Intl.NumberFormat("id-ID", {
+                                            style: "currency",
+                                            currency: "IDR",
+                                            currencyDisplay: "symbol",
+                                        }).format(detailProduk?.subtotal)}{" "}
+                                    </Card.Title>
                                 </Card.Body>
                             </div>
                         </div>
                         <div className="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-6 " style={{ marginTop: "50px" }}>
-                            {router.query.status === "sudah bayar" || router.query.status === "dikirim" ? (
-                                <h4 className="bg-lime text-white d-flex float-end text-center py-2 px-2 rounded-3 me-2">{router.query.status}</h4>
+                            {detailTransaksi.status === "dibayar" ? (
+                                <h4 className="bg-lime text-white d-flex float-end text-center py-2 px-2 rounded-3 me-2">{detailTransaksi.status}</h4>
                             ) : (
-                                <h4 className="bg-danger text-white d-flex float-end text-center py-2 px-2 rounded-3 me-2">{router.query.status}</h4>
+                                <>
+                                    {detailTransaksi.status === "belum_dibayar" ? (
+                                        <h4 className="bg-danger text-white d-flex float-end text-center py-2 px-2 rounded-3 me-2">{detailTransaksi.status}</h4>
+                                    ) : (
+                                        <h4 className="bg-info text-white d-flex float-end text-center py-2 px-2 rounded-3 me-2">{detailTransaksi.status}</h4>
+                                    )}
+                                </>
                             )}
                         </div>
                     </Row>
                 </Card>
 
-                {router.query.status === "sudah bayar" || router.query.status === "dikirim" ? null : (
-                    <Button variant="alpukat" className="text-white fw-bolder float-end mt-3">
+                {detailTransaksi.status === "dibayar" ? (
+                    <Button variant="alpukat" className="text-white fw-bolder float-end mt-3" onClick={() => putDetailTransaksi()}>
                         Kirim
                     </Button>
-                )}
+                ) : null}
             </div>
         </div>
     );

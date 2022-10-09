@@ -28,6 +28,15 @@ const Index = () => {
         }
     };
 
+    const detailPorters = (idPorter) => {
+        Router.push({
+            pathname: `/admin/porter/${idPorter}`,
+            query: {
+                idPorter: idPorter,
+            },
+        });
+    };
+
     // Delete Porter
     const deleteDataPorters = (idPorter) => {
         console.log(idPorter);
@@ -61,24 +70,21 @@ const Index = () => {
         });
     };
 
-    const hargaClient = 666666;
-    const hargaMitra = 7777777;
-
     const goTambah = () => {
         Router.push({ pathname: "/admin/porter/tambah" });
     };
 
-    const formatClient = new Intl.NumberFormat("id-ID", {
-        style: "currency",
-        currency: "IDR",
-        currencyDisplay: "symbol",
-    }).format(hargaClient);
+    // const formatClient = new Intl.NumberFormat("id-ID", {
+    //     style: "currency",
+    //     currency: "IDR",
+    //     currencyDisplay: "symbol",
+    // }).format(hargaClient);
 
-    const formatMitra = new Intl.NumberFormat("id-ID", {
-        style: "currency",
-        currency: "IDR",
-        currencyDisplay: "symbol",
-    }).format(hargaMitra);
+    // const formatMitra = new Intl.NumberFormat("id-ID", {
+    //     style: "currency",
+    //     currency: "IDR",
+    //     currencyDisplay: "symbol",
+    // }).format(hargaMitra);
 
     return (
         <div>
@@ -119,7 +125,7 @@ const Index = () => {
                                             </a>
 
                                             {" | "}
-                                            <a href="/admin/porter/detail" className="text-alpukat text-decoration-none">
+                                            <a className="text-alpukat text-decoration-none" onClick={() => detailPorters(porter.id)}>
                                                 Detail
                                             </a>
                                             {" | "}
