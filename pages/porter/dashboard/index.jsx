@@ -13,10 +13,11 @@ import Footer from "../../../components/Footer";
 
 const Index = () => {
     const [dataDashboard, setDataDashboard] = useState([]);
+    const [filter, setFilter] = useState("");
 
     const getDataDashboard = async () => {
         try {
-            const response = await axios.get(`https://altagp3.online/porter/dashboard`, {
+            const response = await axios.get(`https://altagp3.online/porter/dashboard?filter=${filter}`, {
                 headers: {
                     Authorization: `Bearer ${Cookies.get("token")}`,
                 },
@@ -57,13 +58,14 @@ const Index = () => {
             <HeaderPorter />
             <div className="container " style={{ marginBottom: "100px" }}>
                 <div className="d-flex float-end mt-3 h-5">
-                    <Form.Select aria-label="Default select example" className="w-75 flex me-3">
-                        <option value="harian">Harian</option>
+                    <Form.Select aria-label="Default select example" className="w-75 flex me-3" onChange={(e) => setFilter(e.target.value)}>
+                        <option>Hari/Bulan/Tahun</option>
+                        <option value="day">Harian</option>
                         <option value="mingguan">Mingguan</option>
-                        <option value="bulanan">Bulanan</option>
-                        <option value="tahunan">Tahunan</option>
+                        <option value="month">Bulanan</option>
+                        <option value="year">Tahunan</option>
                     </Form.Select>
-                    <Button variant="success" className="hover-overlay hover-zoom text-white ">
+                    <Button variant="success" className="hover-overlay hover-zoom text-white " onClick={() => getDataDashboard()}>
                         Filter
                     </Button>
                 </div>
@@ -92,11 +94,6 @@ const Index = () => {
                                 </Row>
                             </Card.Body>
                         </Card>
-                        {/* {dataDashboard.map((data, i) => {
-                            return (
-                                
-                            );
-                        })} */}
                     </div>
                     <div className="col-xl-6 col-lg-6 col-md-12 col-sm-12 d-flex justify-content-xl-end justify-content-lg-end justify-content-center">
                         <Card style={{ width: "25rem" }} className="mt-md-3 mt-3 mt-xl-0 mt-lg-0 bg-tea shadow border border-lime">

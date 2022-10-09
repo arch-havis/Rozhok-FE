@@ -9,6 +9,7 @@ import Cookies from "js-cookie";
 const Index = () => {
     const router = useRouter();
     const [detailList, setDetailList] = useState([]);
+    const [detailRosok, setDetailRosok] = useState([]);
     const [barangRosokId, setBarangRosokId] = useState();
     const [barangRosokKategori, setBarangRosokKategori] = useState("");
     const [berat, setBerat] = useState();
@@ -24,6 +25,8 @@ const Index = () => {
                 },
             });
             setDetailList(response.data.data);
+            setDetailRosok(response.data.data.barang_rosok);
+            console.log("ini list rosok", JSON.stringify(response.data.data.barang_rosok));
             setBarangRosokId(response.data.data.barang_rosok[0].id);
             setBarangRosokKategori(response.data.data.barang_rosok[0].kategori);
             setHarga(response.data.data.barang_rosok[0].harga_kategori);
@@ -44,8 +47,24 @@ const Index = () => {
                     berat: berat,
                     subtotal: subTotal,
                 },
+                {
+                    id_barang_rosok: barangRosokId,
+                    berat: berat,
+                    subtotal: subTotal,
+                },
+                {
+                    id_barang_rosok: barangRosokId,
+                    berat: berat,
+                    subtotal: subTotal,
+                },
+                {
+                    id_barang_rosok: barangRosokId,
+                    berat: berat,
+                    subtotal: subTotal,
+                },
             ],
         };
+
         console.log("ini data", data);
         var config = {
             method: "put",
@@ -110,51 +129,55 @@ const Index = () => {
                         <h4 className="text-alpukat">Kecamatan: {detailList?.client?.kecamatan}</h4>
                     </div>
                 </Row>
-                <Card className="w-100 mb-5 shadow-sm mt-5 border border-lime" key={barangRosokId}>
-                    <Card.Body className="bg-tea shadow-md">
-                        <Row>
-                            <div className="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
-                                <Card.Title className="text-alpukat fs-3">Kategori: {barangRosokKategori} </Card.Title>
-                            </div>
-                            <div className="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12 d-flex justify-content-end">
-                                {detailList?.status === "dibayar" || detailList?.status === "terjual" ? (
-                                    <Card.Title className="text-alpukat fs-5 pt-1 text-center text-white bg-lime rounded-3 w-25">{detailList?.status}</Card.Title>
-                                ) : (
-                                    <Card.Title className="text-alpukat fs-5 pt-1 text-center text-white bg-danger rounded-3 w-25">{detailList?.status}</Card.Title>
-                                )}
-                            </div>
-                            <div className="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12 mt-5">
-                                {detailList?.status === "dibayar" || detailList?.status === "terjual" ? (
-                                    <Card.Title className="text-alpukat fs-3">{berat}</Card.Title>
-                                ) : (
-                                    <Card.Title className="text-alpukat fs-3">
-                                        Berat <input className="w-25" type="number" onChange={(e) => setBerat(parseInt(e.target.value))}></input> (Kg)
-                                    </Card.Title>
-                                )}
-                            </div>
-                            <div className="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12 d-flex justify-content-end mt-5">
-                                {detailList?.status === "dibayar" || detailList?.status === "terjual" ? (
-                                    <Card.Title
-                                        className="text-alpukat fs-3 text-center text-alpukat rounded-3 w-50"
-                                        value={new Intl.NumberFormat("id-ID", {
-                                            style: "currency",
-                                            currency: "IDR",
-                                            currencyDisplay: "symbol",
-                                        }).format(subTotal)}
-                                    >
-                                        {subTotal}
-                                    </Card.Title>
-                                ) : (
-                                    <Card.Title className="text-alpukat fs-3 text-center text-alpukat rounded-3 w-50">
-                                        Rp <input className="w-25" type="number" onChange={(e) => setSubTotal(parseInt(e.target.value))}></input>
-                                    </Card.Title>
-                                )}
-                            </div>
-                        </Row>
-                    </Card.Body>
-                </Card>
+                {detailRosok.map((data) => {
+                    return (
+                        <Card className="w-100 mb-5 shadow-sm mt-5 border border-lime" key={data.id}>
+                            <Card.Body className="bg-tea shadow-md">
+                                <Row>
+                                    <div className="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
+                                        <Card.Title className="text-alpukat fs-3">Kategori: {data.kategori} </Card.Title>
+                                    </div>
+                                    <div className="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12 d-flex justify-content-end">
+                                        {detailList?.status === "dibayar" || detailList?.status === "terjual" ? (
+                                            <Card.Title className="text-alpukat fs-5 pt-1 text-center text-white bg-lime rounded-3 w-25">{detailList?.status}</Card.Title>
+                                        ) : (
+                                            <Card.Title className="text-alpukat fs-5 pt-1 text-center text-white bg-danger rounded-3 w-25">{detailList?.status}</Card.Title>
+                                        )}
+                                    </div>
+                                    <div className="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12 mt-5">
+                                        {detailList?.status === "dibayar" || detailList?.status === "terjual" ? (
+                                            <Card.Title className="text-alpukat fs-3">{berat}</Card.Title>
+                                        ) : (
+                                            <Card.Title className="text-alpukat fs-3">
+                                                Berat <input className="w-25" type="number" onChange={(e) => setBerat(parseInt(e.target.value))}></input> (Kg)
+                                            </Card.Title>
+                                        )}
+                                    </div>
+                                    <div className="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12 d-flex justify-content-end mt-5">
+                                        {detailList?.status === "dibayar" || detailList?.status === "terjual" ? (
+                                            <Card.Title
+                                                className="text-alpukat fs-3 text-center text-alpukat rounded-3 w-50"
+                                                value={new Intl.NumberFormat("id-ID", {
+                                                    style: "currency",
+                                                    currency: "IDR",
+                                                    currencyDisplay: "symbol",
+                                                }).format(subTotal)}
+                                            >
+                                                {subTotal}
+                                            </Card.Title>
+                                        ) : (
+                                            <Card.Title className="text-alpukat fs-3 text-center text-alpukat rounded-3 w-50">
+                                                Rp <input className="w-25" type="number" onChange={(e) => setSubTotal(parseInt(e.target.value))}></input>
+                                            </Card.Title>
+                                        )}
+                                    </div>
+                                </Row>
+                            </Card.Body>
+                        </Card>
+                    );
+                })}
                 {detailList?.status === "belum_bayar" ? (
-                    <Button variant="alpukat" className="hover-overlay hover-zoom text-white fs-5 float-end" onClick={() => putDataDetails()}>
+                    <Button variant="alpukat" className="hover-overlay hover-zoom text-white fs-5 float-end mb-5" onClick={() => putDataDetails()}>
                         Simpan
                     </Button>
                 ) : (

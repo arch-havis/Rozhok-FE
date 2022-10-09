@@ -1,12 +1,19 @@
 import Link from "next/link";
 import React from "react";
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { Col, Row, Form, Button } from "react-bootstrap";
-import Router from "next/router";
+import Router, { useRouter } from "next/router";
 import axios from "axios";
 import { setCookie } from "cookies-next";
 
 const Index = () => {
+  const inputRef = useRef(null);
+  const onButtonClick = () => {
+    // inputRef.current.value = "";
+  };
+  const router = useRouter();
+  const refreshData = () => router.replace(router.asPath);
+
   const [Register, setRegister] = useState(false);
   console.log(Register);
 
@@ -14,6 +21,15 @@ const Index = () => {
     email: "",
     password: "",
   });
+  console.log(user);
+
+  const [regist, setRegist] = useState({
+    email: "",
+    password: "",
+    username: "",
+    telepon: "",
+  });
+  console.log(regist);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -52,18 +68,63 @@ const Index = () => {
 
   const handleRegist = (e) => {
     e.preventDefault();
+    // window.location.reload();
+    // refreshData()
     setRegister(!Register);
   };
 
-  const handleCancel = (e) => {
+  const handleRegistMitra = (e) => {
     e.preventDefault();
-    setRegister(!Register);
+    Router.push("/");
+  };
+
+  const handleCancel = async (e) => {
+    e.preventDefault();
+    await window.location.reload();
+    // setRegister(!Register);
   };
 
   const handleInput = (e) => {
     let newLogin = { ...user };
     newLogin[e.target.name] = e.target.value;
     setUser(newLogin);
+  };
+
+  const handleInputRegister = (e) => {
+    let newRegist = { ...regist };
+    newRegist[e.target.name] = e.target.value;
+    setRegist(newRegist);
+  };
+
+  const handlePostRegist = (e) => {
+    e.preventDefault();
+    postRegister(e);
+  };
+
+  const postRegister = async (e) => {
+    e.preventDefault();
+    await axios({
+      method: "post",
+      url: "https://altagp3.online/register",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      data: {
+        email: regist.email,
+        password: regist.password,
+        username: regist.username,
+        telepon: regist.telepon,
+      },
+    })
+      .then((response) => {
+        console.log(response.data);
+        alert(response.data.message);
+        // setRegister(!Register);
+        window.location.reload();
+      })
+      .catch((error) => {
+        console.log(error.data);
+      });
   };
 
   return (
@@ -82,25 +143,47 @@ const Index = () => {
         <Col lg className="pt-5 mt-5">
           {Register ? (
             <Form
-              onSubmit={(e) => handleRegist(e)}
+              onSubmit={(e) => handlePostRegist(e)}
               className="border border-lime p-5 bg-putihan text-alpukat rounded-3 border-2"
             >
-              <Form.Group className="mb-3" controlId="formBasicEmail">
+              <Form.Group className="mb-3" controlId="regist-email">
                 <Form.Label>Email address</Form.Label>
-                <Form.Control type="email" placeholder="Enter Email" />
+                <Form.Control
+                  name="email"
+                  type="email"
+                  placeholder="Enter Email"
+                  value={regist.email}
+                  onChange={(e) => handleInputRegister(e)}
+                />
               </Form.Group>
-              <Form.Group className="mb-3" controlId="formBasicEmail">
-                <Form.Label>Telepon</Form.Label>
-                <Form.Control type="email" placeholder="Enter Phone Number" />
+              <Form.Group className="mb-3" controlId="regist-password">
+                <Form.Label>Password</Form.Label>
+                <Form.Control
+                  name="password"
+                  type="password"
+                  placeholder="Enter Password"
+                  value={regist.password}
+                  onChange={(e) => handleInputRegister(e)}
+                />
               </Form.Group>
 
-              <Form.Group className="mb-3" controlId="formBasicEmail">
+              <Form.Group className="mb-3" controlId="regist-username">
                 <Form.Label>Username</Form.Label>
-                <Form.Control type="email" placeholder="Enter Username" />
+                <Form.Control
+                  name="username"
+                  type="text"
+                  placeholder="Enter Username"
+                  onChange={(e) => handleInputRegister(e)}
+                />
               </Form.Group>
-              <Form.Group className="mb-3" controlId="formBasicPassword">
-                <Form.Label>Password</Form.Label>
-                <Form.Control type="password" placeholder="Password" />
+              <Form.Group className="mb-3" controlId="regist-tel">
+                <Form.Label>Telepon</Form.Label>
+                <Form.Control
+                  name="telepon"
+                  type="tel"
+                  placeholder="Enter Phone Number"
+                  onChange={(e) => handleInputRegister(e)}
+                />
               </Form.Group>
               <div className="d-flex justify-content-end">
                 <Button
@@ -135,15 +218,18 @@ const Index = () => {
                   name="email"
                   type="email"
                   placeholder="Enter email"
+                  // ref={inputRef}
                 />
               </Form.Group>
 
               <Form.Group className="mb-3" controlId="formBasicPassword">
                 <Form.Label>Password</Form.Label>
                 <Form.Control
+                  id="password"
                   name="password"
                   type="password"
                   placeholder="Password"
+                  // onfocus="this.value=''"
                   onChange={(e) => handleInput(e)}
                 />
               </Form.Group>
@@ -167,7 +253,10 @@ const Index = () => {
               <p>
                 Apakah mau jadi mitra kami?
                 <Link href="/client-page" className="text-decoration-none">
-                  <a className="text-lime text-decoration-none">
+                  <a
+                    className="text-lime text-decoration-none"
+                    onClick={(e) => handleRegistMitra(e)}
+                  >
                     {" "}
                     <b>Daftar Sekarang !</b>
                   </a>

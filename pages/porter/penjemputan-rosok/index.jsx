@@ -3,7 +3,6 @@ import { Card, Row, Button } from "react-bootstrap";
 import HeaderPorter from "../../../components/HeaderPorter";
 import Router from "next/router";
 import Cookies from "js-cookie";
-import axios from "axios";
 import Footer from "../../../components/Footer";
 
 const Index = () => {
@@ -46,7 +45,7 @@ const Index = () => {
     return (
         <div>
             <HeaderPorter />
-            <div className="container" style={{ marginBottom: "100px" }}>
+            <div className="container" style={{ marginBottom: "400px" }}>
                 <h3 className="d-flex float-end text-alpukat fw-bolder mt-5">List Penjemputan</h3>
                 <br />
                 <br />

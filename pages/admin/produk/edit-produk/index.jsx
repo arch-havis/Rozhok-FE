@@ -1,11 +1,12 @@
 import Cookies from "js-cookie";
-import Link from "next/link";
 import Router from "next/router";
 import React, { useState } from "react";
-import { Button, Col, Form, Row, Container } from "react-bootstrap";
+import { useRouter } from "next/router";
+import { Button, Col, Container, Form, Row } from "react-bootstrap";
 import HeaderAdmin from "../../../../components/HeaderAdmin";
 
 const Index = () => {
+  const router = useRouter();
   const [image, setImage] = useState(null);
   const [createObjectURL, setCreateObjectURL] = useState(null);
   const [namaProduk, setNamaProduk] = useState(null);
@@ -13,7 +14,7 @@ const Index = () => {
   const [harga, setHarga] = useState(0);
   const [desc, setDesc] = useState("");
 
-  // cancel
+  // handle cancel
   const handleCancel = (e) => {
     e.preventDefault();
     Router.push({ pathname: "/admin/produk" });
@@ -28,11 +29,9 @@ const Index = () => {
       setCreateObjectURL(URL.createObjectURL(i));
     }
   };
-
-  // add Produk
-  const handleTambahProduk = (e) => {
+  // editProduk
+  const handleEditProduk = (e) => {
     e.preventDefault();
-
     var myHeaders = new Headers();
     myHeaders.append("Authorization", `Bearer ${Cookies.get("token")}`);
 
@@ -44,19 +43,18 @@ const Index = () => {
     formdata.append("desc", desc);
 
     var requestOptions = {
-      method: "POST",
+      method: "PUT",
       headers: myHeaders,
       body: formdata,
       redirect: "follow",
     };
 
-    fetch("https://altagp3.online/product", requestOptions)
+    fetch(`https://altagp3.online/product/${router.query.id}`, requestOptions)
       .then((response) => response.text())
       .then((result) => {
         // console.log(result);
         Router.push({ pathname: "/admin/produk" });
       })
-
       .catch((error) => console.log("error", error));
   };
 
@@ -65,7 +63,7 @@ const Index = () => {
       <HeaderAdmin />
       <Container className="min-vh-100 pt-3">
         <h4 className="border-bottom  border-3 border-dark text-center">
-          Tambah Produk
+          Edit Produk
         </h4>
         <Row>
           <Col xl="7" lg="8" md="10" sm="12" className=" mt-5 mx-auto">
@@ -127,9 +125,9 @@ const Index = () => {
                   variant="lime"
                   type="submit"
                   style={{ color: "white" }}
-                  onClick={(e) => handleTambahProduk(e)}
+                  onClick={(e) => handleEditProduk(e)}
                 >
-                  Tambahkan
+                  Simpan
                 </Button>
               </div>
             </Form>

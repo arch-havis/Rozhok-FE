@@ -3,8 +3,39 @@ import HeaderClient from "../../../../components/HeaderClient";
 import Footer from "../../../../components/Footer";
 import { Row, Col, Button, Modal } from "react-bootstrap";
 import { useRouter } from "next/router";
+import { getCookie } from "cookies-next";
 
-const Index = () => {
+export const getServerSideProps = async (context) => {
+  const token = getCookie("token", context);
+  const response = await fetch(
+    `https://altagp3.online/transaksi/${context.query.id}/client/${context.query.status}`,
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }
+  );
+  const data = await response.json();
+
+  const respTagihan = await fetch(
+    `https://altagp3.online/tagihan/${context.query.id}`,
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }
+  );
+  const tagihan = await respTagihan.json();
+  return {
+    props: {
+      data: data,
+      tagihan: tagihan,
+    },
+  };
+};
+
+const Index = (props) => {
+  console.log(props.tagihan);
   const [show, setShow] = useState(false);
   const router = useRouter();
 
@@ -31,7 +62,9 @@ const Index = () => {
             </Col>
             <Col>
               <Button variant="warning text-white" className="w-100">
-                Tertunda
+                {props.data.data.status.split("_").map((items) => {
+                  return items.charAt(0).toUpperCase() + items.slice(1) + " ";
+                })}
               </Button>
             </Col>
             <Col id="batas" className="p-0 m-0"></Col>
@@ -52,7 +85,7 @@ const Index = () => {
                     style: "currency",
                     currency: "IDR",
                     currencyDisplay: "symbol",
-                  }).format(159364782)}
+                  }).format(props.data.data.grand_total)}
                 </b>
               </p>
               <br></br>
@@ -61,7 +94,7 @@ const Index = () => {
                 <b>Kurir</b>
               </h4>
               <p>
-                <b>JNT</b>
+                <b>{props.data.data.kurir.toUpperCase()}</b>
               </p>
             </Col>
           </Row>
@@ -72,46 +105,53 @@ const Index = () => {
             <b>Pembeli</b>
           </h4>
           <p>
-            <b>Nama :</b> Mikasa
+            <b>Nama :</b> {props.data.data.client.name}
           </p>
           <p>
-            <b>No. Telpon :</b> 963852147
+            <b>No. Telpon :</b> {parseInt(props.data.data.client.no_telp)}
           </p>
           <p>
-            <b>Provinsi :</b> Jawa Timur
+            <b>Provinsi :</b> {props.data.data.client.provinsi}
           </p>
           <p>
-            <b>Kota / Kabupaten :</b> Kediri
+            <b>Kota / Kabupaten :</b> {props.data.data.client.kota}
           </p>
           <p>
-            <b>Kecamatan :</b> Krass
+            <b>Kecamatan :</b> {props.data.data.client.kecamatan}
           </p>
         </Col>
       </Row>
       <Row className="p-0 m-0 text-alpukat">
         <Col md={2}></Col>
         <Col md={8}>
-          <Row className=" bg-tea border border-lime p-2 rounded-2">
-            <Col md={3}>
-              <img
-                src="https://cdn-brilio-net.akamaized.net/news/2017/11/02/134250/698323-lampu-hias-botol-bekas.jpg"
-                alt=""
-                className="w-100"
-              />
-            </Col>
-            <Col md={9} className="p-0 m-0 text-alpukat">
-              <h4>Kerajinan Botol</h4>
-              <h5>Jumlah : 5</h5>
-              <h6>
-                {new Intl.NumberFormat("id-ID", {
-                  style: "currency",
-                  currency: "IDR",
-                  currencyDisplay: "symbol",
-                }).format(743985621)}
-              </h6>
-            </Col>
-            <Col className="p-0 m-0"></Col>
-          </Row>
+          {props.data.data.produk.map((items, index) => {
+            return (
+              <Row
+                className=" bg-tea border border-lime p-2 rounded-2"
+                key={index}
+              >
+                <Col md={3}>
+                  <img
+                    src="https://cdn-brilio-net.akamaized.net/news/2017/11/02/134250/698323-lampu-hias-botol-bekas.jpg"
+                    alt=""
+                    className="w-100"
+                  />
+                </Col>
+                <Col md={9} className="p-0 m-0 text-alpukat">
+                  <h4></h4>
+                  <h5>Jumlah : {items.qty}</h5>
+                  <h6>
+                    {new Intl.NumberFormat("id-ID", {
+                      style: "currency",
+                      currency: "IDR",
+                      currencyDisplay: "symbol",
+                    }).format(items.subtotal)}
+                  </h6>
+                </Col>
+                <Col className="p-0 m-0"></Col>
+              </Row>
+            );
+          })}
         </Col>
         <Col></Col>
       </Row>
@@ -136,17 +176,21 @@ const Index = () => {
           <Row>
             <Col>
               <b>No. Akun Virtual</b>
-              <div>0123456789</div>
+              <div>{parseInt(props.tagihan.data.no_va)}</div>
             </Col>
             <Col>
               <b>Bank</b>
-              <div>BNI</div>
+              <div>{props.tagihan.data.bank.toUpperCase()}</div>
             </Col>
           </Row>
           <Row>
             <Col>
               <b>Tipe Pembayaran</b>
-              <div>Bank Transfer</div>
+              <div>
+                {props.tagihan.data.tipe_pembayaran.split("_").map((items) => {
+                  return items.charAt(0).toUpperCase() + items.slice(1) + " ";
+                })}
+              </div>
             </Col>
             <Col>
               <b>Total Harga</b>
@@ -155,7 +199,7 @@ const Index = () => {
                   style: "currency",
                   currency: "IDR",
                   currencyDisplay: "symbol",
-                }).format(sub)}
+                }).format(props.tagihan.data.total_harga)}
               </div>
             </Col>
           </Row>

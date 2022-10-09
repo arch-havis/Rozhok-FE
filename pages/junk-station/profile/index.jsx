@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Button, Col, Container, Row } from "react-bootstrap";
 import HeaderJunkStation from "../../../components/HeaderJunkStation";
 import {
@@ -12,17 +12,47 @@ import {
 
 // import { HiMapPin } from "react-icons/hi2";
 import { BiMap } from "react-icons/bi";
+import Cookies from "js-cookie";
+import Router, { useRouter } from "next/router";
 
 const Index = () => {
-  const [status, setStatus] = useState("Terverifikasi");
-  const [namaJunkStation, setNamaJunkStation] = useState("TPA Bersih");
-  const [namaPemilik, setNamaPemilik] = useState("Mukidi");
-  const [email, setEmail] = useState("mukidi@gmail.com");
-  const [noTelp, setNoTelp] = useState("09897988");
-  const [password, setPassword] = useState("tpa123");
-  const [alamat, setAlamat] = useState(
-    "Jalan abcde No 67  Kecamatan Selebar Kota Surabaya Jawa Timur"
-  );
+  const router = useRouter();
+  const [JS, setJS] = useState([]);
+
+  const gotoPerbarui = () => {
+    Router.push({
+      pathname: "/junk-station/edit-profile",
+    });
+  };
+
+  // get Profile
+  useEffect(() => {
+    getProfile();
+  }, []);
+
+  const getProfile = () => {
+    var axios = require("axios");
+    var FormData = require("form-data");
+    var data = new FormData();
+
+    var config = {
+      method: "get",
+      url: "https://altagp3.online/junk-station/profile",
+      headers: {
+        Authorization: `Bearer ${Cookies.get("token")}`,
+      },
+      data: data,
+    };
+
+    axios(config)
+      .then(function (response) {
+        // console.log(JSON.stringify(response.data.data));
+        setJS(response.data.data);
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+  };
 
   return (
     <div className="bg-putih min-vh-100">
@@ -32,7 +62,9 @@ const Index = () => {
           <Col className="text-end d-flex justify-content-end mt-3 ">
             <div className="d-flex bg-lime px-2 rounded-2">
               <AiFillAlert size={40} className="text-alpukat " />
-              <p className="fs-4 mt-1 fw-bold ">{status}</p>
+              <p className="fs-4 mt-1 fw-bold ms-1 text-capitalize">
+                {JS.status_kemitraan}
+              </p>
             </div>
           </Col>
         </Row>
@@ -40,27 +72,26 @@ const Index = () => {
           <Col md="7" lg="6" className="">
             <div className="d-flex ">
               <AiFillBank size={30} className="text-alpukat " />
-              <p className=" mt-1  ">{namaJunkStation}</p>
+              <p className=" mt-1 ms-1 text-capitalize ">
+                {JS.junk_station_name}
+              </p>
             </div>
             <div className="d-flex ">
               <AiOutlineUser size={30} className="text-alpukat " />
-              <p className=" mt-1  ">{namaPemilik}</p>
-            </div>
-            <div className="d-flex ">
-              <AiOutlineMail size={30} className="text-alpukat " />
-              <p className=" mt-1  ">{email}</p>
+              <p className=" mt-1 ms-1 text-capitalize ">
+                {JS.junk_station_owner}
+              </p>
             </div>
             <div className="d-flex ">
               <AiFillPhone size={30} className="text-alpukat " />
-              <p className=" mt-1  ">{noTelp}</p>
-            </div>
-            <div className="d-flex ">
-              <AiOutlineLock size={30} className="text-alpukat " />
-              <p className=" mt-1  ">{password}</p>
+              <p className=" mt-1 ms-1 ">{JS.telp}</p>
             </div>
             <div className="d-flex ">
               <BiMap size={30} className="text-alpukat " />
-              <p className=" mt-1 fs-6  ">{alamat}</p>
+              <p className=" mt-1 fs-6 ms-1 text-capitalize ">
+                {JS.jalan} Kecamatan {JS.kecamatan} {JS.kota} Provinsi{" "}
+                {JS.provinsi}
+              </p>
             </div>
           </Col>
           <Col className=" d-none d-md-block text-end">
@@ -78,9 +109,7 @@ const Index = () => {
             <Button
               className=" mb-3 fw-bold text-putih"
               variant="lime"
-              onClick={function () {
-                location.href = "/junk-station/edit-profile";
-              }}
+              onClick={() => gotoPerbarui()}
             >
               Perbarui
             </Button>

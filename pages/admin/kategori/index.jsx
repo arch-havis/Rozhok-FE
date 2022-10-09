@@ -1,77 +1,149 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import Router, { useRouter } from "next/router";
+
 import HeaderAdmin from "../../../components/HeaderAdmin";
 import Footer from "../../../components/Footer";
-import { Button, Col, Row, Table } from "react-bootstrap";
+import { Button, Col, Container, Row, Table } from "react-bootstrap";
+import Cookies from "js-cookie";
 
 const Index = () => {
-  const hargaClient = 666666;
-  const hargaMitra = 7777777;
+  const [kategori, setKategori] = useState([]);
+  const router = useRouter();
 
-  const goTambah = (e) => {
-    location.href = "/admin/kategori/tambah";
+  // get Kategori
+  useEffect(() => {
+    getKategori();
+  }, []);
+
+  const getKategori = () => {
+    var axios = require("axios");
+    var data = "";
+
+    var config = {
+      method: "get",
+      url: "https://altagp3.online/categories",
+      headers: {
+        accept: "application/json",
+        Authorization: `Bearer ${Cookies}`,
+      },
+      data: data,
+    };
+
+    axios(config)
+      .then(function (response) {
+        // console.log(JSON.stringify(response.data.data));
+        setKategori(response.data.data);
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
   };
 
-  const formatClient = new Intl.NumberFormat("id-ID", {
-    style: "currency",
-    currency: "IDR",
-    currencyDisplay: "symbol",
-  }).format(hargaClient);
+  // delete kategori
+  const handleDeleteKategori = (id) => {
+    var axios = require("axios");
 
-  const formatMitra = new Intl.NumberFormat("id-ID", {
-    style: "currency",
-    currency: "IDR",
-    currencyDisplay: "symbol",
-  }).format(hargaMitra);
+    var config = {
+      method: "delete",
+      url: `https://altagp3.online/category/${id}`,
+      headers: {
+        Authorization: `Bearer ${Cookies.get("token")}`,
+      },
+    };
+
+    axios(config)
+      .then(function (response) {
+        // console.log(JSON.stringify(response.data));
+        getKategori();
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+  };
+
+  // goto tambah kategori
+  const gotoTambahKategori = () => {
+    Router.push({
+      pathname: `/admin/kategori/tambah-kategori`,
+    });
+  };
+
+  // goto edit kategori
+  const handleEditKategori = (id) => {
+    Router.push({
+      pathname: `/admin/kategori/edit-kategori`,
+      query: {
+        kategori: id,
+      },
+    });
+  };
 
   return (
     <div>
       <HeaderAdmin />
-      <Row className="m-0 mb-5">
-        <Col></Col>
-        <Col></Col>
-        <Col>
-          <Button variant="lime mt-5 border-alpukat" onClick={() => goTambah()}>
+      <Container>
+        <div className="text-end">
+          <Button
+            variant="lime mt-5 mb-2 fw-bold text-putih "
+            onClick={() => gotoTambahKategori()}
+          >
             Tambah Kategori
           </Button>
-        </Col>
-      </Row>
-      <Row className="m-0 mt-5">
-        <Col></Col>
-        <Col md={8} className="text-center">
-          <Table>
-            <thead className="bg-alpukat text-putihan">
-              <tr>
-                <th>No.</th>
-                <th>Kategori</th>
-                <th>Harga Client</th>
-                <th>Harga Mitra</th>
-                <th>Aksi</th>
-              </tr>
-            </thead>
-            <tbody className="border-tea border">
-              <tr>
-                <td>1</td>
-                <td>Besi</td>
-                <td>{formatClient}</td>
-                <td>{formatMitra}</td>
-                <td>
-                  <a
-                    href="/admin/kategori/tambah"
-                    className="text-alpukat text-decoration-none"
-                  >
-                    Edit
-                  </a>
-                  {" | "}
-                  <a href="" className="text-alpukat text-decoration-none">
-                    Hapus
-                  </a>
-                </td>
-              </tr>
-            </tbody>
-          </Table>
-        </Col>
-        <Col></Col>
-      </Row>
+        </div>
+        <Table responsive>
+          <thead className="bg-alpukat text-putihan">
+            <tr>
+              <th>No.</th>
+              <th>Kategori</th>
+              <th>Harga Client</th>
+              <th>Harga Mitra</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody className="border-tea border">
+            {kategori.map((item, index) => {
+              return (
+                <tr key={item.id}>
+                  <td> {index + 1} </td>
+                  <td>{item.nama}</td>
+                  <td>
+                    {Intl.NumberFormat("id-ID", {
+                      style: "currency",
+                      currency: "IDR",
+                      currencyDisplay: "symbol",
+                    }).format(item.harga_client)}
+                  </td>
+
+                  <td>
+                    {Intl.NumberFormat("id-ID", {
+                      style: "currency",
+                      currency: "IDR",
+                      currencyDisplay: "symbol",
+                    }).format(item.harga_mitra)}
+                  </td>
+                  <td>
+                    <Button
+                      variant="putihan"
+                      className="text-alpukat text-decoration-none p-0"
+                      onClick={() => handleEditKategori(item.id)}
+                    >
+                      Edit
+                    </Button>
+                    {" | "}
+                    <Button
+                      variant="putihan"
+                      className="text-alpukat text-decoration-none p-0"
+                      onClick={() => handleDeleteKategori(item.id)}
+                    >
+                      Hapus
+                    </Button>
+                  </td>
+                </tr>
+              );
+            })}
+          </tbody>
+        </Table>
+      </Container>
       <Footer />
     </div>
   );

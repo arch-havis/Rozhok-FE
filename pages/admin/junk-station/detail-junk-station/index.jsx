@@ -1,4 +1,6 @@
-import React, { useState } from "react";
+import Cookies from "js-cookie";
+import React, { useEffect, useState } from "react";
+import Router, { useRouter } from "next/router";
 import { Button, Col, Container, Row } from "react-bootstrap";
 import {
   AiFillAlert,
@@ -12,55 +14,137 @@ import { BiMap } from "react-icons/bi";
 import HeaderAdmin from "../../../../components/HeaderAdmin";
 
 const Index = () => {
-  const [namaJunkStation, setNamaJunkStation] = useState("TPA Bersih");
-  const [namaPemilik, setNamaPemilik] = useState("Mukidi");
-  const [email, setEmail] = useState("mukidi@gmail.com");
-  const [noTelp, setNoTelp] = useState("09897988");
-  const [alamat, setAlamat] = useState(
-    "Jalan abcde No 67  Kecamatan Selebar Kota Surabaya Jawa Timur"
-  );
+  const router = useRouter();
+  const [status, setStatus] = useState("");
+  const [detailJS, setDetailJS] = useState([]);
+
+  // get Detail JS
+  useEffect(() => {
+    getDetailJS();
+  }, []);
+
+  const getDetailJS = () => {
+    var axios = require("axios");
+
+    var config = {
+      method: "get",
+      url: `https://altagp3.online/junk-station/${router.query.id}`,
+      headers: {
+        Authorization: `Bearer ${Cookies.get("token")}`,
+      },
+    };
+
+    axios(config)
+      .then(function (response) {
+        console.log(JSON.stringify(response.data.data));
+        setDetailJS(response.data.data);
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+  };
+
+  // edit StatusJS
+
+  const handleTerimaKemitraan = () => {
+    var axios = require("axios");
+    var data = "";
+
+    var config = {
+      method: "put",
+      url: `https://altagp3.online/kemitraan/${router.query.id}?status_kemitraan=terverifikasi`,
+
+      headers: {
+        Authorization: `Bearer ${Cookies.get("token")}`,
+      },
+      data: data,
+    };
+
+    axios(config)
+      .then(function (response) {
+        console.log(JSON.stringify(response.data));
+        getDetailJS();
+        Router.push({
+          pathname: `/admin/junk-station`,
+        });
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+  };
+
+  const handleTolakKemitraan = () => {
+    var axios = require("axios");
+    var data = "";
+
+    var config = {
+      method: "put",
+      url: `https://altagp3.online/kemitraan/${router.query.id}?status_kemitraan=gagal_verifikasi`,
+
+      headers: {
+        Authorization: `Bearer ${Cookies.get("token")}`,
+      },
+      data: data,
+    };
+
+    axios(config)
+      .then(function (response) {
+        console.log(JSON.stringify(response.data));
+        getDetailJS();
+        Router.push({
+          pathname: `/admin/junk-station`,
+        });
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+  };
+
   return (
     <div className="bg-putih">
       <HeaderAdmin />
       <Container className="min-vh-100 pt-5">
         <h2 className="text-end">Detail Junk Station</h2>
         <div className="pt-5 d-flex flex-column flex-md-row">
-          <div className="">
-            <img
-              src="https://images.unsplash.com/photo-1591198619986-ac025da6a1f3?crop=entropy&cs=tinysrgb&fit=crop&fm=jpg&h=400&ixid=MnwxfDB8MXxyYW5kb218MHx8cnViYmlzaHx8fHx8fDE2NjQ3Nzc1Mzc&ixlib=rb-1.2.1&q=80&utm_campaign=api-credit&utm_medium=referral&utm_source=unsplash_source&w=400"
-              alt=""
-              className="w-100 rounded-3"
-            />
-          </div>
-          <div className=" d-flex flex-column justify-content-center px-md-3 fs-5 mt-3 mt-md-0 mt-lg-5">
+          <Col className="">
+            <img src={detailJS.image_url} alt="" className="w-100 rounded-3" />
+          </Col>
+          <Col className=" d-flex flex-column justify-content-center px-md-3 fs-5 mt-3 mt-md-0 mt-lg-5">
             <div className="d-flex ">
               <AiFillBank size={30} className="text-alpukat " />
-              <p className="ms-1 mt-1  ">{namaJunkStation}</p>
+              <p className="ms-1 mt-1  ">{detailJS.junk_station_name}</p>
             </div>
             <div className="d-flex ">
               <AiOutlineUser size={30} className="text-alpukat " />
-              <p className="ms-1 mt-1  ">{namaPemilik}</p>
-            </div>
-            <div className="d-flex ">
-              <AiOutlineMail size={30} className="text-alpukat " />
-              <p className="ms-1 mt-1  ">{email}</p>
+              <p className="ms-1 mt-1  ">{detailJS.junk_station_owner}</p>
             </div>
             <div className="d-flex ">
               <AiFillPhone size={30} className="text-alpukat " />
-              <p className="ms-1 mt-1  ">{noTelp}</p>
+              <p className="ms-1 mt-1  ">{detailJS.telp}</p>
             </div>
             <div className="d-flex ">
               <BiMap size={30} className="text-alpukat " />
-              <p className=" ms-1 mt-1 fs-6  ">{alamat}</p>
+              <p className=" ms-1 mt-1 fs-6  ">
+                jalan {detailJS.jalan} Kecamatan {detailJS.kecamatan}{" "}
+                {detailJS.kota} Provinsi {detailJS.provinsi}
+              </p>
             </div>
-          </div>
+          </Col>
         </div>
 
         <div className="mt-5 pb-5 text-end">
-          <Button variant="danger" className="fw-bold text-putih px-3 ms-2">
+          <Button
+            variant="danger"
+            className="fw-bold text-putih px-3 ms-2"
+            onClick={() => handleTolakKemitraan()}
+          >
             Tolak Kemitraan
           </Button>
-          <Button variant="lime" className="fw-bold text-putih px-3 ms-3">
+          <Button
+            variant="lime"
+            className="fw-bold text-putih px-3 ms-3"
+            onClick={() => handleTerimaKemitraan()}
+          >
             Verifikasi
           </Button>
         </div>
