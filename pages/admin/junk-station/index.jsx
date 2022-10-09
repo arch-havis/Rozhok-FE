@@ -80,7 +80,6 @@ const Index = () => {
     <div className="bg-putih">
       <HeaderAdmin />
       <Container className="min-vh-100">
-        <p> {filter} </p>
         <h4 className="border-bottom  border-3 border-dark text-center mt-3">
           Daftar Junk Station
         </h4>
