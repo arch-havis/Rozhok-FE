@@ -1,11 +1,10 @@
 import React from "react";
 import { Col } from "react-bootstrap";
 
-
 const Footer = () => {
     return (
-        <footer className="bg-alpukat text-putihan">
-            <div className="atas">
+        <footer className="">
+            {/* <div className="atas">
                 <div className="text">
                     <div className="row">
                         <div className="col"> Contact</div>
@@ -17,8 +16,8 @@ const Footer = () => {
             <div className="bawah">
                 <div className="text">&copy;Rozhok
                 </div>
-            </div>
-        </footer>  
+            </div> */}
+        </footer>
     );
 };
 export default Footer;
