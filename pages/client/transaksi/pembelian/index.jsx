@@ -16,15 +16,26 @@ export const getServerSideProps = async (context) => {
     }
   );
   const data = await response.json();
+
+  const respTagihan = await fetch(
+    `https://altagp3.online/tagihan/${context.query.id}`,
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }
+  );
+  const tagihan = await respTagihan.json();
   return {
     props: {
       data: data,
+      tagihan: tagihan,
     },
   };
 };
 
 const Index = (props) => {
-  console.log(props.data);
+  console.log(props.tagihan);
   const [show, setShow] = useState(false);
   const router = useRouter();
 
@@ -165,17 +176,21 @@ const Index = (props) => {
           <Row>
             <Col>
               <b>No. Akun Virtual</b>
-              <div>0123456789</div>
+              <div>{parseInt(props.tagihan.data.no_va)}</div>
             </Col>
             <Col>
               <b>Bank</b>
-              <div>BNI</div>
+              <div>{props.tagihan.data.bank.toUpperCase()}</div>
             </Col>
           </Row>
           <Row>
             <Col>
               <b>Tipe Pembayaran</b>
-              <div>Bank Transfer</div>
+              <div>
+                {props.tagihan.data.tipe_pembayaran.split("_").map((items) => {
+                  return items.charAt(0).toUpperCase() + items.slice(1) + " ";
+                })}
+              </div>
             </Col>
             <Col>
               <b>Total Harga</b>
@@ -184,7 +199,7 @@ const Index = (props) => {
                   style: "currency",
                   currency: "IDR",
                   currencyDisplay: "symbol",
-                }).format(sub)}
+                }).format(props.tagihan.data.total_harga)}
               </div>
             </Col>
           </Row>

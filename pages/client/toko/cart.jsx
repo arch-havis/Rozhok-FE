@@ -30,7 +30,7 @@ const Cart = (props) => {
   const [jumlah, setJumlah] = useState(1);
   let sub = harga * jumlah;
 
-  console.log(props.cart.data.filter((items) => items.checklist === true));
+  // console.log(props.cart.data.filter((items) => items.checklist === true));
   // const format = Intl.NumberFormat("id", {
   //     style: "currency",
   //     currency: "IDR"
