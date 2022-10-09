@@ -33,7 +33,8 @@ const Checkout = () => {
         alert(response.data.message.toUpperCase());
       })
       .catch((error) => {
-        console.log(error.data.message);
+        console.log(error.message);
+        alert(error.response.data.message.toUpperCase());
       });
   };
 
