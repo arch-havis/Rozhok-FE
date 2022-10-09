@@ -125,7 +125,7 @@ const Index = () => {
                             </div>
                             <div className="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12 mt-5">
                                 {detailList?.status === "dibayar" || detailList?.status === "terjual" ? (
-                                    <Card.Title className="text-alpukat fs-3">{berat}</Card.Title>
+                                    <Card.Title className="text-alpukat fs-3">{berat}(Kg)</Card.Title>
                                 ) : (
                                     <Card.Title className="text-alpukat fs-3">
                                         Berat <input className="w-25" type="number" onChange={(e) => setBerat(parseInt(e.target.value))}></input> (Kg)
@@ -134,15 +134,12 @@ const Index = () => {
                             </div>
                             <div className="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12 d-flex justify-content-end mt-5">
                                 {detailList?.status === "dibayar" || detailList?.status === "terjual" ? (
-                                    <Card.Title
-                                        className="text-alpukat fs-3 text-center text-alpukat rounded-3 w-50"
-                                        value={new Intl.NumberFormat("id-ID", {
+                                    <Card.Title className="text-alpukat fs-3 text-center text-alpukat rounded-3 w-50">
+                                        {new Intl.NumberFormat("id-ID", {
                                             style: "currency",
                                             currency: "IDR",
                                             currencyDisplay: "symbol",
                                         }).format(subTotal)}
-                                    >
-                                        {subTotal}
                                     </Card.Title>
                                 ) : (
                                     <Card.Title className="text-alpukat fs-3 text-center text-alpukat rounded-3 w-50">
