@@ -34,7 +34,7 @@ const Index = (props) => {
   const [id, setId] = useState();
   console.log(id);
 
-  const handleAdd = async () => {
+  const handleAdd = async (e) => {
     await axios({
       method: "post",
       url: "https://altagp3.online/cart",
@@ -42,7 +42,7 @@ const Index = (props) => {
         Authorization: `Bearer ${token}`,
       },
       data: {
-        id_barang: id,
+        id_barang: parseInt(e.target.id),
       },
     })
       .then((response) => {
@@ -202,11 +202,14 @@ const Index = (props) => {
                     <br></br>
                     <Button
                       variant="lime border border-alpukat border-2"
-                      onClick={() => {
-                        setId(items.id), handleAdd();
+                      value={items.id}
+                      onClick={(e) => {
+                        handleAdd(e);
                       }}
                     >
-                      <b className="text-alpukat">Add Cart</b>
+                      <b className="text-alpukat" id={items.id}>
+                        Add Cart
+                      </b>
                     </Button>
                     <p></p>
                   </Col>

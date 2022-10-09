@@ -5,6 +5,7 @@ import HeaderPorter from "../../../components/HeaderPorter";
 import { useRouter } from "next/router";
 import axios from "axios";
 import Cookies from "js-cookie";
+import Footer from "../../../components/Footer";
 
 const Index = () => {
     const router = useRouter();
@@ -22,7 +23,7 @@ const Index = () => {
                 },
             });
             setDataJunkStation(response.data.data);
-            console.log("ini response.data.data", response.data.data);
+            console.log("ini response.data.data", JSON.stringify(response.data.data));
         } catch (error) {
             console.log(error);
         }
@@ -48,9 +49,11 @@ const Index = () => {
                         <h3 className="text-alpukat fs-sm-5">Kota/Kab: {dataJunkStation?.kota}</h3>
                         <h3 className="text-alpukat fs-sm-5">Kecamatan: {dataJunkStation?.kecamatan}</h3>
                         <h3 className="text-alpukat fs-sm-5">Jalan: {dataJunkStation?.jalan}</h3>
+
                     </div>
                 </Row>
             </div>
+            <Footer />
         </div>
     );
 };

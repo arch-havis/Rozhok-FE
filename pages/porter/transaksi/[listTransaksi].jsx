@@ -176,7 +176,6 @@ const Index = () => {
                         </Card>
                     );
                 })}
-
                 {detailList?.status === "belum_bayar" ? (
                     <Button variant="alpukat" className="hover-overlay hover-zoom text-white fs-5 float-end mb-5" onClick={() => putDataDetails()}>
                         Simpan
