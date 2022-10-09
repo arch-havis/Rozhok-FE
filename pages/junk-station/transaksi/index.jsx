@@ -60,7 +60,7 @@ const Index = () => {
         <h4 className="border-bottom  border-3 border-dark text-center">
           Daftar Transaksi
         </h4>
-        <div className=" mt-5 d-flex flex-column flex-sm-row justify-content-end">
+        {/* <div className=" mt-5 d-flex flex-column flex-sm-row justify-content-end">
           <input type="date" className="rounded-2 border-1 border-dark" />
           <input
             type="date"
@@ -69,7 +69,7 @@ const Index = () => {
           <Button variant="lime" className="fw-bold text-putih px-3">
             Filter
           </Button>
-        </div>
+        </div> */}
         <Table responsive="xl" className="bg-tea mt-3">
           <thead className="bg-alpukat text-putih ">
             <tr className="">
