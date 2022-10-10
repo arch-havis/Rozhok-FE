@@ -241,7 +241,7 @@ const Cart = (props) => {
                           <Row className="border border-2 border-lime rounded-2 bg-tea pt-2 ms-2">
                             <Col md={3}>
                               <img
-                                src="https://cdn-brilio-net.akamaized.net/news/2017/11/02/134250/698323-lampu-hias-botol-bekas.jpg"
+                                src={items.image_url}
                                 alt=""
                                 style={{ maxWidth: "100%", minHeight: "100%" }}
                                 className="rounded-2"
@@ -327,7 +327,7 @@ const Cart = (props) => {
                           <Row className="border border-2 border-lime rounded-2 bg-tea pt-2 ms-2">
                             <Col md={3}>
                               <img
-                                src="https://cdn-brilio-net.akamaized.net/news/2017/11/02/134250/698323-lampu-hias-botol-bekas.jpg"
+                                src={items.image_url}
                                 alt=""
                                 style={{ maxWidth: "100%", minHeight: "100%" }}
                                 className="rounded-2"

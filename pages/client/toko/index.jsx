@@ -98,7 +98,7 @@ const Index = (props) => {
                   }}
                 >
                   <img
-                    src="https://cdn-brilio-net.akamaized.net/news/2017/11/02/134250/698323-lampu-hias-botol-bekas.jpg"
+                    src={items.image_url}
                     alt=""
                     style={{ maxWidth: "100%" }}
                     className="rounded-2"
