@@ -57,36 +57,80 @@ const Index = (props) => {
   return (
     <div>
       <HeaderClient />
+      {/* ////////////////APA ITU ROZHOK///////////////////////////       */}
       <Row className="pt-5 mt-5 pe-0 me-0 ps-0 ms-0 mb-5">
         <Col md={3}></Col>
         <Col md={6} className="border border-lime rounded-2 text-alpukat p-5">
-          <p>
-            Nobis molestiae nihil autem laborum earum. Rerum ducimus expedita
-            modi dolor molestias aut. Vero doloribus rerum quis voluptas fugiat
-            accusamus minima. Soluta temporibus consequatur quaerat omnis dolore
-            qui. Inventore ut sed maiores.
-          </p>
-          <p>
-            Nemo eum iste quo ut. Sapiente porro rerum pariatur necessitatibus
-            et. Dicta a aut est eos ipsam ut voluptatibus. Maxime facere dolorem
-            dolores fuga ipsum nihil et ipsam. Laudantium corporis deserunt
-            illum molestiae. Quasi ducimus ut in veritatis magni sed ut.
-          </p>
-          <p>
-            Porro aut labore amet sapiente recusandae. Recusandae veniam sit
-            nihil repellendus distinctio. Voluptates et dignissimos quo.
-            Voluptas fugiat perferendis facere voluptates. Iste omnis suscipit
-            numquam dolores dolor molestiae in.
-          </p>
-          <p>
-            Occaecati omnis est et qui veniam deleniti. Cumque dolorem magnam
-            recusandae. Ipsam in quo et id hic laboriosam suscipit.
-          </p>
-          <p>
-            Omnis neque qui eum occaecati dolor. Est voluptas sit rerum id
-            praesentium. Qui atque in tenetur cumque dolorem. Dolore aut debitis
-            sequi qui et asperiores.
-          </p>
+          <Row>
+            <h1>
+              <b>Apa itu Rozhok ?</b>
+            </h1>
+            <p>
+              Rozhok adalah sebuah platform untuk menghubungkan masyarakat
+              dengan pengepul untuk menjual barang yang tidak terpakai.
+            </p>
+          </Row>
+
+          {/* /////////////LATAR MASALAH////////////////// */}
+
+          <Row className="text-end bg-tea">
+            <h3>
+              <b>Latar Masalah</b>
+            </h3>
+            <Row>
+              <Col className="">
+                Sampah yang terbengkalai dan tidak tahu mau dijual kemana
+              </Col>
+              <Col md={1}>
+                <h4>
+                  <b>01</b>
+                </h4>
+              </Col>
+            </Row>
+            <Row>
+              <Col className="">
+                Ingin mendatangi pengepul, namun tidak punya banyak waktu luang
+              </Col>
+              <Col md={1}>
+                <h4>
+                  <b>02</b>
+                </h4>
+              </Col>
+            </Row>
+            <Row>
+              <Col className="">
+                Pengepul sering berkeliling namun ditolak dan tidak efektif
+              </Col>
+              <Col md={1}>
+                <h4>
+                  <b>03</b>
+                </h4>
+              </Col>
+            </Row>
+            <Row>
+              <Col>
+                Mempermudah pendaur ulang sampah untuk memilah dan
+                mengkategorikan sampah
+              </Col>
+              <Col md={1}>
+                <h4>
+                  <b>04</b>
+                </h4>
+              </Col>
+            </Row>
+          </Row>
+
+          <Row className="mt-3">
+            <h1>
+              <b>Solusi ?</b>
+            </h1>
+            <h3>Rozhok datang untuk menjawab.</h3>
+            <p>
+              Rozhok sebuah platform untuk mempertemukan masyarakat, pengepul
+              dan juga tempat pembuangan sampah untuk bersama membangun saling
+              berintegrasi menyelesaikan masalah pengelolaan sampah
+            </p>
+          </Row>
         </Col>
         <Col md={3}></Col>
       </Row>
@@ -177,7 +221,7 @@ const Index = (props) => {
                       }}
                     >
                       <img
-                        src="https://cdn-brilio-net.akamaized.net/news/2017/11/02/134250/698323-lampu-hias-botol-bekas.jpg"
+                        src={items.image_url}
                         alt=""
                         style={{ maxWidth: "100%" }}
                         className="rounded-2"

@@ -36,6 +36,7 @@ export const getServerSideProps = async (context) => {
 
 const Index = (props) => {
   console.log(props.tagihan);
+  console.log(props.data);
   const [show, setShow] = useState(false);
   const router = useRouter();
 
@@ -131,11 +132,7 @@ const Index = (props) => {
                 key={index}
               >
                 <Col md={3}>
-                  <img
-                    src="https://cdn-brilio-net.akamaized.net/news/2017/11/02/134250/698323-lampu-hias-botol-bekas.jpg"
-                    alt=""
-                    className="w-100"
-                  />
+                  <img src={items.image_url} alt="" className="w-100" />
                 </Col>
                 <Col md={9} className="p-0 m-0 text-alpukat">
                   <h4></h4>
