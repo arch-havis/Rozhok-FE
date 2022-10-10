@@ -61,7 +61,7 @@ const Index = () => {
           className="p-2 border border-alpukat rounded-2 bg-tea"
         >
           <Col>
-            <h6>Total Junk Client</h6>
+            <h6>Total Client</h6>
           </Col>
           <Col>
             <h4>
