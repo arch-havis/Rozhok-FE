@@ -4,10 +4,11 @@ import Footer from "../../../../components/Footer";
 import { Row, Col, Button } from "react-bootstrap";
 import Router, { useRouter } from "next/router";
 import { getCookie } from "cookies-next";
+import axios from "axios";
 
 export const getServerSideProps = async (context) => {
   const token = getCookie("token", context);
-  const response = await fetch(
+  const response = await axios.get(
     `https://altagp3.online/transaksi/${context.query.id}/client/${context.query.status}`,
     {
       headers: {
@@ -15,7 +16,7 @@ export const getServerSideProps = async (context) => {
       },
     }
   );
-  const data = await response.json();
+  const data = response.data;
   return {
     props: {
       data: data,
@@ -27,9 +28,32 @@ const Index = (props) => {
   const [data, setData] = useState();
   console.log(props.data);
 
+  const [Respons, setRespons] = useState();
+
+  const token = getCookie("token");
+  const getKat = async () => {
+    await axios
+      .get(
+        `https://altagp3.online/transaksi/${Router.query.id}/client/${Router.query.tipe}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      )
+      .then((response) => {
+        setRespons(response.data.data.barang_rosok);
+      });
+  };
+  useEffect(() => {
+    getKat();
+  }, []);
+  console.log(Respons);
+
   return (
     <div className="text-alpukat">
       <HeaderClient />
+      {/* <p>{Respons[0].berat}</p> */}
       <Row className="mt-5 p-0 m-0">
         <Col></Col>
         <Col></Col>
@@ -115,7 +139,10 @@ const Index = (props) => {
                 <Row>
                   <Col md={3}></Col>
                   <Col md={9}>
-                    <Col>Kategori : {item.kategori}</Col>
+                    <Col>
+                      Kategori :{" "}
+                      {Respons === undefined ? <></> : Respons[index].kategori}
+                    </Col>
                     <Col>Berat : {item.berat} kg</Col>
                     <Col>Harga : {item.harga}</Col>
                   </Col>
