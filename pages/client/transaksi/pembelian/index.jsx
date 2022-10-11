@@ -8,7 +8,7 @@ import { getCookie } from "cookies-next";
 export const getServerSideProps = async (context) => {
   const token = getCookie("token", context);
   const response = await fetch(
-    `https://altagp3.online/transaksi/${context.query.id}/client/${context.query.status}`,
+    `https://altagp3.online/transaksi/${context.query.id}/client/${context.query.tipe}`,
     {
       headers: {
         Authorization: `Bearer ${token}`,

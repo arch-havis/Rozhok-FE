@@ -9,7 +9,7 @@ import axios from "axios";
 export const getServerSideProps = async (context) => {
   const token = getCookie("token", context);
   const response = await axios.get(
-    `https://altagp3.online/transaksi/${context.query.id}/client/${context.query.status}`,
+    `https://altagp3.online/transaksi/${context.query.id}/client/${context.query.tipe}`,
     {
       headers: {
         Authorization: `Bearer ${token}`,
@@ -139,10 +139,7 @@ const Index = (props) => {
                 <Row>
                   <Col md={3}></Col>
                   <Col md={9}>
-                    <Col>
-                      Kategori :{" "}
-                      {Respons === undefined ? <></> : Respons[index].kategori}
-                    </Col>
+                    <Col>Kategori : {item.kategori}</Col>
                     <Col>Berat : {item.berat} kg</Col>
                     <Col>Harga : {item.harga}</Col>
                   </Col>
