@@ -30,13 +30,14 @@ const Checkout = () => {
       },
     })
       .then((response) => {
-        console.log(response.data)
-        var data = `
+        var alet = `
           NO_VA: ${response.data.no_va}
           BANK: ${response.data.bank}
           TIPE_PEMBAYARAN: ${response.data.tipe_pembayaran}
           HARGA: ${response.data.total_harga}
         `
+        console.log(response.data)
+        alert(alet)
       })
       .catch((error) => {
         console.log(error.message);
