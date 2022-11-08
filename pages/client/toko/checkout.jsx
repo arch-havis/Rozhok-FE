@@ -31,10 +31,10 @@ const Checkout = () => {
     })
       .then((response) => {
         var alet = `
-          NO_VA: ${response.data.no_va}
-          BANK: ${response.data.bank}
-          TIPE_PEMBAYARAN: ${response.data.tipe_pembayaran}
-          HARGA: ${response.data.total_harga}
+          NO_VA: ${response.data.data.no_va}
+          BANK: ${response.data.data.bank}
+          TIPE_PEMBAYARAN: ${response.data.data.tipe_pembayaran}
+          HARGA: ${response.data.data.total_harga}
         `
         console.log(response.data)
         alert(alet)
