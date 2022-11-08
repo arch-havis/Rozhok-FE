@@ -31,7 +31,12 @@ const Checkout = () => {
     })
       .then((response) => {
         console.log(response.data)
-        alert(response.data.status.toUpperCase());
+        var data = `
+          NO_VA: ${response.data.no_va}
+          BANK: ${response.data.bank}
+          TIPE_PEMBAYARAN: ${response.data.tipe_pembayaran}
+          HARGA: ${response.data.total_harga}
+        `
       })
       .catch((error) => {
         console.log(error.message);
