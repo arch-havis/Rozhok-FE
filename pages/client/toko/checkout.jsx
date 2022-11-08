@@ -30,6 +30,7 @@ const Checkout = () => {
       },
     })
       .then((response) => {
+        console.log(response.data)
         alert(response.data.status.toUpperCase());
       })
       .catch((error) => {
