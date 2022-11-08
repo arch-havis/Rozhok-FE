@@ -135,7 +135,7 @@ const Index = () => {
       redirect: "follow",
     };
 
-    fetch("https://altagp3.online/junk-station", requestOptions)
+    fetch("https://rozhok.romodeus.site/junk-station", requestOptions)
       .then((response) => response.text())
       .then((result) => {
         // console.log(result);

@@ -50,7 +50,7 @@ const Index = () => {
       redirect: "follow",
     };
 
-    fetch("https://altagp3.online/product", requestOptions)
+    fetch("https://rozhok.romodeus.site/product", requestOptions)
       .then((response) => response.text())
       .then((result) => {
         // console.log(result);

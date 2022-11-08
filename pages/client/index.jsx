@@ -41,7 +41,7 @@ const Index = () => {
 
     await axios({
       method: "post",
-      url: "https://altagp3.online/login",
+      url: "https://rozhok.romodeus.site/login",
       headers: {
         "Content-Type": "application/json",
       },
@@ -105,7 +105,7 @@ const Index = () => {
     e.preventDefault();
     await axios({
       method: "post",
-      url: "https://altagp3.online/register",
+      url: "https://rozhok.romodeus.site/register",
       headers: {
         "Content-Type": "application/json",
       },

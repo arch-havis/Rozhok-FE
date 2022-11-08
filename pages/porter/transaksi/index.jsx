@@ -19,7 +19,7 @@ const Index = () => {
 
     const getDataTransaksi = async () => {
         try {
-            const response = await axios.get("https://altagp3.online/transaksi/porter", {
+            const response = await axios.get("https://rozhok.romodeus.site/transaksi/porter", {
                 headers: {
                     Authorization: `Bearer ${Cookies.get("token")}`,
                 },
@@ -43,7 +43,7 @@ const Index = () => {
 
     const getFilterTransaksi = async () => {
         try {
-            const response = await axios.get(`https://altagp3.online/transaksi/porter?type_transaction=${tipeTransaksi}&status=${statusTransaksi}`, {
+            const response = await axios.get(`https://rozhok.romodeus.site/transaksi/porter?type_transaction=${tipeTransaksi}&status=${statusTransaksi}`, {
                 headers: {
                     Authorization: `Bearer ${Cookies.get("token")}`,
                 },

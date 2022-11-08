@@ -20,7 +20,7 @@ const Index = () => {
   const getDetailPorters = async () => {
     try {
       const response = await axios.get(
-        `https://altagp3.online/porter/${router.query.idPorter}`,
+        `https://rozhok.romodeus.site/porter/${router.query.idPorter}`,
         {
           headers: {
             accept: "application/json",
@@ -38,7 +38,7 @@ const Index = () => {
   const getDataDashboard = async () => {
     try {
       const response = await axios.get(
-        `https://altagp3.online/porter/${router.query.idPorter}/pendapatan`,
+        `https://rozhok.romodeus.site/porter/${router.query.idPorter}/pendapatan`,
         {
           headers: {
             Authorization: `Bearer ${Cookies.get("token")}`,

@@ -18,7 +18,7 @@ const Index = () => {
   const getDetailTransaksi = async () => {
     try {
       const response = await axios.get(
-        `https://altagp3.online/transaksi/${router.query.item}/admin`,
+        `https://rozhok.romodeus.site/transaksi/${router.query.item}/admin`,
         {
           headers: {
             Authorization: `Bearer ${Cookies.get("token")}`,
@@ -38,7 +38,7 @@ const Index = () => {
 
     var config = {
       method: "put",
-      url: `https://altagp3.online/transaksi/${router.query.item}/admin`,
+      url: `https://rozhok.romodeus.site/transaksi/${router.query.item}/admin`,
       headers: {
         Authorization: `Bearer ${Cookies.get("token")}`,
       },

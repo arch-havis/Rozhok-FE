@@ -31,7 +31,7 @@ const Index = () => {
 
     var config = {
       method: "put",
-      url: `https://altagp3.online/category/${router.query.kategori}`,
+      url: `https://rozhok.romodeus.site/category/${router.query.kategori}`,
       headers: {
         Authorization: `Bearer ${Cookies.get("token")}`,
         "Content-Type": "application/json",

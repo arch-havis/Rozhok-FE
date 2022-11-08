@@ -20,7 +20,7 @@ const Index = () => {
 
     var config = {
       method: "get",
-      url: `https://altagp3.online/transaksi/${router.query.transaksi_Id}/junk-station`,
+      url: `https://rozhok.romodeus.site/transaksi/${router.query.transaksi_Id}/junk-station`,
       headers: {
         Authorization: `Bearer ${Cookies.get("token")}`,
       },

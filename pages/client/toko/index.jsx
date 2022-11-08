@@ -8,7 +8,7 @@ import { getCookie } from "cookies-next";
 import Link from "next/link";
 
 export const getServerSideProps = async () => {
-  const getProduct = await axios.get("https://altagp3.online/products");
+  const getProduct = await axios.get("https://rozhok.romodeus.site/products");
   const product = await getProduct;
 
   return {
@@ -37,7 +37,7 @@ const Index = (props) => {
     setId(e);
     await axios({
       method: "post",
-      url: "https://altagp3.online/cart",
+      url: "https://rozhok.romodeus.site/cart",
       headers: {
         Authorization: `Bearer ${token}`,
       },

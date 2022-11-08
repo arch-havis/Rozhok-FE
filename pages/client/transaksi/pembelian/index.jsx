@@ -8,7 +8,7 @@ import { getCookie } from "cookies-next";
 export const getServerSideProps = async (context) => {
   const token = getCookie("token", context);
   const response = await fetch(
-    `https://altagp3.online/transaksi/${context.query.id}/client/${context.query.tipe}`,
+    `https://rozhok.romodeus.site/transaksi/${context.query.id}/client/${context.query.tipe}`,
     {
       headers: {
         Authorization: `Bearer ${token}`,
@@ -18,7 +18,7 @@ export const getServerSideProps = async (context) => {
   const data = await response.json();
 
   const respTagihan = await fetch(
-    `https://altagp3.online/tagihan/${context.query.id}`,
+    `https://rozhok.romodeus.site/tagihan/${context.query.id}`,
     {
       headers: {
         Authorization: `Bearer ${token}`,

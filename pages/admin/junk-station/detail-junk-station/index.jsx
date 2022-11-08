@@ -28,7 +28,7 @@ const Index = () => {
 
     var config = {
       method: "get",
-      url: `https://altagp3.online/junk-station/${router.query.id}`,
+      url: `https://rozhok.romodeus.site/junk-station/${router.query.id}`,
       headers: {
         Authorization: `Bearer ${Cookies.get("token")}`,
       },
@@ -52,7 +52,7 @@ const Index = () => {
 
     var config = {
       method: "put",
-      url: `https://altagp3.online/kemitraan/${router.query.id}?status_kemitraan=terverifikasi`,
+      url: `https://rozhok.romodeus.site/kemitraan/${router.query.id}?status_kemitraan=terverifikasi`,
 
       headers: {
         Authorization: `Bearer ${Cookies.get("token")}`,
@@ -79,7 +79,7 @@ const Index = () => {
 
     var config = {
       method: "put",
-      url: `https://altagp3.online/kemitraan/${router.query.id}?status_kemitraan=gagal_verifikasi`,
+      url: `https://rozhok.romodeus.site/kemitraan/${router.query.id}?status_kemitraan=gagal_verifikasi`,
 
       headers: {
         Authorization: `Bearer ${Cookies.get("token")}`,

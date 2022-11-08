@@ -31,7 +31,7 @@ const Index = () => {
 
     var config = {
       method: "post",
-      url: "https://altagp3.online/category",
+      url: "https://rozhok.romodeus.site/category",
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${Cookies.get("token")}`,

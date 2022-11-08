@@ -8,10 +8,10 @@ import Router from "next/router";
 // import { propTypes } from "react-bootstrap/esm/Image";
 
 export const getServerSideProps = async () => {
-  const response = await axios.get("https://altagp3.online/categories");
+  const response = await axios.get("https://rozhok.romodeus.site/categories");
   const categories = await response;
 
-  const getProduct = await axios.get("https://altagp3.online/products");
+  const getProduct = await axios.get("https://rozhok.romodeus.site/products");
   const product = await getProduct;
 
   return {
@@ -37,7 +37,7 @@ const Index = (props) => {
   const handleAdd = async (e) => {
     await axios({
       method: "post",
-      url: "https://altagp3.online/cart",
+      url: "https://rozhok.romodeus.site/cart",
       headers: {
         Authorization: `Bearer ${token}`,
       },

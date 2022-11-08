@@ -3,7 +3,6 @@ import { Row, Col, Button, Table } from "react-bootstrap";
 import Footer from "../../../components/Footer";
 import HeaderClient from "../../../components/HeaderClient";
 import AddModal from "../../../components/client-page/AddClientData";
-import EditAlamat from "../../../components/client-page/Alamat";
 import { getCookie } from "cookies-next";
 import axios from "axios";
 import Router from "next/router";
@@ -15,13 +14,13 @@ export const getServerSideProps = async (context) => {
   const provinsi = resProv.data.provinsi;
 
   const token = getCookie("token", context);
-  const alamat = await fetch(`https://altagp3.online/alamats`, {
+  const alamat = await fetch(`https://rozhok.romodeus.site/alamats`, {
     headers: {
       Authorization: `Bearer ${token}`,
     },
   });
 
-  const profile = await fetch("https://altagp3.online/client", {
+  const profile = await fetch("https://rozhok.romodeus.site/client", {
     headers: {
       Authorization: `Bearer ${token}`,
     },
@@ -80,7 +79,7 @@ const Index = (props) => {
 
     var config = {
       method: "put",
-      url: "https://altagp3.online/client",
+      url: "https://rozhok.romodeus.site/client",
       headers: {
         Authorization: `Bearer ${token}`,
         "Content-Type": "application/json",
@@ -102,7 +101,7 @@ const Index = (props) => {
   const handleDelete = async (e) => {
     e.preventDefault();
     await axios
-      .delete("https://altagp3.online/client", {
+      .delete("https://rozhok.romodeus.site/client", {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -219,7 +218,7 @@ const Index = (props) => {
     e.preventDefault();
     await axios({
       method: "post",
-      url: "https://altagp3.online/alamat",
+      url: "https://rozhok.romodeus.site/alamat",
       headers: {
         Authorization: `Bearer ${token}`,
         "Content-Type": "application/json",
@@ -254,7 +253,7 @@ const Index = (props) => {
     e.preventDefault();
     await axios({
       method: "put",
-      url: `https://altagp3.online/alamat/${id}`,
+      url: `https://rozhok.romodeus.site/alamat/${id}`,
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -281,7 +280,7 @@ const Index = (props) => {
     console.log(e);
     await axios({
       method: "delete",
-      url: `https://altagp3.online/alamat/${e.target.id}`,
+      url: `https://rozhok.romodeus.site/alamat/${e.target.id}`,
       headers: {
         Authorization: `Bearer ${token}`,
       },

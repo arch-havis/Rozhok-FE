@@ -48,7 +48,7 @@ const Index = () => {
 
     var config = {
       method: "get",
-      url: "https://altagp3.online/categories",
+      url: "https://rozhok.romodeus.site/categories",
       headers: {
         accept: "application/json",
         Authorization: `Bearer ${Cookies.get("token")}`,
@@ -77,7 +77,7 @@ const Index = () => {
 
     var config = {
       method: "get",
-      url: "https://altagp3.online/pembelian/junk-station",
+      url: "https://rozhok.romodeus.site/pembelian/junk-station",
       headers: {
         accept: "application/json",
         Authorization: `Bearer ${Cookies.get("token")}`,
@@ -106,7 +106,7 @@ const Index = () => {
 
     var config = {
       method: "post",
-      url: "https://altagp3.online/pembelian/junk-station",
+      url: "https://rozhok.romodeus.site/pembelian/junk-station",
       headers: {
         Authorization: `Bearer ${Cookies.get("token")}`,
         "Content-Type": "application/json",
@@ -136,7 +136,7 @@ const Index = () => {
 
     var config = {
       method: "put",
-      url: `https://altagp3.online/pembelian/${idPembelian}/junk-station`,
+      url: `https://rozhok.romodeus.site/pembelian/${idPembelian}/junk-station`,
       headers: {
         Authorization: `Bearer ${Cookies.get("token")}`,
         "Content-Type": "application/json",
@@ -161,7 +161,7 @@ const Index = () => {
 
     var config = {
       method: "delete",
-      url: `https://altagp3.online/pembelian/${id}/junk-station`,
+      url: `https://rozhok.romodeus.site/pembelian/${id}/junk-station`,
       headers: {
         Authorization: `Bearer ${Cookies.get("token")}`,
       },
@@ -183,7 +183,7 @@ const Index = () => {
 
     var config = {
       method: "post",
-      url: "https://altagp3.online/transaksi/junk-station",
+      url: "https://rozhok.romodeus.site/transaksi/junk-station",
       headers: {
         Authorization: `Bearer ${Cookies.get("token")}`,
       },

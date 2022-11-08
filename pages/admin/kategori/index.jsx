@@ -21,7 +21,7 @@ const Index = () => {
 
     var config = {
       method: "get",
-      url: "https://altagp3.online/categories",
+      url: "https://rozhok.romodeus.site/categories",
       headers: {
         accept: "application/json",
         Authorization: `Bearer ${Cookies}`,
@@ -45,7 +45,7 @@ const Index = () => {
 
     var config = {
       method: "delete",
-      url: `https://altagp3.online/category/${id}`,
+      url: `https://rozhok.romodeus.site/category/${id}`,
       headers: {
         Authorization: `Bearer ${Cookies.get("token")}`,
       },

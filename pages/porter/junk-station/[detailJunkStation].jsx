@@ -17,7 +17,7 @@ const Index = () => {
 
     const getDetailJunkStation = async () => {
         try {
-            const response = await axios.get(`https://altagp3.online/junk-station/${router.query.item}`, {
+            const response = await axios.get(`https://rozhok.romodeus.site/junk-station/${router.query.item}`, {
                 headers: {
                     Authorization: `Bearer ${Cookies.get("token")}`,
                 },

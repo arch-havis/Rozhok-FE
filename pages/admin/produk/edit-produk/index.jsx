@@ -49,7 +49,7 @@ const Index = () => {
       redirect: "follow",
     };
 
-    fetch(`https://altagp3.online/product/${router.query.id}`, requestOptions)
+    fetch(`https://rozhok.romodeus.site/product/${router.query.id}`, requestOptions)
       .then((response) => response.text())
       .then((result) => {
         // console.log(result);

@@ -16,7 +16,7 @@ const Index = () => {
     // Get Data All Porters
     const getDataPorters = async () => {
         try {
-            const response = await axios.get("https://altagp3.online/porters", {
+            const response = await axios.get("https://rozhok.romodeus.site/porters", {
                 headers: {
                     accept: "application/json",
                     Authorization: `Bearer ${Cookies.get("token")}`,
@@ -44,7 +44,7 @@ const Index = () => {
 
         var config = {
             method: "delete",
-            url: `https://altagp3.online/porter/${idPorter}`,
+            url: `https://rozhok.romodeus.site/porter/${idPorter}`,
             headers: {
                 Authorization: `Bearer ${Cookies.get("token")}`,
             },

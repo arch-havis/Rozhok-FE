@@ -16,7 +16,7 @@ const Index = () => {
   const getDataTransaksi = async () => {
     try {
       const response = await axios.get(
-        "https://altagp3.online/transaksi/admin",
+        "https://rozhok.romodeus.site/transaksi/admin",
         {
           headers: {
             Authorization: `Bearer ${Cookies.get("token")}`,

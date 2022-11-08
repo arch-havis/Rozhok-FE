@@ -103,7 +103,7 @@ const Index = () => {
 
     var config = {
       method: "get",
-      url: "https://altagp3.online/junk-station/profile",
+      url: "https://rozhok.romodeus.site/junk-station/profile",
       headers: {
         Authorization: `Bearer ${Cookies.get("token")}`,
       },
@@ -136,7 +136,7 @@ const Index = () => {
 
     var config = {
       method: "put",
-      url: `https://altagp3.online/junk-station/${JS.id_junk_station}`,
+      url: `https://rozhok.romodeus.site/junk-station/${JS.id_junk_station}`,
       headers: {
         Authorization: `Bearer ${Cookies.get("token")}`,
         "Content-Type": "application/json",

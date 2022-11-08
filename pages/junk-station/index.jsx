@@ -34,7 +34,7 @@ const Index = () => {
 
     var config = {
       method: "post",
-      url: "https://altagp3.online/login",
+      url: "https://rozhok.romodeus.site/login",
       headers: {
         "Content-Type": "application/json",
       },

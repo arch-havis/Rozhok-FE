@@ -14,7 +14,7 @@ const Index = () => {
     try {
       const { data } = await axios({
         method: "post",
-        url: "https://altagp3.online/login",
+        url: "https://rozhok.romodeus.site/login",
         data: {
           email: email,
           password: password,

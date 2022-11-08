@@ -37,7 +37,7 @@ const Index = () => {
 
     var config = {
       method: "get",
-      url: "https://altagp3.online/junk-station/profile",
+      url: "https://rozhok.romodeus.site/junk-station/profile",
       headers: {
         Authorization: `Bearer ${Cookies.get("token")}`,
       },

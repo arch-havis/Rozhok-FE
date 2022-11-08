@@ -40,7 +40,7 @@ const Index = () => {
 
         var config = {
             method: "put",
-            url: `https://altagp3.online/porter/${router.query.idPorter}`,
+            url: `https://rozhok.romodeus.site/porter/${router.query.idPorter}`,
             headers: {
                 Authorization: `Bearer ${Cookies.get("token")}`,
                 "Content-Type": "application/json",

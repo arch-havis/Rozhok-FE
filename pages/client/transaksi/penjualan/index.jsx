@@ -9,7 +9,7 @@ import axios from "axios";
 export const getServerSideProps = async (context) => {
   const token = getCookie("token", context);
   const response = await axios.get(
-    `https://altagp3.online/transaksi/${context.query.id}/client/${context.query.tipe}`,
+    `https://rozhok.romodeus.site/transaksi/${context.query.id}/client/${context.query.tipe}`,
     {
       headers: {
         Authorization: `Bearer ${token}`,
@@ -34,7 +34,7 @@ const Index = (props) => {
   const getKat = async () => {
     await axios
       .get(
-        `https://altagp3.online/transaksi/${Router.query.id}/client/${Router.query.tipe}`,
+        `https://rozhok.romodeus.site/transaksi/${Router.query.id}/client/${Router.query.tipe}`,
         {
           headers: {
             Authorization: `Bearer ${token}`,

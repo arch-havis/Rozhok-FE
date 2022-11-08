@@ -31,7 +31,7 @@ const Index = () => {
 
     var config = {
       method: "get",
-      url: `https://altagp3.online/junk-station`,
+      url: `https://rozhok.romodeus.site/junk-station`,
       headers: {
         Authorization: `Bearer ${Cookies.get("token")}`,
       },
@@ -59,7 +59,7 @@ const Index = () => {
 
     var config = {
       method: "get",
-      url: `https://altagp3.online/junk-station?status_kemitraan=${filter}`,
+      url: `https://rozhok.romodeus.site/junk-station?status_kemitraan=${filter}`,
       headers: {
         Authorization: `Bearer ${Cookies.get("token")}`,
       },

@@ -17,7 +17,7 @@ const Index = () => {
 
     const getDataDashboard = async () => {
         try {
-            const response = await axios.get(`https://altagp3.online/porter/dashboard?filter=${filter}`, {
+            const response = await axios.get(`https://rozhok.romodeus.site/porter/dashboard?filter=${filter}`, {
                 headers: {
                     Authorization: `Bearer ${Cookies.get("token")}`,
                 },

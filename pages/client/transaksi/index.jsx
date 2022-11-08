@@ -8,7 +8,7 @@ import Router from "next/router";
 
 export const getServerSideProps = async (context) => {
   const token = getCookie("token", context);
-  const response = await fetch("https://altagp3.online/transaksi/client", {
+  const response = await fetch("https://rozhok.romodeus.site/transaksi/client", {
     headers: {
       Authorization: `Bearer ${token}`,
     },
@@ -38,7 +38,7 @@ const Index = (props) => {
     e.preventDefault();
     await axios({
       method: "get",
-      url: "https://altagp3.online/transaksi/client",
+      url: "https://rozhok.romodeus.site/transaksi/client",
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -60,7 +60,7 @@ const Index = (props) => {
     e.preventDefault();
     await axios({
       method: "get",
-      url: "https://altagp3.online/transaksi/client",
+      url: "https://rozhok.romodeus.site/transaksi/client",
       headers: {
         Authorization: `Bearer ${token}`,
       },

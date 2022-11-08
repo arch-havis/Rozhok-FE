@@ -19,7 +19,7 @@ const Index = () => {
     // get data details
     const getDataDetails = async () => {
         try {
-            const response = await axios.get(`https://altagp3.online/transaksi/${router.query.idTransaksi}/porter?type_transaction=${router.query.tipeTransaksi}`, {
+            const response = await axios.get(`https://rozhok.romodeus.site/transaksi/${router.query.idTransaksi}/porter?type_transaction=${router.query.tipeTransaksi}`, {
                 headers: {
                     Authorization: `Bearer ${Cookies.get("token")}`,
                 },
@@ -68,7 +68,7 @@ const Index = () => {
         console.log("ini data", data);
         var config = {
             method: "put",
-            url: `https://altagp3.online/transaksi/${router.query.idTransaksi}/porter`,
+            url: `https://rozhok.romodeus.site/transaksi/${router.query.idTransaksi}/porter`,
             headers: {
                 Authorization: `Bearer ${Cookies.get("token")}`,
             },
@@ -90,7 +90,7 @@ const Index = () => {
 
         var config = {
             method: "post",
-            url: `https://altagp3.online/transaksi/${router.query.idTransaksi}/porter`,
+            url: `https://rozhok.romodeus.site/transaksi/${router.query.idTransaksi}/porter`,
             headers: {
                 Authorization: `Bearer ${Cookies.get("token")}`,
             },

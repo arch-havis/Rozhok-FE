@@ -52,7 +52,7 @@ const Index = () => {
 
     var config = {
       method: "post",
-      url: "https://altagp3.online/porter",
+      url: "https://rozhok.romodeus.site/porter",
       headers: {
         Authorization: `Bearer ${Cookies.get("token")}`,
         "Content-Type": "application/json",

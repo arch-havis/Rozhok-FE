@@ -18,7 +18,7 @@ const Index = () => {
 
     var config = {
       method: "get",
-      url: "https://altagp3.online/admin",
+      url: "https://rozhok.romodeus.site/admin",
       headers: {
         Authorization: `Bearer ${Cookies.get("token")}`,
       },

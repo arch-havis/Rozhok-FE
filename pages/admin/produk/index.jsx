@@ -45,7 +45,7 @@ const Index = () => {
 
     var config = {
       method: "get",
-      url: "https://altagp3.online/products",
+      url: "https://rozhok.romodeus.site/products",
       headers: {
         Authorization: `Bearer ${Cookies.get("token")}`,
       },
@@ -67,7 +67,7 @@ const Index = () => {
 
     var config = {
       method: "delete",
-      url: `https://altagp3.online/product/${id}`,
+      url: `https://rozhok.romodeus.site/product/${id}`,
       headers: {
         Authorization: `Bearer ${Cookies.get("token")}`,
       },

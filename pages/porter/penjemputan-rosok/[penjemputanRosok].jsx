@@ -16,7 +16,7 @@ const Index = () => {
 
         var config = {
             method: "get",
-            url: `https://altagp3.online/pengambilan/${router.query.item}/porter`,
+            url: `https://rozhok.romodeus.site/pengambilan/${router.query.item}/porter`,
             headers: {
                 Authorization: `Bearer ${Cookies.get("token")}`,
             },
@@ -43,7 +43,7 @@ const Index = () => {
 
         var config = {
             method: "post",
-            url: `https://altagp3.online/pengambilan/${router.query.item}/porter`,
+            url: `https://rozhok.romodeus.site/pengambilan/${router.query.item}/porter`,
             headers: {
                 Authorization: `Bearer ${Cookies.get("token")}`,
             },

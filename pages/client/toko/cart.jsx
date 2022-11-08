@@ -8,7 +8,7 @@ import HeaderClient from "../../../components/HeaderClient";
 
 export const getServerSideProps = async (context) => {
   const token = getCookie("token", context);
-  const getCart = await axios.get("https://altagp3.online/carts", {
+  const getCart = await axios.get("https://rozhok.romodeus.site/carts", {
     headers: {
       Authorization: `Bearer ${token}`,
     },
@@ -56,7 +56,7 @@ const Cart = (props) => {
   const handleBuy = async (e) => {
     // await axios({
     //   method: "post",
-    //   url: "https://altagp3.online/transaksi/client",
+    //   url: "https://rozhok.romodeus.site/transaksi/client",
     //   headers: {
     //     Authorization: `Bearer ${token}`,
     //   },
@@ -85,7 +85,7 @@ const Cart = (props) => {
     setId(),
       await axios({
         method: "delete",
-        url: `https://altagp3.online/cart/${e.target.parentElement.value}`,
+        url: `https://rozhok.romodeus.site/cart/${e.target.parentElement.value}`,
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -137,7 +137,7 @@ const Cart = (props) => {
     // console.log("data is " + data.checklist);
     await axios({
       method: "put",
-      url: `https://altagp3.online/cart/${parseInt(e.target.value)}`,
+      url: `https://rozhok.romodeus.site/cart/${parseInt(e.target.value)}`,
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -158,7 +158,7 @@ const Cart = (props) => {
     console.log(e.target);
     await axios({
       method: "put",
-      url: `https://altagp3.online/cart/${parseInt(e.target.value)}`,
+      url: `https://rozhok.romodeus.site/cart/${parseInt(e.target.value)}`,
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -182,7 +182,7 @@ const Cart = (props) => {
     console.log(e.target);
     await axios({
       method: "put",
-      url: `https://altagp3.online/cart/${parseInt(e.target.value)}`,
+      url: `https://rozhok.romodeus.site/cart/${parseInt(e.target.value)}`,
       headers: {
         Authorization: `Bearer ${token}`,
       },

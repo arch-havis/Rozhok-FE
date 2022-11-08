@@ -15,14 +15,14 @@ import HeaderClient from "../../../components/HeaderClient";
 
 export const getServerSideProps = async (context) => {
   const token = getCookie("token", context);
-  const getList = await fetch("https://altagp3.online/penjualan/client", {
+  const getList = await fetch("https://rozhok.romodeus.site/penjualan/client", {
     headers: {
       Authorization: `Bearer ${token}`,
     },
   });
   const list = await getList.json();
 
-  const getKat = await fetch("https://altagp3.online/categories");
+  const getKat = await fetch("https://rozhok.romodeus.site/categories");
   const kat = await getKat.json();
   return {
     props: {
@@ -61,7 +61,7 @@ const Index = (props) => {
   const handleTambah = async () => {
     await axios({
       method: "post",
-      url: "https://altagp3.online/penjualan/client",
+      url: "https://rozhok.romodeus.site/penjualan/client",
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -81,7 +81,7 @@ const Index = (props) => {
   const handleUpdate = async () => {
     await axios({
       method: "put",
-      url: `https://altagp3.online/penjualan/${idJual}/client`,
+      url: `https://rozhok.romodeus.site/penjualan/${idJual}/client`,
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -102,7 +102,7 @@ const Index = (props) => {
   const handleDelete = async () => {
     await axios({
       method: "delete",
-      url: `https://altagp3.online/penjualan/${idJual}/client`,
+      url: `https://rozhok.romodeus.site/penjualan/${idJual}/client`,
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -120,7 +120,7 @@ const Index = (props) => {
   const handleProses = async () => {
     await axios({
       method: "post",
-      url: `https://altagp3.online/transaksi/client`,
+      url: `https://rozhok.romodeus.site/transaksi/client`,
       headers: {
         Authorization: `Bearer ${token}`,
       },

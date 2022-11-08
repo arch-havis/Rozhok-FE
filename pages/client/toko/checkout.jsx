@@ -20,7 +20,7 @@ const Checkout = () => {
   const handleBayar = async () => {
     await axios({
       method: "post",
-      url: "https://altagp3.online/payment",
+      url: "https://rozhok.romodeus.site/payment",
       headers: {
         Authorization: `Bearer ${token}`,
       },

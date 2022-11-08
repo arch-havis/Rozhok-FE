@@ -8,7 +8,7 @@ import { getCookie } from "cookies-next";
 
 export const getServerSideProps = async (context) => {
   const id = getCookie("idProduk", context);
-  const getProduct = await axios.get(`https://altagp3.online/product/${id}`);
+  const getProduct = await axios.get(`https://rozhok.romodeus.site/product/${id}`);
   const product = await getProduct;
 
   return {
